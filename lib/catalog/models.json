@@ -1,0 +1,524 @@
+[
+  {
+    "id": "openai/gpt-6-astra",
+    "name": "GPT-6 Astra",
+    "publisher": "OpenAI",
+    "context": 1050000,
+    "inputPrice": 10,
+    "outputPrice": 50,
+    "inputModalities": [
+      "file",
+      "image",
+      "text"
+    ],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/openai/gpt-6-astra",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "openai/gpt-6-sol",
+    "name": "GPT-6 Sol",
+    "publisher": "OpenAI",
+    "context": 1050000,
+    "inputPrice": 2,
+    "outputPrice": 10,
+    "inputModalities": [
+      "file",
+      "image",
+      "text"
+    ],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/openai/gpt-6-sol",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "openai/gpt-6-luna",
+    "name": "GPT-6 Luna",
+    "publisher": "OpenAI",
+    "context": 1050000,
+    "inputPrice": 0.09999999999999999,
+    "outputPrice": 0.5,
+    "inputModalities": [
+      "file",
+      "image",
+      "text"
+    ],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/openai/gpt-6-luna",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "anthropic/claude-opus-5.5",
+    "name": "Claude Opus 5.5",
+    "publisher": "Anthropic",
+    "context": 1000000,
+    "inputPrice": 4,
+    "outputPrice": 20,
+    "inputModalities": [
+      "text",
+      "image",
+      "file"
+    ],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/anthropic/claude-opus-5.5",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "anthropic/claude-sonnet-5",
+    "name": "Claude Sonnet 5",
+    "publisher": "Anthropic",
+    "context": 1000000,
+    "inputPrice": 2,
+    "outputPrice": 10,
+    "inputModalities": [
+      "text",
+      "image",
+      "file"
+    ],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/anthropic/claude-sonnet-5",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "anthropic/claude-haiku-4.5",
+    "name": "Claude Haiku 4.5",
+    "publisher": "Anthropic",
+    "context": 200000,
+    "inputPrice": 1,
+    "outputPrice": 5,
+    "inputModalities": [
+      "text",
+      "image",
+      "file"
+    ],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/anthropic/claude-haiku-4.5",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "google/gemini-3.8-flash",
+    "name": "Gemini 3.8 Flash",
+    "publisher": "Google",
+    "context": 1048576,
+    "inputPrice": 0.75,
+    "outputPrice": 3.75,
+    "inputModalities": [
+      "text",
+      "image",
+      "video",
+      "file",
+      "audio"
+    ],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/google/gemini-3.8-flash",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "google/gemini-3.1-pro-preview",
+    "name": "Gemini 3.1 Pro Preview",
+    "publisher": "Google",
+    "context": 1048576,
+    "inputPrice": 2,
+    "outputPrice": 12,
+    "inputModalities": [
+      "audio",
+      "file",
+      "image",
+      "text",
+      "video"
+    ],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/google/gemini-3.1-pro-preview",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "google/gemma-4-31b-it",
+    "name": "Gemma 4 31B",
+    "publisher": "Google",
+    "context": 262144,
+    "inputPrice": 0.09,
+    "outputPrice": 0.33999999999999997,
+    "inputModalities": [
+      "image",
+      "text",
+      "video"
+    ],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/google/gemma-4-31b-it",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "meta-llama/llama-4-maverick",
+    "name": "Llama 4 Maverick",
+    "publisher": "Meta",
+    "context": 1048576,
+    "inputPrice": 0.1875,
+    "outputPrice": 0.6525,
+    "inputModalities": [
+      "text",
+      "image"
+    ],
+    "reasoning": false,
+    "tools": true,
+    "url": "https://openrouter.ai/meta-llama/llama-4-maverick",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "meta-llama/llama-4-scout",
+    "name": "Llama 4 Scout",
+    "publisher": "Meta",
+    "context": 1310720,
+    "inputPrice": 0.09999999999999999,
+    "outputPrice": 0.3,
+    "inputModalities": [
+      "text",
+      "image"
+    ],
+    "reasoning": false,
+    "tools": true,
+    "url": "https://openrouter.ai/meta-llama/llama-4-scout",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "deepseek/deepseek-v4-pro-0813",
+    "name": "DeepSeek V4 Pro 0813",
+    "publisher": "DeepSeek",
+    "context": 1048576,
+    "inputPrice": 0.26399999999999996,
+    "outputPrice": 0.792,
+    "inputModalities": [
+      "text"
+    ],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/deepseek/deepseek-v4-pro-0813",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "deepseek/deepseek-v4.1-flash",
+    "name": "DeepSeek V4.1 Flash",
+    "publisher": "DeepSeek",
+    "context": 1048576,
+    "inputPrice": 0.035,
+    "outputPrice": 0.29,
+    "inputModalities": [
+      "text",
+      "image"
+    ],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/deepseek/deepseek-v4.1-flash",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "deepseek/deepseek-r1",
+    "name": "R1",
+    "publisher": "DeepSeek",
+    "context": 64000,
+    "inputPrice": 0.7,
+    "outputPrice": 2.5,
+    "inputModalities": [
+      "text"
+    ],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/deepseek/deepseek-r1",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "qwen/qwen3.8-max-prime",
+    "name": "Qwen3.8 Max Prime",
+    "publisher": "Qwen",
+    "context": 1000000,
+    "inputPrice": 4,
+    "outputPrice": 12,
+    "inputModalities": [
+      "text",
+      "image",
+      "video"
+    ],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/qwen/qwen3.8-max-prime",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "qwen/qwen3.8-flash",
+    "name": "Qwen3.8 Flash",
+    "publisher": "Qwen",
+    "context": 1000000,
+    "inputPrice": 0.15,
+    "outputPrice": 0.47,
+    "inputModalities": [
+      "text",
+      "image",
+      "video"
+    ],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/qwen/qwen3.8-flash",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "qwen/qwen3-coder-next",
+    "name": "Qwen3 Coder Next",
+    "publisher": "Qwen",
+    "context": 262144,
+    "inputPrice": 0.12,
+    "outputPrice": 0.7999999999999999,
+    "inputModalities": [
+      "text"
+    ],
+    "reasoning": false,
+    "tools": true,
+    "url": "https://openrouter.ai/qwen/qwen3-coder-next",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "mistralai/mistral-large-2512",
+    "name": "Mistral Large 3 2512",
+    "publisher": "Mistral",
+    "context": 262144,
+    "inputPrice": 0.5,
+    "outputPrice": 1.5,
+    "inputModalities": [
+      "text",
+      "image",
+      "file"
+    ],
+    "reasoning": false,
+    "tools": true,
+    "url": "https://openrouter.ai/mistralai/mistral-large-2512",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "mistralai/mistral-small-2603",
+    "name": "Mistral Small 4",
+    "publisher": "Mistral",
+    "context": 262144,
+    "inputPrice": 0.15,
+    "outputPrice": 0.6,
+    "inputModalities": [
+      "text",
+      "image"
+    ],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/mistralai/mistral-small-2603",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "mistralai/codestral-2508",
+    "name": "Codestral 2508",
+    "publisher": "Mistral",
+    "context": 256000,
+    "inputPrice": 0.3,
+    "outputPrice": 0.8999999999999999,
+    "inputModalities": [
+      "text",
+      "file"
+    ],
+    "reasoning": false,
+    "tools": true,
+    "url": "https://openrouter.ai/mistralai/codestral-2508",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "x-ai/grok-4.7",
+    "name": "Grok 4.7",
+    "publisher": "SpaceXAI",
+    "context": 500000,
+    "inputPrice": 1.5999999999999999,
+    "outputPrice": 4.8,
+    "inputModalities": [
+      "text",
+      "image",
+      "file"
+    ],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/x-ai/grok-4.7",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "x-ai/grok-4.6",
+    "name": "Grok 4.6",
+    "publisher": "SpaceXAI",
+    "context": 500000,
+    "inputPrice": 2,
+    "outputPrice": 6,
+    "inputModalities": [
+      "text",
+      "image",
+      "file"
+    ],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/x-ai/grok-4.6",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "cohere/command-a-plus",
+    "name": "Command A+",
+    "publisher": "Cohere",
+    "context": 192000,
+    "inputPrice": 0.3,
+    "outputPrice": 1.5,
+    "inputModalities": [
+      "text",
+      "image"
+    ],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/cohere/command-a-plus",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "cohere/command-a",
+    "name": "Command A",
+    "publisher": "Cohere",
+    "context": 256000,
+    "inputPrice": 2.5,
+    "outputPrice": 10,
+    "inputModalities": [
+      "text"
+    ],
+    "reasoning": false,
+    "tools": false,
+    "url": "https://openrouter.ai/cohere/command-a",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "moonshotai/kimi-k3",
+    "name": "Kimi K3",
+    "publisher": "MoonshotAI",
+    "context": 1048576,
+    "inputPrice": 3,
+    "outputPrice": 15,
+    "inputModalities": [
+      "text",
+      "image",
+      "video"
+    ],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/moonshotai/kimi-k3",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "minimax/minimax-m3",
+    "name": "MiniMax M3",
+    "publisher": "MiniMax",
+    "context": 1048576,
+    "inputPrice": 0.3,
+    "outputPrice": 1.2,
+    "inputModalities": [
+      "text",
+      "image",
+      "video"
+    ],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/minimax/minimax-m3",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "z-ai/glm-5.3",
+    "name": "GLM 5.3",
+    "publisher": "Z.ai",
+    "context": 1310720,
+    "inputPrice": 1.4,
+    "outputPrice": 4.4,
+    "inputModalities": [
+      "text"
+    ],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/z-ai/glm-5.3",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "nvidia/nemotron-3.5-lightning",
+    "name": "Nemotron 3.5 Lightning",
+    "publisher": "NVIDIA",
+    "context": 1000000,
+    "inputPrice": 0.08,
+    "outputPrice": 0.19999999999999998,
+    "inputModalities": [
+      "text"
+    ],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/nvidia/nemotron-3.5-lightning",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "microsoft/phi-4",
+    "name": "Phi 4",
+    "publisher": "Microsoft",
+    "context": 16384,
+    "inputPrice": 0.07,
+    "outputPrice": 0.14,
+    "inputModalities": [
+      "text"
+    ],
+    "reasoning": false,
+    "tools": false,
+    "url": "https://openrouter.ai/microsoft/phi-4",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "openai/gpt-oss-120b",
+    "name": "gpt-oss-120b",
+    "publisher": "OpenAI",
+    "context": 131072,
+    "inputPrice": 0.15,
+    "outputPrice": 0.6,
+    "inputModalities": [
+      "text"
+    ],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/openai/gpt-oss-120b",
+    "checkedAt": "2026-09-27",
+    "source": "https://openrouter.ai/api/v1/models"
+  }
+]
