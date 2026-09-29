@@ -29,6 +29,7 @@ export function PointerMotion() {
     const hide = () => {
       visible = false;
       element.style.opacity = "0";
+      element.dataset.pressed = "false";
       cancelAnimationFrame(frame);
       frame = 0;
     };
@@ -59,7 +60,14 @@ export function PointerMotion() {
       enabled = media.matches;
       if (!enabled) hide();
     };
+    const press = (event: PointerEvent) => {
+      if (enabled && event.pointerType === "mouse") element.dataset.pressed = "true";
+    };
+    const release = () => { element.dataset.pressed = "false"; };
     window.addEventListener("pointermove", move, { passive: true });
+    window.addEventListener("pointerdown", press, { passive: true });
+    window.addEventListener("pointerup", release, { passive: true });
+    window.addEventListener("pointercancel", release, { passive: true });
     document.addEventListener("pointerleave", hide);
     window.addEventListener("blur", hide);
     document.addEventListener("visibilitychange", hide);
@@ -67,6 +75,9 @@ export function PointerMotion() {
     return () => {
       hide();
       window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerdown", press);
+      window.removeEventListener("pointerup", release);
+      window.removeEventListener("pointercancel", release);
       document.removeEventListener("pointerleave", hide);
       window.removeEventListener("blur", hide);
       document.removeEventListener("visibilitychange", hide);

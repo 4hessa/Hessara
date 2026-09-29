@@ -14,7 +14,7 @@ type HeroCopy = {
 export const heroCopy: Record<Locale, HeroCopy> = {
   ar: {
     eyebrow: "مختبر Hessara لتقييم النماذج",
-    headline: "وضوح أكثر في اختيار النموذج.",
+    headline: "وضوح أكثر في اختيار النموذج",
     description:
       "اختبر النماذج على مهام واضحة، وقارن الجودة والسرعة والثبات والتكلفة قبل أن تبني عليها.",
     explore: "استكشف النماذج",

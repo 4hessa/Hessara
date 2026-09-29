@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import {
   ArrowDownToLine,
   ArrowUpRight,
-  BarChart3,
   Check,
   ChevronLeft,
   ChevronRight,
@@ -66,6 +65,7 @@ import {
 } from "./discover";
 import { NvidiaStart } from "./nvidia-start";
 import { PointerMotion } from "./pointer-motion";
+import { SectionIcon } from "./section-icon";
 import { heroCopy } from "./hero-copy";
 import { AgentsPanel } from "./agents";
 import { displayName, ARABIC_LANGUAGES } from "@/lib/display-names";
@@ -117,6 +117,10 @@ const providerColors: Record<string, string> = {
   anthropic: "#547773",
   gemini: "#957d86",
 };
+const comparisonColors = [
+  "#806386", "#557e78", "#a96b76", "#957243",
+  "#657d9b", "#84734f", "#72586d", "#497b87",
+];
 export default function Workspace() {
   const [locale, setLocale] = useState<Locale>("ar"),
     [view, setView] = useState("overview");
@@ -201,7 +205,10 @@ export default function Workspace() {
     ...visibleModels.filter(
       (m) => !snapshotModels.some((x: { id: string }) => x.id === m.id),
     ),
-  ];
+  ].map((model, index) => ({
+    ...model,
+    color: comparisonColors[index % comparisonColors.length],
+  }));
   const data = metrics(trials, measuredModels),
     demo = selected?.mode === "demo",
     completed = selected?.done ?? 0;
@@ -727,7 +734,7 @@ export default function Workspace() {
                         <>
                           <span>وضوح أكثر</span>
                           <br />
-                          في اختيار النموذج.
+                          في اختيار النموذج
                         </>
                       ) : (
                         heroCopy[locale].headline
@@ -812,36 +819,37 @@ export default function Workspace() {
                       {
                         title: heroCopy[locale].explore,
                         detail: t("comparison"),
-                        icon: BarChart3,
                         target: "llms",
                       },
                       {
                         title: t("benchmarks"),
                         detail: t("sixCategories"),
-                        icon: FlaskConical,
                         target: "benchmarks",
                       },
                       {
                         title: t("aiTools"),
                         detail: heroCopy[locale].tools,
-                        icon: Search,
                         target: "tools",
                       },
                       {
                         title: t("method"),
                         detail: t("methodDescription"),
-                        icon: ShieldCheck,
                         target: "method",
                       },
-                    ].map(({ title, detail, icon: Icon, target }) => (
+                    ].map(({ title, detail, target }) => (
                       <button
                         className="explore-path"
+                        data-section={target}
                         key={target}
                         onClick={() => navigateTo(target)}
                       >
                         <span className="path-top">
-                          <Icon size={23} strokeWidth={1.4} />
-                          <ArrowUpRight size={17} />
+                          <span className="path-icon" aria-hidden="true">
+                            <SectionIcon section={target} />
+                          </span>
+                          <span className="path-arrow" aria-hidden="true">
+                            <ArrowUpRight size={17} />
+                          </span>
                         </span>
                         <span className="path-title">{title}</span>
                         <span className="path-description">{detail}</span>
@@ -853,7 +861,7 @@ export default function Workspace() {
               </>
             )}
             {selected && (
-              <>
+              <div className="evaluation-dashboard">
                 <div className="experiment-toolbar">
                   <div className="experiment-name">
                     <span className="overline">{t("saved")}</span>
@@ -1177,7 +1185,7 @@ export default function Workspace() {
                   </div>
                   <p className="footnote">{t("first30")}</p>
                 </section>
-              </>
+              </div>
             )}
           </TabsContent>
           <TabsContent value="runs">

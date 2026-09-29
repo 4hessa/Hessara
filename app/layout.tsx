@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "./discover.css";
 import "./identity.css";
+import "./surfaces.css";
 export const metadata: Metadata = {
   title: "Hessara — مختبر تقييم النماذج",
   description:

@@ -319,21 +319,28 @@ body {
   }
   .pointer-halo span {
     display: block;
-    width: 24px;
-    height: 24px;
-    margin: -12px;
-    border: 1px solid #775b6e88;
-    background: #dcc5d814;
-    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    margin: -11px;
+    border: 1px solid #614c63b3;
+    background: #775b6e12;
+    border-radius: 8px 15px 15px 15px;
+    transform: rotate(-20deg);
     transition:
       transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
       background 0.2s,
-      border-color 0.2s;
+      border-color 0.2s,
+      border-radius 0.2s;
   }
   .pointer-halo[data-interactive="true"] span {
-    transform: scale(1.5);
-    background: #dcc5d826;
-    border-color: #775b6e;
+    transform: rotate(0deg) scale(1.4);
+    border-radius: 50%;
+    background: #775b6e1c;
+    border-color: #614c63;
+  }
+  .pointer-halo[data-pressed="true"] span {
+    transform: rotate(0deg) scale(0.8);
+    background: #775b6e30;
   }
   .view-content[data-state="active"] {
     animation: surface-enter 0.35s ease-out;
