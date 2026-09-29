@@ -67,6 +67,7 @@ import {
 import { NvidiaStart } from "./nvidia-start";
 import { PointerMotion } from "./pointer-motion";
 import { heroCopy } from "./hero-copy";
+import { HeroArt } from "./hero-art";
 import { AgentsPanel } from "./agents";
 import { displayName, ARABIC_LANGUAGES } from "@/lib/display-names";
 type Run = {
@@ -765,6 +766,7 @@ export default function Workspace() {
                       </span>
                     </div>
                   </div>
+                  <HeroArt />
                 </section>
                 <section
                   className="agents-invitation"
