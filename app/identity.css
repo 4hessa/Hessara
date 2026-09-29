@@ -1110,10 +1110,10 @@ body {
   background: #8a6f91;
 }
 .meadow-welcome {
-  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  grid-template-columns: minmax(0, 1fr);
   min-height: 475px;
   padding-block: 42px 58px;
-  gap: clamp(4px, 1vw, 20px);
+  gap: 0;
   isolation: isolate;
   overflow: hidden;
   border-radius: 28px;
@@ -1161,22 +1161,6 @@ body {
 .meadow-copy {
   padding-inline: clamp(22px, 3.5vw, 48px);
   max-width: 710px;
-}
-.hero-art {
-  position: relative;
-  width: 100%;
-  height: clamp(330px, 33vw, 440px);
-  align-self: center;
-  opacity: 0.4;
-  pointer-events: none;
-  user-select: none;
-  filter: blur(0.35px);
-}
-.hero-art canvas,
-.hero-art-still {
-  width: 100%;
-  height: 100%;
-  display: block;
 }
 .meadow-copy h1 {
   max-width: 640px;
@@ -1640,11 +1624,6 @@ body {
   .meadow-copy {
     max-width: 650px;
   }
-  .hero-art {
-    height: 220px;
-    max-width: 460px;
-    justify-self: center;
-  }
   .decision-studio {
     grid-template-columns: 1fr;
   }
@@ -1657,7 +1636,7 @@ body {
   .meadow-welcome {
     min-height: 0;
     padding-block: 32px 42px;
-    gap: 8px;
+    gap: 0;
     border-radius: 19px;
   }
   .meadow-welcome::before {
@@ -1668,10 +1647,6 @@ body {
   }
   .meadow-copy {
     padding-inline: 19px;
-  }
-  .hero-art {
-    height: 170px;
-    max-width: 340px;
   }
   .hero-indicators {
     margin-top: 30px;
