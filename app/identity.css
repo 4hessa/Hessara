@@ -1268,9 +1268,7 @@ body {
   padding-block: 8px;
 }
 .decision-kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
+  display: inline-block;
   color: #725a78;
   font-size: 13px;
   font-weight: 600;

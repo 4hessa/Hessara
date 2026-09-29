@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ArrowUpRight, ArrowLeft, Search, Sparkles } from "lucide-react";
+import { ArrowUpRight, ArrowLeft, Search } from "lucide-react";
 import { CATEGORIES, type Category } from "@/lib/benchmarks";
 import { AGENTS, type AgentCategory } from "@/lib/agent-catalog";
 import { type Locale } from "@/lib/i18n";
@@ -170,7 +170,6 @@ export function AgentsPanel({
       <section className="decision-studio" aria-labelledby="decision-title">
         <div className="decision-heading">
           <span className="decision-kicker">
-            <Sparkles size={17} aria-hidden="true" />{" "}
             {c("خطوة عملية", "A PRACTICAL STEP")}
           </span>
           <h3 id="decision-title">
