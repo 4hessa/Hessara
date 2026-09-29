@@ -1,15 +1,14 @@
-// Intentionally empty by default.
-// Add Drizzle tables here when the site actually needs a database.
-// See examples/d1/db/schema.ts for an opt-in example.
+// PostgreSQL schema for the Vercel deployment. RLS and grants live in supabase/migrations.
 import {
-  sqliteTable,
+  pgTable,
   text,
   integer,
-  real,
+  bigint,
+  doublePrecision as real,
   index,
   uniqueIndex,
-} from "drizzle-orm/sqlite-core";
-export const runs = sqliteTable(
+} from "drizzle-orm/pg-core";
+export const runs = pgTable(
   "runs",
   {
     id: text("id").primaryKey(),
@@ -22,13 +21,14 @@ export const runs = sqliteTable(
     total: integer("total").notNull(),
     nextIndex: integer("next_index").notNull().default(0),
     lockToken: text("lock_token"),
-    lockedUntil: integer("locked_until").notNull().default(0),
+    lockedUntil: bigint("locked_until", { mode: "number" }).notNull().default(0),
   },
   (t) => [index("idx_runs_owner_created").on(t.owner, t.createdAt)],
 );
-export const trials = sqliteTable(
+export const trials = pgTable(
   "trials",
   {
+    rowid: bigint("rowid", { mode: "number" }).generatedAlwaysAsIdentity(),
     id: text("id").primaryKey(),
     runId: text("run_id")
       .notNull()
@@ -55,7 +55,7 @@ export const trials = sqliteTable(
     ),
   ],
 );
-export const modelProfiles = sqliteTable(
+export const modelProfiles = pgTable(
   "model_profiles",
   {
     id: text("id").primaryKey(),
@@ -70,7 +70,7 @@ export const modelProfiles = sqliteTable(
   },
   (t) => [index("idx_model_profiles_owner").on(t.owner)],
 );
-export const integrationExports = sqliteTable(
+export const integrationExports = pgTable(
   "integration_exports",
   {
     id: text("id").primaryKey(),
@@ -92,8 +92,14 @@ export const integrationExports = sqliteTable(
   ],
 );
 
-export const decisionUsage = sqliteTable("decision_usage", {
+export const decisionUsage = pgTable("decision_usage", {
   owner: text("owner").primaryKey(),
   day: text("day").notNull(),
   used: integer("used").notNull().default(0),
+});
+
+export const authLimits = pgTable("auth_limits", {
+  bucket: text("bucket").primaryKey(),
+  expiresAt: bigint("expires_at", { mode: "number" }).notNull(),
+  used: integer("used").notNull(),
 });

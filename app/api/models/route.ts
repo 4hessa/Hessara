@@ -42,7 +42,8 @@ export async function POST(request: Request) {
     const c = value.data,
       id = crypto.randomUUID();
     const cipher = await encryptSecret(c.apiKey, `${owner}:${id}`);
-    const inserted = await database()
+    const db = database();
+    const statement = db
       .prepare(
         "INSERT INTO model_profiles(id,owner,name,provider,model,key_cipher,input_price,output_price,created_at) SELECT ?,?,?,?,?,?,?,?,? WHERE (SELECT count(*) FROM model_profiles WHERE owner=?)<100",
       )
@@ -57,8 +58,8 @@ export async function POST(request: Request) {
         c.outputPrice,
         new Date().toISOString(),
         owner,
-      )
-      .run();
+      );
+    const [inserted] = await db.ownerQuotaBatch(owner, [statement]);
     if (inserted.meta.changes !== 1) throw new HttpError("LIMIT", 429);
     return Response.json(
       { models: await availableModels(owner) },

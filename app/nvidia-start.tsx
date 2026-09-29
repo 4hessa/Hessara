@@ -172,7 +172,7 @@ export function NvidiaStart({
                 ? "تعذّر إكمال الربط. تحقّق من الاتصال وحاول مجددًا."
                 : "Connection failed. Please try again.")}
             {error === "AUTH_REQUIRED" && (
-              <a href="/signin-with-chatgpt?return_to=/" target="_top">
+              <a href="/signin?next=/" target="_top">
                 {ar ? "تسجيل الدخول" : "Sign in"}
               </a>
             )}

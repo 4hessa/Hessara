@@ -121,7 +121,7 @@ const comparisonColors = [
   "#806386", "#557e78", "#a96b76", "#957243",
   "#657d9b", "#84734f", "#72586d", "#497b87",
 ];
-export default function Workspace() {
+export default function Workspace({ sessionMode = "none" }: { sessionMode?: "guest" | "account" | "none" }) {
   const [locale, setLocale] = useState<Locale>("ar"),
     [view, setView] = useState("overview");
   const [runs, setRuns] = useState<Run[]>([]),
@@ -558,6 +558,9 @@ export default function Workspace() {
           </strong>
         </a>
         <div className="header-tools">
+          <a href="/signin" className="session-link" lang="ar">
+            {sessionMode === "guest" ? "جلسة ضيف" : sessionMode === "account" ? "حسابي" : "تسجيل الدخول"}
+          </a>
           <span className="privacy">
             <ShieldCheck size={15} />
             {t("private")}
@@ -639,7 +642,7 @@ export default function Workspace() {
               >
                 <span>{message(error)}</span>
                 {error === "AUTH_REQUIRED" ? (
-                  <a href="/signin-with-chatgpt?return_to=/" target="_top">
+                  <a href="/signin?next=/" target="_top">
                     {t("signIn")}
                   </a>
                 ) : (

@@ -2,6 +2,8 @@ import { z } from "zod";
 import { identity, database, fail, HttpError } from "@/lib/server";
 import { decisionQuestion, layaEndpoint, parseDecision } from "@/lib/decisions";
 
+export const maxDuration = 120;
+
 const schema = z
   .object({
     engine: z.enum(["jev", "laya"]),

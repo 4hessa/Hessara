@@ -1,9 +1,7 @@
-import { env } from "cloudflare:workers";
 const encoder = new TextEncoder();
 export function vaultReady() {
   try {
-    const value = (env as unknown as Record<string, string>)
-      .HESSARA_ENCRYPTION_KEY;
+    const value = process.env.HESSARA_ENCRYPTION_KEY;
     return !!value && bytes(value).length === 32;
   } catch {
     return false;
@@ -16,8 +14,7 @@ function base64(value: Uint8Array) {
   return btoa(String.fromCharCode(...value));
 }
 async function masterKey() {
-  const encoded = (env as unknown as Record<string, string>)
-    .HESSARA_ENCRYPTION_KEY;
+  const encoded = process.env.HESSARA_ENCRYPTION_KEY;
   if (!encoded || bytes(encoded).length !== 32)
     throw new Error("Vault unavailable");
   return crypto.subtle.importKey("raw", bytes(encoded), "AES-GCM", false, [

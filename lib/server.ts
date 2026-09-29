@@ -1,13 +1,10 @@
-import { env } from "cloudflare:workers";
 import { decryptSecret } from "./vault";
-import { getChatGPTUser } from "@/app/chatgpt-auth";
+import { authenticatedUser } from "@/lib/auth";
 import { DEMO_MODELS, type Model, type Task } from "./benchmarks";
 import { invokeNvidia } from "./nvidia";
-export const settings = () => env as unknown as Record<string, string>;
-export function database() {
-  if (!env.DB) throw new Error("قاعدة النتائج غير متاحة حاليًا.");
-  return env.DB;
-}
+export { database } from "./postgres-database";
+import { database } from "./postgres-database";
+export const settings = () => process.env as Record<string, string>;
 export class HttpError extends Error {
   constructor(
     message: string,
@@ -17,14 +14,14 @@ export class HttpError extends Error {
   }
 }
 export async function identity(request?: Request) {
-  const u = await getChatGPTUser();
+  const u = await authenticatedUser();
   if (!u) throw new HttpError("AUTH_REQUIRED", 401);
   if (request && request.method !== "GET") {
     const origin = request.headers.get("origin");
     if (origin !== new URL(request.url).origin)
       throw new HttpError("ORIGIN", 403);
   }
-  return u.userId;
+  return u.id;
 }
 export async function availableModels(owner: string): Promise<Model[]> {
   const e = settings();
@@ -67,7 +64,7 @@ export async function availableModels(owner: string): Promise<Model[]> {
       label: e[m.key + "_MODEL"] || "لم يُحدد نموذج",
       color: m.color,
       provider: m.id,
-      ready: !!(e[m.key + "_API_KEY"] && e[m.key + "_MODEL"]),
+      ready: e.HESSARA_SHARED_MODEL_OWNER_ID === owner && !!(e[m.key + "_API_KEY"] && e[m.key + "_MODEL"]),
     })),
   ];
 }
@@ -155,7 +152,8 @@ export async function invokeModel(
     .first<{ key_cipher: string }>();
   const key = profile
     ? await decryptSecret(profile.key_cipher, `${owner}:${model.id}`)
-    : e[model.provider.toUpperCase() + "_API_KEY"];
+    : e.HESSARA_SHARED_MODEL_OWNER_ID === owner
+      ? e[model.provider.toUpperCase() + "_API_KEY"] : undefined;
   if (!key) throw new Error("المفتاح غير مهيأ");
   if (model.provider === "nvidia") return invokeNvidia(task.prompt, model, key);
   let url = "",
