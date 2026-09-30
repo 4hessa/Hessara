@@ -1,4 +1,5 @@
 import postgres from "postgres";
+import { databaseTls } from "./postgres-tls.mjs";
 
 type Value = string | number | boolean | null;
 type Row = Record<string, unknown>;
@@ -71,11 +72,10 @@ export function postgresConnection() {
   if (connection) return connection;
   const url = process.env.DATABASE_URL || process.env.POSTGRES_URL;
   if (!url) throw new Error("Database is not configured");
-  const local = ["localhost", "127.0.0.1", "[::1]"].includes(new URL(url).hostname);
   // postgres.js supports max_pipeline at runtime; it is absent from its current type declarations.
   const options = {
     max: 1, max_pipeline: 1, prepare: false,
-    ssl: local ? false as const : { rejectUnauthorized: true },
+    ssl: databaseTls(url),
     connect_timeout: 10, idle_timeout: 20, max_lifetime: 300,
     types: {
       safeInt8: {
