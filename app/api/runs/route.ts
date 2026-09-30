@@ -124,7 +124,7 @@ export async function POST(request: Request) {
       pricing_recorded_at: created_at,
     });
     const total = c.models.length * c.categories.length * c.count * c.repeats;
-    const inserted = await db
+    const statement = db
       .prepare(
         "INSERT INTO runs(id,owner,name,mode,status,created_at,config,total) SELECT ?,?,?,?,?,?,?,? WHERE (SELECT count(*) FROM runs WHERE owner=? AND status='running')<10",
       )
@@ -138,8 +138,8 @@ export async function POST(request: Request) {
         config,
         total,
         owner,
-      )
-      .run();
+      );
+    const [inserted] = await db.ownerQuotaBatch(owner, [statement]);
     if (inserted.meta.changes !== 1) throw new HttpError("LIMIT", 429);
     return Response.json(
       {

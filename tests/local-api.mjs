@@ -18,14 +18,21 @@ const nvidiaGuest = await fetch(base + "/api/catalog/nvidia", {
   }),
 });
 assert.equal(nvidiaGuest.status, 401);
-const signIn = await fetch(base + "/signin-with-chatgpt?return_to=/", {
-  redirect: "manual",
+const forged = await fetch(base + "/api/runs", {
+  headers: { "oai-authenticated-user-id": "test-forged-user" },
 });
+assert.equal(forged.status, 401, "Untrusted hosting headers must never authenticate a visitor");
+const signIn = await fetch(base + "/api/auth", {
+  method: "POST",
+  headers: { "Content-Type": "application/json", Origin: base },
+  body: JSON.stringify({ action: "guest" }),
+});
+assert.equal(signIn.status, 200, "Configure a test Supabase project with guest sign-in before running E2E");
 const cookie = signIn.headers
   .getSetCookie()
   .map((x) => x.split(";")[0])
   .join("; ");
-assert.ok(cookie, "Local sign-in must return its development cookie");
+assert.ok(cookie, "Verified sign-in must return its session cookie");
 async function request(path, body, extra = {}) {
   const r = await fetch(base + "/api/" + path, {
     headers: {
@@ -213,6 +220,18 @@ assert.equal(
 );
 const noAccess = await fetch(base + "/api/runs/" + id);
 assert.equal(noAccess.status, 401);
+const secondSession = await fetch(base + "/api/auth", {
+  method: "POST",
+  headers: { "Content-Type": "application/json", Origin: base },
+  body: JSON.stringify({ action: "guest" }),
+});
+assert.equal(secondSession.status, 200);
+const secondCookie = secondSession.headers.getSetCookie().map(x => x.split(";")[0]).join("; ");
+assert.ok(secondCookie);
+const otherOwner = await fetch(base + "/api/runs/" + id, { headers: { Cookie: secondCookie } });
+assert.equal(otherOwner.status, 404, "Another signed-in user must not see the first user's experiment");
+const otherModels = await fetch(base + "/api/models", { headers: { Cookie: secondCookie } });
+assert.ok(!(await otherModels.json()).models.some(x => x.id === modelId), "Stored credentials must remain private");
 const paperclipStatus = await request("integrations/paperclip");
 assert.equal(paperclipStatus.status, 200);
 assert.equal(

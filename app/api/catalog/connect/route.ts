@@ -69,7 +69,7 @@ export async function POST(request: Request) {
         };
       }),
     );
-    const results = await db.batch(created.map((x) => x.statement));
+    const results = await db.ownerQuotaBatch(owner, created.map((x) => x.statement));
     const connectedIds = created
       .filter((_, i) => results[i].meta.changes === 1)
       .map((x) => x.id);

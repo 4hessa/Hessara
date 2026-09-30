@@ -1,0 +1,42 @@
+# Source uploads use an allowlist. Vercel CLI does not read .gitignore.
+# Keep local credentials, tooling state and previous hosting output off Vercel.
+*
+
+# Application source and public assets.
+!/app
+!/app/**
+!/components
+!/components/**
+!/hooks
+!/hooks/**
+!/lib
+!/lib/**
+!/db
+!/db/**
+!/public
+!/public/**
+!/vendor
+!/vendor/**
+
+# Files required by npm and the Next.js production build.
+!/package.json
+!/package-lock.json
+!/.npmrc
+!/next.config.ts
+!/next-env.d.ts
+!/postcss.config.mjs
+!/proxy.ts
+!/tsconfig.json
+!/vercel.json
+!/.vercelignore
+
+# Never allow secrets or generated artifacts, including within source folders.
+**/.env*
+**/.dev.vars*
+**/*.pem
+**/*.key
+**/*.tsbuildinfo
+**/node_modules/
+**/.next/
+**/.vercel/
+**/.npm-cache/

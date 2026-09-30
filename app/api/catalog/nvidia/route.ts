@@ -8,6 +8,7 @@ import {
   HttpError,
 } from "@/lib/server";
 import { encryptSecret, vaultReady } from "@/lib/vault";
+export const maxDuration = 120;
 const schema = z
   .object({
     ids: z.array(z.string()).min(1).max(4),
@@ -84,7 +85,7 @@ export async function POST(request: Request) {
         };
       }),
     );
-    const result = await db.batch(created.map((x) => x.statement));
+    const result = await db.ownerQuotaBatch(owner, created.map((x) => x.statement));
     const connected = created
       .filter((_, i) => result[i].meta.changes === 1)
       .map((x) => x.id);

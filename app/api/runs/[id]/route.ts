@@ -14,6 +14,7 @@ import {
   invokeModel,
   type ModelConfig,
 } from "@/lib/server";
+export const maxDuration = 120;
 type RecordRun = {
   id: string;
   owner: string;
