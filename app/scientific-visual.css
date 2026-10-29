@@ -1,0 +1,25 @@
+/* Original vector illustrations: one seamless Pale Moor field at every size. */
+.scientific-visual{min-width:0;margin:0;border:0;border-radius:14px;overflow:hidden;background:var(--overview-art);color:var(--overview-art-primary);isolation:isolate}
+.scientific-canvas{position:relative;aspect-ratio:35/23;overflow:hidden;background:var(--overview-art)}
+.scientific-canvas>svg{position:relative;display:block;width:100%;height:100%;z-index:1}
+.science-stage-key{position:absolute;z-index:2;inset-inline:7%;bottom:5.5%;display:flex;justify-content:space-between;align-items:center;gap:10px;color:var(--overview-art-micro);font:12px/1.6 var(--hessara-font,sans-serif);text-align:center;pointer-events:none}
+.science-stage-key[dir=rtl]{direction:ltr}.science-stage-key[dir=rtl]>span{direction:rtl}
+.science-caption{position:relative;padding:22px 27px 26px;border-block-start:1px solid color-mix(in srgb,var(--overview-wire) 18%,transparent);background:var(--overview-art)}
+.science-caption>div{display:flex;align-items:center;gap:12px}
+.science-figure-index{font:10px/1.5 var(--hessara-mono,monospace);color:var(--overview-art-micro)}
+.science-caption strong{font:500 13px/1.7 var(--hessara-font,sans-serif);color:var(--overview-art-primary)}
+html body .app .science-caption p{margin:9px 0 8px;font:400 17px/1.7 var(--hessara-font,sans-serif);color:var(--overview-art-primary)}
+.science-caption small{display:block;max-width:62ch;font:400 13px/1.9 var(--hessara-font,sans-serif);color:var(--overview-art-secondary)}
+.science-concept-label{display:block;margin-block-start:13px;font:400 11px/1.6 var(--hessara-font,sans-serif);color:var(--overview-art-micro)}
+.science-transmission{stroke-dasharray:.12 1;stroke-dashoffset:1.12;opacity:0;animation:science-signal 7s linear infinite;animation-delay:calc(var(--science-stage,0) * 1s);animation-play-state:paused}
+.science-node-activation{opacity:.1;animation:science-activate 7s ease infinite;animation-delay:calc(var(--science-stage,0) * 1s);animation-play-state:paused}
+.science-attention-head,.science-language-stage{animation:science-head 7s ease infinite;animation-delay:calc(var(--science-stage,0) * 1s);animation-play-state:paused}
+.scientific-visual[data-running=true] :is(.science-transmission,.science-node-activation,.science-attention-head,.science-language-stage){animation-play-state:running}
+/* Compact rendering keeps the full conceptual structure with fewer paint overlays. */
+.scientific-visual[data-quality=compact] .science-depth-detail{display:none}
+@keyframes science-signal{0%{stroke-dashoffset:1.12;opacity:0}2%{opacity:.9}15%{stroke-dashoffset:0;opacity:.9}19%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes science-activate{0%,4%,23%,100%{opacity:.1}10%,16%{opacity:.85}}
+@keyframes science-head{0%,8%,34%,100%{opacity:.72}14%,23%{opacity:1}}
+@media(max-width:600px){.scientific-visual{border-radius:10px}.science-caption{padding:20px}.science-stage-key{font-size:10px}.science-caption small{font-size:12px}html body .app .science-caption p{font-size:15px}}
+@media(prefers-reduced-motion:reduce){.scientific-visual *{animation:none!important}.science-node-activation{opacity:.25}.science-attention-head,.science-language-stage{opacity:1}}
+@media(forced-colors:active){.scientific-visual,.scientific-canvas,.science-caption{background:Canvas;color:CanvasText;border-color:CanvasText}.science-caption :is(strong,p,small,span),.science-stage-key{color:CanvasText!important}.scientific-canvas svg{forced-color-adjust:none}}

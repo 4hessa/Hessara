@@ -88,7 +88,7 @@ export async function POST(request: Request) {
     const id = crypto.randomUUID();
     const inserted = await db
       .prepare(
-        "INSERT OR IGNORE INTO integration_exports(id,owner,run_id,destination,status,created_at) VALUES(?,?,?,'paperclip','pending',?)",
+        "INSERT INTO integration_exports(id,owner,run_id,destination,status,created_at) VALUES(?,?,?,'paperclip','pending',?) ON CONFLICT(owner,run_id,destination) DO NOTHING",
       )
       .bind(id, owner, run.id, new Date().toISOString())
       .run();

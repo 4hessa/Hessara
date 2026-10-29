@@ -1,0 +1,30 @@
+[Unit]
+Description=HESSARA isolated reverse engineering supervisor
+After=network-online.target docker.service
+Requires=docker.service
+
+[Service]
+Type=simple
+User=hessara-re
+Group=hessara-re
+# This trusted supervisor alone may access the dedicated Docker daemon. It must
+# never share a host with the platform DB or production application credentials.
+SupplementaryGroups=docker
+WorkingDirectory=/opt/hessara-re-worker
+EnvironmentFile=/etc/hessara-re-worker.env
+ExecStart=/usr/bin/python3 /opt/hessara-re-worker/supervisor.py --config /etc/hessara-re-engines.json
+Restart=on-failure
+RestartSec=30
+TimeoutStopSec=45
+NoNewPrivileges=true
+PrivateTmp=false
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/tmp /tmp
+UMask=0077
+MemoryMax=512M
+CPUQuota=50%
+TasksMax=64
+
+[Install]
+WantedBy=multi-user.target

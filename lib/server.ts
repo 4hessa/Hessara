@@ -1,13 +1,12 @@
-import { env } from "cloudflare:workers";
 import { decryptSecret } from "./vault";
-import { getChatGPTUser } from "@/app/chatgpt-auth";
+import { authenticatedUser } from "@/lib/auth";
 import { DEMO_MODELS, type Model, type Task } from "./benchmarks";
-import { invokeNvidia } from "./nvidia";
-export const settings = () => env as unknown as Record<string, string>;
-export function database() {
-  if (!env.DB) throw new Error("قاعدة النتائج غير متاحة حاليًا.");
-  return env.DB;
-}
+import { invokeNvidia, outputTokenLimit, readProviderJson, ProviderResponseError, type InvocationOptions } from "./nvidia";
+export { database } from "./postgres-database";
+import { database } from "./postgres-database";
+import { CLOUDFLARE_MODELS, cloudflareConnection, invokeCloudflare } from "./cloudflare-models";
+import { configurationHash, verificationState, recordVerification, PLATFORM_VERIFICATION_OWNER, type VerificationConfiguration } from "./model-verification";
+export const settings = () => process.env as Record<string, string>;
 export class HttpError extends Error {
   constructor(
     message: string,
@@ -17,58 +16,28 @@ export class HttpError extends Error {
   }
 }
 export async function identity(request?: Request) {
-  const u = await getChatGPTUser();
+  const u = await authenticatedUser();
   if (!u) throw new HttpError("AUTH_REQUIRED", 401);
   if (request && request.method !== "GET") {
     const origin = request.headers.get("origin");
     if (origin !== new URL(request.url).origin)
       throw new HttpError("ORIGIN", 403);
   }
-  return u.userId;
+  return u.id;
 }
 export async function availableModels(owner: string): Promise<Model[]> {
-  const e = settings();
-  const rows = await database()
-    .prepare(
-      "SELECT id,name,provider,model FROM model_profiles WHERE owner=? ORDER BY created_at",
-    )
-    .bind(owner)
-    .all<{ id: string; name: string; provider: string; model: string }>();
+  const e = settings(), db = database();
+  const rows = await db.prepare("SELECT id,name,provider,model,key_cipher FROM model_profiles WHERE owner=? ORDER BY created_at").bind(owner).all<{id:string;name:string;provider:string;model:string;key_cipher:string}>();
+  const verified = (await db.scopedBatch(owner, [db.prepare("SELECT model_id,fingerprint,checked_at,success FROM model_verifications WHERE owner=? OR owner=?").bind(owner, PLATFORM_VERIFICATION_OWNER)]))[0].results;
+  const state = (id:string, provider:string, model:string, secret:string) => verificationState(verified.find(row => row.model_id === id), configurationHash(provider, model, secret));
   return [
     ...DEMO_MODELS,
-    ...rows.results.map((m) => ({
-      id: m.id,
-      name: m.name,
-      label: m.model,
-      provider: m.provider,
-      color: (
-        {
-          openai: "#648956",
-          anthropic: "#b28b64",
-          gemini: "#798b9d",
-          openrouter: "#4d7858",
-          nvidia: "#6f5345",
-        } as Record<string, string>
-      )[m.provider],
-      ready: true,
-    })),
-    ...[
-      { id: "openai", name: "OpenAI", color: "#3b9874", key: "OPENAI" },
-      {
-        id: "anthropic",
-        name: "Anthropic",
-        color: "#cc9769",
-        key: "ANTHROPIC",
-      },
-      { id: "gemini", name: "Gemini", color: "#7899d4", key: "GEMINI" },
-    ].map((m) => ({
-      id: m.id,
-      name: m.name,
-      label: e[m.key + "_MODEL"] || "لم يُحدد نموذج",
-      color: m.color,
-      provider: m.id,
-      ready: !!(e[m.key + "_API_KEY"] && e[m.key + "_MODEL"]),
-    })),
+    ...(cloudflareConnection(e) ? CLOUDFLARE_MODELS.map(m => ({id:m.id,name:m.name,label:m.model,color:"#5f7fa6",provider:"cloudflare",configured:true,...state(m.id,"cloudflare",m.model,e.HESSARA_INFERENCE_SECRET)})) : []),
+    ...rows.results.map(m => ({id:m.id,name:m.name,label:m.model,provider:m.provider,color:"#5f7fa6",configured:true,...state(m.id,m.provider,m.model,m.key_cipher)})),
+    ...["openai","anthropic","gemini"].map(provider => {
+      const prefix=provider.toUpperCase(), configured=e.HESSARA_SHARED_MODEL_OWNER_ID===owner && !!(e[prefix+"_API_KEY"]&&e[prefix+"_MODEL"]);
+      return {id:provider,name:prefix,label:e[prefix+"_MODEL"]||"لم يُحدد نموذج",color:"#666f75",provider,configured,...(configured?state(provider,provider,e[prefix+"_MODEL"],e[prefix+"_API_KEY"]):{ready:false,verification:"unverified" as const,verifiedAt:null})};
+    }),
   ];
 }
 export function fail(e: unknown) {
@@ -100,6 +69,8 @@ export async function modelConfig(
   id: string,
   owner: string,
 ): Promise<ModelConfig> {
+  const freeModel = CLOUDFLARE_MODELS.find(model => model.id === id);
+  if (freeModel && cloudflareConnection()) return { id, provider: "cloudflare", name: freeModel.name, model: freeModel.model, inputPrice: null, outputPrice: null };
   const simulation = DEMO_MODELS.find((model) => model.id === id);
   if (simulation)
     return {
@@ -143,31 +114,39 @@ export async function modelConfig(
     outputPrice: price(e[key + "_OUTPUT_USD_PER_MILLION"]),
   };
 }
-export async function invokeModel(
-  task: Task,
+async function invokeConfiguredModel(
+  task: Pick<Task, "prompt">,
   model: ModelConfig,
   owner: string,
+  options?: InvocationOptions,
+  observeConfiguration?: (config: VerificationConfiguration) => void,
 ) {
   const e = settings();
+  if (model.provider === "cloudflare") {
+    if (e.HESSARA_INFERENCE_SECRET) observeConfiguration?.({ owner: PLATFORM_VERIFICATION_OWNER, fingerprint: configurationHash("cloudflare", model.model, e.HESSARA_INFERENCE_SECRET) });
+    return invokeCloudflare(task.prompt, model.model, owner, database(), options, e);
+  }
   const profile = await database()
     .prepare("SELECT key_cipher FROM model_profiles WHERE id=? AND owner=?")
     .bind(model.id, owner)
     .first<{ key_cipher: string }>();
   const key = profile
     ? await decryptSecret(profile.key_cipher, `${owner}:${model.id}`)
-    : e[model.provider.toUpperCase() + "_API_KEY"];
+    : e.HESSARA_SHARED_MODEL_OWNER_ID === owner
+      ? e[model.provider.toUpperCase() + "_API_KEY"] : undefined;
   if (!key) throw new Error("المفتاح غير مهيأ");
-  if (model.provider === "nvidia") return invokeNvidia(task.prompt, model, key);
-  let url = "",
-    headers: Record<string, string> = { "content-type": "application/json" },
-    body: unknown;
+  observeConfiguration?.({ owner, fingerprint: configurationHash(model.provider, model.model, profile?.key_cipher ?? key) });
+  if (model.provider === "nvidia") return invokeNvidia(task.prompt, model, key, fetch, options);
+  const maxOutputTokens = outputTokenLimit(options, 512);
+  let url = "", body: unknown;
+  const headers: Record<string, string> = { "content-type": "application/json" };
   if (model.provider === "openai") {
     url = "https://api.openai.com/v1/responses";
     headers.Authorization = `Bearer ${key}`;
     body = {
       model: model.model,
       input: task.prompt,
-      max_output_tokens: 512,
+      max_output_tokens: maxOutputTokens,
       store: false,
     };
   } else if (model.provider === "anthropic") {
@@ -178,7 +157,7 @@ export async function invokeModel(
       headers["anthropic-workspace-id"] = e.ANTHROPIC_WORKSPACE_ID;
     body = {
       model: model.model,
-      max_tokens: 512,
+      max_tokens: maxOutputTokens,
       messages: [{ role: "user", content: task.prompt }],
     };
   } else if (model.provider === "gemini") {
@@ -186,7 +165,7 @@ export async function invokeModel(
     headers["x-goog-api-key"] = key;
     body = {
       contents: [{ role: "user", parts: [{ text: task.prompt }] }],
-      generationConfig: { maxOutputTokens: 512 },
+      generationConfig: { maxOutputTokens },
     };
   } else if (model.provider === "openrouter") {
     url = "https://openrouter.ai/api/v1/chat/completions";
@@ -195,7 +174,7 @@ export async function invokeModel(
     body = {
       model: model.model,
       messages: [{ role: "user", content: task.prompt }],
-      max_tokens: 512,
+      max_tokens: maxOutputTokens,
       stream: false,
       provider: { allow_fallbacks: false },
     };
@@ -206,18 +185,29 @@ export async function invokeModel(
     headers,
     body: JSON.stringify(body),
     signal: AbortSignal.timeout(55000),
+    redirect: "error",
   });
-  const d = (await response.json()) as any;
+  let bodyError: string | null = null;
+  const d = (await readProviderJson(response).catch(error => {
+    if (!(error instanceof ProviderResponseError)) throw error;
+    bodyError = error.message;
+    return {};
+  })) as ProviderReply;
   const latency = Math.round(performance.now() - start);
-  if (!response.ok)
+  if (!response.ok || bodyError || response.status === 202)
     return {
       output: "",
+      truncated: false,
       latency,
       input_tokens: null,
       output_tokens: null,
       cost: null,
-      error: `provider_http_${response.status}`,
+      error: response.status === 202 ? "provider_pending" : !response.ok ? `provider_http_${response.status}` : bodyError,
       metadata: JSON.stringify({
+        requested_model: model.model,
+        resolved_model: typeof d.model === "string" ? d.model : typeof d.modelVersion === "string" ? d.modelVersion : null,
+        max_output_tokens: maxOutputTokens,
+        timeout_ms: 55000,
         http_status: response.status,
         request_id:
           response.headers.get("request-id") ||
@@ -231,19 +221,19 @@ export async function invokeModel(
   let reason = "";
   if (model.provider === "openai") {
     output = (d.output ?? [])
-      .flatMap((x: any) => x.content ?? [])
-      .filter((x: any) => x.type === "output_text")
-      .map((x: any) => x.text)
+      .flatMap((x) => x.content ?? [])
+      .filter((x) => x.type === "output_text")
+      .map((x) => x.text)
       .join("");
     input_tokens = d.usage?.input_tokens ?? null;
     output_tokens = d.usage?.output_tokens ?? null;
-    reason = d.status;
+    reason = d.status ?? "";
     if (d.status !== "completed") error = "incomplete_response";
   }
   if (model.provider === "anthropic") {
     output = (d.content ?? [])
-      .filter((x: any) => x.type === "text")
-      .map((x: any) => x.text)
+      .filter((x) => x.type === "text")
+      .map((x) => x.text)
       .join("");
     input_tokens =
       typeof d.usage?.input_tokens === "number"
@@ -252,15 +242,15 @@ export async function invokeModel(
           (d.usage.cache_creation_input_tokens ?? 0)
         : null;
     output_tokens = d.usage?.output_tokens ?? null;
-    reason = d.stop_reason;
+    reason = d.stop_reason ?? "";
     if (reason !== "end_turn" && reason !== "stop_sequence")
       error = "incomplete_response";
   }
   if (model.provider === "gemini") {
     const c = d.candidates?.[0];
     output = (c?.content?.parts ?? [])
-      .filter((x: any) => !x.thought && typeof x.text === "string")
-      .map((x: any) => x.text)
+      .filter((x) => !x.thought && typeof x.text === "string")
+      .map((x) => x.text)
       .join("");
     input_tokens = d.usageMetadata?.promptTokenCount ?? null;
     output_tokens =
@@ -268,7 +258,7 @@ export async function invokeModel(
         ? d.usageMetadata.candidatesTokenCount +
           (d.usageMetadata.thoughtsTokenCount ?? 0)
         : null;
-    reason = c?.finishReason;
+    reason = c?.finishReason ?? "";
     if (reason !== "STOP") error = "incomplete_response";
   }
   if (model.provider === "openrouter") {
@@ -279,10 +269,15 @@ export async function invokeModel(
         : "";
     input_tokens = d.usage?.prompt_tokens ?? null;
     output_tokens = d.usage?.completion_tokens ?? null;
-    reason = choice?.finish_reason;
+    reason = choice?.finish_reason ?? "";
     if (reason !== "stop") error = "incomplete_response";
   }
   if (!output && !error) error = "empty_response";
+  const truncated = output.length > 24000;
+  if (truncated) error = "incomplete_response";
+  const validTokens = (value: unknown) => typeof value === "number" && Number.isSafeInteger(value) && value >= 0 ? value : null;
+  input_tokens = validTokens(input_tokens);
+  output_tokens = validTokens(output_tokens);
   const cached =
     (d.usage?.input_tokens_details?.cached_tokens ?? 0) +
     (d.usage?.prompt_tokens_details?.cached_tokens ?? 0) +
@@ -300,6 +295,7 @@ export async function invokeModel(
       : null;
   return {
     output: output.slice(0, 24000),
+    truncated,
     latency,
     input_tokens,
     output_tokens,
@@ -307,12 +303,36 @@ export async function invokeModel(
     error,
     metadata: JSON.stringify({
       requested_model: model.model,
-      resolved_model: d.model ?? d.modelVersion ?? model.model,
+      resolved_model: typeof d.model === "string" ? d.model : typeof d.modelVersion === "string" ? d.modelVersion : null,
       request_id: d.id ?? d.responseId,
       finish_reason: reason,
       usage: d.usage ?? d.usageMetadata,
       cost_basis: "configured uncached price per million tokens",
-      max_output_tokens: 512,
+      max_output_tokens: maxOutputTokens,
+      timeout_ms: 55000,
+      truncated,
     }),
   };
+}
+
+type ProviderReply = {
+  model?: string; modelVersion?: string; status?: string; stop_reason?: string; id?: string; responseId?: string;
+  output?: { content?: {type?:string;text?:string}[] }[];
+  content?: {type?:string;text?:string}[];
+  candidates?: {content?:{parts?:{thought?:boolean;text?:string}[]};finishReason?:string}[];
+  choices?: {message?:{content?:string};finish_reason?:string}[];
+  usage?: {input_tokens?:number;output_tokens?:number;prompt_tokens?:number;completion_tokens?:number;cache_read_input_tokens?:number;cache_creation_input_tokens?:number;input_tokens_details?:{cached_tokens?:number};prompt_tokens_details?:{cached_tokens?:number}};
+  usageMetadata?: {promptTokenCount?:number;candidatesTokenCount?:number;thoughtsTokenCount?:number;cachedContentTokenCount?:number};
+};
+export async function invokeModel(task: Pick<Task,"prompt">, model:ModelConfig, owner:string, options?:InvocationOptions) {
+  let observed: VerificationConfiguration | null = null;
+  try {
+    const result=await invokeConfiguredModel(task,model,owner,options, config => { observed = config; });
+    try { await recordVerification(database(),model.id,!!result.output && (!result.error || result.error==="incomplete_response"),observed); }
+    catch { console.error("Model verification storage unavailable"); }
+    return result;
+  } catch(error) {
+    try { await recordVerification(database(),model.id,false,observed); } catch { console.error("Model verification storage unavailable"); }
+    throw error;
+  }
 }

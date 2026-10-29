@@ -1,0 +1,13 @@
+[
+  {"names":["AndroidManifest.xml","classes.dex"],"format":"apk"},
+  {"names":["AndroidManifest.xml","classes2.dex"],"format":"apk"},
+  {"names":["AndroidManifest.xml","classes-extra.dex"],"format":"zip"},
+  {"names":["AndroidManifest.xml","nested/classes.dex"],"format":"zip"},
+  {"names":["base/manifest/AndroidManifest.xml"],"format":"zip"},
+  {"names":["base/manifest/AndroidManifest.xml","BundleConfig.pb"],"format":"aab"},
+  {"names":["base/manifest/AndroidManifest.xml","BundleConfig.pb","META-INF/MANIFEST.MF","lib/Foo.class"],"format":"aab"},
+  {"names":["lib/Foo.class"],"format":"zip"},
+  {"names":["META-INF/MANIFEST.MF","lib/Foo.class"],"format":"jar"},
+  {"names":["META-INF/MANIFEST.MF"],"format":"zip"},
+  {"names":["package.json","src/index.js"],"format":"zip"}
+]

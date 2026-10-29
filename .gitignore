@@ -3,6 +3,9 @@
 # dependencies
 /node_modules
 /.npm-cache/
+/.supabase-cli/
+/.supabase/
+/.workflow-data/
 /.pnp
 .pnp.*
 .yarn/*
@@ -16,6 +19,9 @@
 
 # next.js
 /.next/
+/.next.*/
+/.next-premium/
+/.*-test-*/
 /.vinext/
 /out/
 
@@ -50,3 +56,4 @@ next-env.d.ts
 *.tsbuildinfo
 
 .dev.vars*
+/.swc

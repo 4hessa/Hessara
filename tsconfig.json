@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -19,9 +23,14 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./*"
+      ]
     },
-    "types": ["node", "@cloudflare/workers-types"],
+    "types": [
+      "node",
+      "@cloudflare/workers-types"
+    ],
     "allowImportingTsExtensions": true
   },
   "include": [
@@ -30,7 +39,15 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "**/*.mts"
+    "**/*.mts",
+    ".next.openai-test/types/**/*.ts",
+    ".next.openai-test/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules", "examples"]
+  "exclude": [
+    "node_modules",
+    "examples",
+    "cloudflare-workspace",
+    "cloudflare-inference",
+    "research"
+  ]
 }

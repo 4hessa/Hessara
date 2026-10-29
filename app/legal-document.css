@@ -1,0 +1,33 @@
+.legal-page {
+  --legal-dust: #f3f5f7;
+  --legal-ink: #24292e;
+  --legal-muted: #626b7c;
+  min-height: 100svh;
+  padding: 40px 20px;
+  background: var(--legal-dust);
+  color: var(--legal-ink);
+}
+
+.legal-paper {
+  width: min(100%, 850px);
+  margin: auto;
+  padding: clamp(24px, 5vw, 64px);
+  border: 1px solid var(--legal-dust);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.legal-paper header { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-block-end: 48px; }
+.legal-page .legal-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--legal-ink); font: 24px "DM Serif Display", Georgia, serif; letter-spacing: .08em; }
+.legal-page h1 { font-size: clamp(28px, 4vw, 40px); font-weight: 500; margin: 0 0 12px; line-height: 1.6; text-wrap: balance; }
+.legal-page h2 { font-size: 21px; font-weight: 500; margin: 36px 0 10px; line-height: 1.7; text-wrap: balance; }
+.legal-page p { max-width: 68ch; font-size: 16px; line-height: 1.95; overflow-wrap: anywhere; }
+.legal-page .legal-updated { color: var(--legal-muted); font-size: 13px; }
+.legal-page a { color: var(--legal-ink); text-underline-offset: 4px; text-decoration-thickness: 1px; }
+.legal-page nav { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding-block-start: 24px; margin-block-start: 36px; border-block-start: 1px solid var(--legal-dust); font-size: 14px; }
+.legal-page nav a, .legal-paper header > a:last-child { display: inline-flex; align-items: center; min-height: 44px; }
+.legal-page a:focus-visible { outline: 2px solid var(--legal-ink); outline-offset: 5px; border-radius: 3px; }
+
+@media (hover: hover) and (pointer: fine) { .legal-page a:hover { text-decoration: underline; }.legal-page .legal-brand:hover { text-decoration: none; } }
+@media (max-width: 600px) { .legal-page { padding: 16px 10px; }.legal-paper { padding: 24px 20px; border-radius: 10px; }.legal-paper header { margin-block-end: 32px; gap: 12px; }.legal-page .legal-brand { font-size: 21px; }.legal-page h2 { font-size: 20px; margin-block-start: 30px; } }
+@media (forced-colors: active) { .legal-page, .legal-paper { background: Canvas; color: CanvasText; border-color: CanvasText; }.legal-page a, .legal-page .legal-brand { color: LinkText; }.legal-page a:focus-visible { outline-color: Highlight; } }

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 
-/** Decorative feedback only: the native cursor, focus and text selection stay usable. */
+/** A small, quiet companion to the native custom cursor; never intercepts input. */
 export function PointerMotion() {
   const ring = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -35,6 +35,11 @@ export function PointerMotion() {
     };
     const move = (event: PointerEvent) => {
       if (!enabled || event.pointerType !== "mouse") return;
+      const target = event.target instanceof Element ? event.target : null;
+      if (!target?.closest(".app")) {
+        hide();
+        return;
+      }
       targetX = event.clientX;
       targetY = event.clientY;
       if (!visible) {
@@ -42,7 +47,6 @@ export function PointerMotion() {
         y = targetY;
         visible = true;
       }
-      const target = event.target instanceof Element ? event.target : null;
       const editing = !!target?.closest(
         "input, textarea, [contenteditable=true], pre, code",
       );
@@ -61,7 +65,7 @@ export function PointerMotion() {
       if (!enabled) hide();
     };
     const press = (event: PointerEvent) => {
-      if (enabled && event.pointerType === "mouse") element.dataset.pressed = "true";
+      if (enabled && visible && event.pointerType === "mouse") element.dataset.pressed = "true";
     };
     const release = () => { element.dataset.pressed = "false"; };
     window.addEventListener("pointermove", move, { passive: true });

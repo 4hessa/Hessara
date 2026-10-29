@@ -1,0 +1,1 @@
+export { retiredAssistantRoute as GET, retiredAssistantRoute as POST, retiredAssistantRoute as PATCH, retiredAssistantRoute as DELETE, retiredAssistantRoute as OPTIONS } from "@/lib/retired-assistant-route";

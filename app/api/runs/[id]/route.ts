@@ -1,5 +1,4 @@
 import {
-  CATEGORIES,
   getTask,
   simulate,
   grade,
@@ -14,6 +13,7 @@ import {
   invokeModel,
   type ModelConfig,
 } from "@/lib/server";
+export const maxDuration = 120;
 type RecordRun = {
   id: string;
   owner: string;
@@ -25,6 +25,17 @@ type RecordRun = {
   locked_until: number;
   lock_token: string;
 };
+type RunJob = Pick<Trial, "model" | "task_id" | "repeat">;
+type RunOutcome = Pick<
+  Awaited<ReturnType<typeof invokeModel>>,
+  | "output"
+  | "latency"
+  | "input_tokens"
+  | "output_tokens"
+  | "cost"
+  | "error"
+  | "metadata"
+>;
 const PAGE_SIZE = 250;
 function page(url: string) {
   const params = new URL(url).searchParams;
@@ -45,7 +56,7 @@ function page(url: string) {
 async function detail(id: string, owner: string, url: string) {
   const db = database(),
     run = await db
-      .prepare("SELECT * FROM runs WHERE id=? AND owner=?")
+      .prepare("SELECT * FROM runs WHERE id=? AND owner=? AND mode IN ('demo','live')")
       .bind(id, owner)
       .first<RecordRun>();
   if (!run) throw new HttpError("NOT_FOUND", 404);
@@ -114,7 +125,7 @@ export async function POST(
       throw new HttpError("INVALID_INPUT");
     const db = database();
     const existing = await db
-      .prepare("SELECT * FROM runs WHERE id=? AND owner=?")
+      .prepare("SELECT * FROM runs WHERE id=? AND owner=? AND mode IN ('demo','live')")
       .bind(id, owner)
       .first<RecordRun>();
     if (!existing) throw new HttpError("NOT_FOUND", 404);
@@ -153,7 +164,7 @@ export async function POST(
       run.mode === "demo" ? 24 : config.concurrency === 1 ? 1 : 3;
     const batch = jobs.slice(run.next_index, run.next_index + concurrency);
     if (batch.length) {
-      const prepared = batch.map((j: any) =>
+      const prepared = batch.map((j: RunJob) =>
         db
           .prepare(
             "INSERT INTO trials(id,run_id,model,task_id,repeat,status) VALUES(?,?,?,?,?,'running')",
@@ -173,10 +184,10 @@ export async function POST(
       );
       await db.batch(prepared);
       const outcomes = await Promise.allSettled(
-        batch.map(async (j: any) => {
+        batch.map(async (j: RunJob) => {
           const task = getTask(j.task_id);
           const start = performance.now();
-          let r: any;
+          let r: RunOutcome;
           try {
             r =
               run.mode === "demo"

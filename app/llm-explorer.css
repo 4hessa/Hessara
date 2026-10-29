@@ -1,0 +1,114 @@
+/* Educational surfaces reuse the established palette; no media-player controls. */
+.llm-learning { margin-block: 36px 52px; padding-block: 32px; border-block: 1px solid var(--hessara-line); min-width: 0; }
+.llm-learning-intro { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.llm-eyebrow { color: var(--overview-micro); font: 11px/1.6 var(--hessara-mono); letter-spacing: .09em; }
+.llm-learning .llm-learning-intro h3 { font-size: clamp(23px, 2.5vw, 32px); font-weight: 500; line-height: 1.6; margin: 12px 0 8px; color: var(--hessara-charcoal); }
+.llm-learning p { color: var(--overview-secondary); line-height: 1.9; font-size: 14px; margin-block: 12px; }
+.llm-learning button, .llm-learning select { min-height: 44px; }
+.llm-learning button { font-family: inherit; cursor: pointer; }
+.llm-learning button:disabled { cursor: not-allowed; opacity: .55; }
+.llm-learning :is(button, select, textarea, input, summary, a, [tabindex]):focus-visible { outline: 2px solid var(--hessara-focus); outline-offset: 4px; }
+.llm-learning .secondary { padding: 10px 18px; border: 1px solid var(--hessara-line-strong); border-radius: var(--hessara-radius-sm); background: var(--hessara-paper); color: var(--hessara-charcoal); font: inherit; font-size: 13px; flex-shrink: 0; }
+.llm-learning .secondary:hover:not(:disabled) { background: var(--hessara-surface); }
+.llm-learning .text-button { color: var(--overview-micro); padding: 8px; border: 0; background: transparent; font-size: 12px; text-decoration: underline; text-underline-offset: 4px; }
+.llm-learning .text-button:hover:not(:disabled) { color: var(--hessara-charcoal); }
+.llm-explorer { margin-block-start: 28px; border: 1px solid var(--hessara-line); border-radius: var(--hessara-radius-card); background: var(--hessara-paper); padding: clamp(16px, 3vw, 32px); min-width: 0; }
+.llm-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.llm-badge { color: var(--overview-micro); background: var(--hessara-surface-blue); border-radius: 4px; font-size: 12px; line-height: 1.7; padding: 6px 10px; }
+.llm-learning p.llm-provenance { max-width: 86ch; font-size: 12px; margin-block: 12px 24px; }
+.llm-input-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(220px, 1fr); gap: 24px; }
+.llm-learning label { display: block; font-size: 13px; line-height: 1.8; color: var(--hessara-charcoal); }
+.llm-learning textarea, .llm-learning select { display: block; width: 100%; margin-block-start: 8px; border: 1px solid var(--hessara-line-strong); border-radius: var(--hessara-radius-sm); color: var(--hessara-charcoal); background: var(--hessara-paper); padding: 12px; font: inherit; }
+.llm-learning textarea { resize: vertical; min-height: 126px; max-height: 320px; }
+.llm-settings { display: grid; gap: 12px; }
+.llm-settings label output { float: inline-end; font-family: var(--hessara-mono); }
+.llm-learning input[type=range] { display: block; width: 100%; min-height: 32px; margin-block-start: 4px; accent-color: var(--hessara-charcoal); cursor: pointer; }
+.llm-learning .llm-small { color: var(--overview-micro); font-size: 12px; line-height: 1.8; }
+.llm-stage-nav { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--hessara-line); border: 1px solid var(--hessara-line); border-radius: 9px; overflow: clip; margin-block: 24px; }
+.llm-stage-nav button { border: 0; background: var(--hessara-paper); color: var(--overview-secondary); text-align: start; font-size: 13px; padding: 12px; min-height: 52px; display: flex; gap: 10px; align-items: center; }
+.llm-stage-nav button span { font: 11px var(--hessara-mono); }
+.llm-stage-nav button[aria-pressed=true] { background: var(--hessara-charcoal); color: var(--hessara-paper); }
+.llm-stage-nav button:hover:not([aria-pressed=true]) { background: var(--hessara-surface); }
+.llm-stage-nav button:focus-visible { outline-offset: -4px; outline-color: currentColor; }
+.llm-stage { min-width: 0; }
+.llm-stage-header { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-block-end: 16px; }
+.llm-stage-header h4 { margin: 0; font-size: 20px; font-weight: 500; color: var(--hessara-charcoal); }
+.llm-stage-header > span { font: 11px/1.6 var(--hessara-mono); color: var(--overview-micro); flex-shrink: 0; }
+.llm-token-selector { display: flex; flex-wrap: wrap; gap: 8px; margin-block-end: 16px; }
+.llm-token-selector button { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border: 1px solid var(--hessara-line); border-radius: 7px; background: var(--hessara-paper); color: var(--hessara-charcoal); font: inherit; font-size: 13px; max-width: 100%; overflow-wrap: anywhere; }
+.llm-token-selector button span { color: var(--overview-micro); font: 10px var(--hessara-mono); }
+.llm-token-selector button[aria-pressed=true] { border-color: var(--hessara-line-strong); background: var(--hessara-surface-blue); }
+.llm-diagram { display: block; width: 100%; height: auto; min-height: 180px; max-height: 340px; background: var(--overview-art); border-radius: 9px; color: var(--overview-art-primary); direction: ltr; }
+.llm-diagram text { fill: var(--overview-art-primary); font: 14px var(--hessara-font); }
+.llm-wire { fill: none; stroke: var(--overview-wire); stroke-width: 1.2; opacity: .35; }
+.llm-flow { fill: none; stroke: var(--overview-signal); stroke-width: 2; stroke-dasharray: 10 15; animation: llm-propagate 2.8s linear infinite; animation-delay: var(--llm-delay, 0s); animation-play-state: paused; }
+.llm-explorer[data-running=true] .llm-flow { animation-play-state: running; }
+.llm-node { fill: var(--overview-plane); stroke: var(--overview-wire); stroke-width: 1; }
+.llm-dot { fill: var(--overview-node-mid); }
+.llm-dot-selected { fill: var(--overview-signal); stroke: var(--overview-node-light); stroke-width: 2; }
+.llm-masked-edge { stroke-dasharray: 2 5; }
+.llm-loss-line { fill: none; stroke: var(--overview-signal); stroke-width: 2.5; }
+.llm-learning .llm-formula { display: block; padding: 14px; background: var(--hessara-snow); border-radius: 6px; color: var(--hessara-charcoal); font: 12px/2 var(--hessara-mono); white-space: normal; overflow-wrap: anywhere; margin-block: 12px; }
+.llm-vector-readout { display: grid; gap: 8px; }
+.llm-vector-readout > div { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-bottom: 1px solid var(--hessara-line); padding: 8px 0; }
+.llm-vector-readout :is(dt,dd) { margin: 0; color: var(--hessara-charcoal); font: 12px/1.8 var(--hessara-mono); }
+.llm-vector-readout code { overflow-wrap: anywhere; }
+.llm-weights { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-block: 16px; }
+.llm-weights > div { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-width: 0; padding: 10px; border-bottom: 1px solid var(--hessara-line); font-size: 12px; color: var(--hessara-charcoal); }
+.llm-weights bdi { overflow-wrap: anywhere; }
+.llm-weights span { font-family: var(--hessara-mono); flex-shrink: 0; }
+.llm-numerical { margin-block: 16px; border-top: 1px solid var(--hessara-line); }
+.llm-numerical summary { cursor: pointer; padding-block: 14px; min-height: 44px; color: var(--hessara-charcoal); font-size: 13px; }
+.llm-table-scroll { max-width: 100%; overflow: auto; margin-block: 12px; }
+.llm-learning table { border-collapse: collapse; direction: ltr; font: 11px/1.6 var(--hessara-mono); width: 100%; color: var(--hessara-charcoal); }
+.llm-learning :is(th,td) { border: 1px solid var(--hessara-line); padding: 9px; text-align: center; min-width: 48px; }
+.llm-learning th { background: var(--hessara-snow); font-weight: 500; }
+.llm-learning caption { text-align: start; padding-block: 8px; color: var(--overview-micro); }
+.llm-learning td[data-masked=true] { background: var(--hessara-snow) !important; }
+.llm-block-values > div { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid var(--hessara-line); padding-block: 12px; color: var(--hessara-charcoal); font-size: 12px; }
+.llm-block-values code { overflow-wrap: anywhere; }
+.llm-predictions { padding-block: 8px; }
+.llm-probability { display: grid; grid-template-columns: minmax(70px, 1fr) minmax(60px, 4fr) 64px 64px; align-items: center; gap: 16px; font-size: 13px; padding-block: 12px; color: var(--hessara-charcoal); }
+.llm-probability-track { height: 9px; background: var(--hessara-surface); border-radius: 3px; overflow: clip; }
+.llm-probability-track span { display: block; height: 100%; background: var(--hessara-slate-shadow); }
+.llm-probability :is(output,code) { font: 12px var(--hessara-mono); direction: ltr; text-align: end; }
+.llm-generation { margin-block-start: 24px; padding-block-start: 16px; border-top: 1px solid var(--hessara-line); }
+.llm-generated { display: flex; gap: 8px; flex-wrap: wrap; margin-block-start: 16px; }
+.llm-generated bdi { background: var(--hessara-surface-blue); color: var(--hessara-charcoal); padding: 6px 12px; border-radius: 5px; }
+.llm-training-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; margin-block: 16px; }
+.llm-training-controls label { flex: 1; min-width: 160px; }
+.llm-training-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.llm-training-metrics > div { background: var(--hessara-snow); border-radius: 7px; padding: 12px; direction: ltr; color: var(--hessara-charcoal); }
+.llm-training-metrics dt { font: 11px var(--hessara-mono); }
+.llm-training-metrics dd { margin: 8px 0 0; font: 16px var(--hessara-mono); }
+.llm-explorer-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding-block-start: 20px; margin-block-start: 24px; border-top: 1px solid var(--hessara-line); }
+.llm-explorer-footer a { color: var(--overview-micro); text-decoration: underline; text-underline-offset: 4px; font-size: 12px; min-height: 44px; display: inline-flex; align-items: center; }
+.llm-learning .llm-empty { padding-block: 32px; }
+@keyframes llm-propagate { to { stroke-dashoffset: -50; } }
+@media (max-width: 700px) {
+  .llm-learning-intro { align-items: stretch; flex-direction: column; }
+  .llm-learning-intro > button { align-self: flex-start; }
+  .llm-input-grid { grid-template-columns: minmax(0,1fr); gap: 16px; }
+  .llm-stage-nav { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .llm-stage-nav button { font-size: 12px; padding: 10px; }
+  .llm-weights { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .llm-probability { grid-template-columns: minmax(40px,1fr) minmax(30px,1fr) 49px 45px; gap: 7px; font-size: 12px; }
+  .llm-probability :is(output,code) { font-size: 10px; }
+  .llm-training-metrics { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .llm-diagram text { font-size: 17px; }
+  .llm-diagram { min-height: 150px; }
+}
+@media (prefers-reduced-motion: reduce) { .llm-explorer .llm-flow { animation: none !important; } }
+.llm-training-film { margin: 28px 0 16px; }
+.llm-training-film .cinematic-media { background: var(--overview-art); border-radius: var(--hessara-radius-sm); }
+.llm-training-film :is(.cinematic-poster,.cinematic-film) { object-fit: contain; }
+.llm-training-film figcaption { margin-block-start: 12px; color: var(--overview-secondary); font-size: 12px; line-height: 1.8; }
+
+
+.llm-export-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.llm-report-panel { min-width: 0; margin-block-start: 20px; padding-block-start: 20px; border-top: 1px solid var(--hessara-line); }
+.llm-report-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.llm-report-header h4 { margin: 0; color: var(--hessara-charcoal); font-size: 15px; font-weight: 500; line-height: 1.7; }
+.llm-learning textarea.llm-report-text { min-height: 240px; max-height: 420px; margin-block-end: 16px; font: 12px/1.7 var(--hessara-mono); text-align: left; overflow: auto; }
+.llm-learning .llm-export-error { color: var(--hessara-charcoal); }
+

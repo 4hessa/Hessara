@@ -17,6 +17,10 @@ export const LANGUAGES = [
   ["nl", "Nederlands"],
 ] as const;
 export type Locale = (typeof LANGUAGES)[number][0];
+export const LOCALE_KEY = "hessara:locale";
+export const LOCALE_COOKIE = "hessara_locale";
+export const isLocale = (value: unknown): value is Locale =>
+  LANGUAGES.some(([code]) => code === value);
 export const isRTL = (lang: Locale) => ["ar", "ur", "fa"].includes(lang);
 export const dictionaries: Record<string, Record<string, string>> = {
   ar,

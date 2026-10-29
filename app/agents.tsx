@@ -1,10 +1,17 @@
 "use client";
+import { agentLanguage as language } from "@/lib/agent-locales";
 
 import { useMemo, useState } from "react";
 import { ArrowUpRight, ArrowLeft, Search } from "lucide-react";
 import { CATEGORIES, type Category } from "@/lib/benchmarks";
 import { AGENTS, type AgentCategory } from "@/lib/agent-catalog";
-import { type Locale } from "@/lib/i18n";
+import { agentDescription } from "@/lib/agent-catalog-locales";
+import { translate, type Locale } from "@/lib/i18n";
+import { AssistantStudio } from "./assistant-studio";
+import { PersonalAgents } from "./personal-agents";
+import { SuperAgentMascot } from "./super-agent-mascot";
+import { mascotMotionLabel } from "@/lib/agent-mascot-config";
+import './agent-directory-cards.css';
 
 const categories: { id: AgentCategory | "all"; ar: string; en: string }[] = [
   { id: "all", ar: "الكل", en: "All" },
@@ -26,14 +33,16 @@ export function AgentsPanel({
   onCreate,
   onPaperclip,
   onTools,
+  sessionMode='none',
 }: {
   locale: Locale;
   onCreate: (category: Category) => void;
   onPaperclip: () => void;
   onTools: () => void;
+  sessionMode?:'guest'|'account'|'none';
 }) {
-  const ar = locale === "ar";
-  const c = (arabic: string, english: string) => (ar ? arabic : english);
+
+  const c = language(locale);
   const [filter, setFilter] = useState<AgentCategory | "all">("all");
   const [search, setSearch] = useState("");
   const [engine, setEngine] = useState<"jev" | "laya">("jev");
@@ -41,41 +50,40 @@ export function AgentsPanel({
   const [apiKey, setApiKey] = useState("");
   const [endpoint, setEndpoint] = useState("");
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<[string, string] | null>(null);
   const [decision, setDecision] = useState<Decision | null>(null);
+  const [mascotMotionPaused, setMascotMotionPaused] = useState(false);
   const shown = useMemo(() => {
     const needle = search.trim().toLocaleLowerCase();
     return AGENTS.filter(
       (item) =>
+        !["openclaw", "letta"].includes(item.id) &&
         (filter === "all" || item.category === filter) &&
         (!needle ||
-          [item.name, item.summaryAr, item.summaryEn]
+          [item.name, item.summaryAr, item.summaryEn, agentDescription(item, locale)]
             .join(" ")
             .toLocaleLowerCase()
             .includes(needle)),
     );
-  }, [filter, search]);
+  }, [filter, search, locale]);
 
   async function decide(event: React.FormEvent) {
     event.preventDefault();
-    setError("");
+    setError(null);
     setDecision(null);
     if (state.trim().length < 12) {
       setError(
-        c("اكتب وصفًا لا يقل عن ١٢ حرفًا.", "Write at least 12 characters."),
+        ["اكتب وصفًا لا يقل عن ١٢ حرفًا.", "Write at least 12 characters."],
       );
       return;
     }
     if (engine === "jev" && !apiKey.trim()) {
-      setError(c("أضف مفتاح خدمة jev أولًا.", "Add your jev API key first."));
+      setError(["أضف مفتاح خدمة jev أولًا.", "Add your jev API key first."]);
       return;
     }
     if (engine === "laya" && !endpoint.trim()) {
       setError(
-        c(
-          "أضف رابط خادم Laya الآمن أولًا.",
-          "Add your secure Laya server URL first.",
-        ),
+        ["أضف رابط خادم Laya الآمن أولًا.", "Add your secure Laya server URL first."],
       );
       return;
     }
@@ -115,19 +123,12 @@ export function AgentsPanel({
           ],
         };
         const message = messages[payload.error || ""];
-        throw new Error(
-          message
-            ? c(...message)
-            : c("تعذّر إتمام الطلب.", "Unable to complete the request."),
-        );
+        setError(message ?? ["تعذّر إتمام الطلب.", "Unable to complete the request."]);
+        return;
       }
       setDecision(payload);
-    } catch (reason) {
-      setError(
-        reason instanceof Error
-          ? reason.message
-          : c("تعذّر إتمام الطلب.", "Unable to complete the request."),
-      );
+    } catch {
+      setError(["تعذّر إتمام الطلب.", "Unable to complete the request."]);
     } finally {
       setBusy(false);
     }
@@ -138,34 +139,12 @@ export function AgentsPanel({
     : null;
 
   return (
-    <div className="agents-page" lang={ar ? "ar" : "en"}>
-      <header className="agents-lead">
-        <div>
-          <p className="kicker">{c("أبعد من المقارنة", "BEYOND COMPARISON")}</p>
-          <h2>
-            {c(
-              "وكلاء خارقون، وقرارات أوضح.",
-              "Agents for more thoughtful work.",
-            )}
-          </h2>
-          <p>
-            {c(
-              "اختر اختبارًا يلائم حاجتك بمساعدة محرك قرار، ثم اكتشف أدوات الوكلاء التي يمكنك تشغيلها وربطها بعملك.",
-              "Choose an evaluation task with a decision engine, then explore agents you can run or connect to your work.",
-            )}
-          </p>
-        </div>
-        <span
-          className="agents-count"
-          aria-label={c(
-            `${AGENTS.length} مشروعًا`,
-            `${AGENTS.length} projects`,
-          )}
-        >
-          <strong>{AGENTS.length}</strong>
-          <span>{c("مشروعًا موثقًا", "documented projects")}</span>
-        </span>
-      </header>
+    <div className="agents-page" lang={locale}>
+
+
+      <div className="agent-mascot-motion-controls"><button type="button" aria-pressed={mascotMotionPaused} onClick={() => setMascotMotionPaused(value => !value)}>{mascotMotionLabel(locale, mascotMotionPaused)}</button></div>
+      <AssistantStudio locale={locale} motionPaused={mascotMotionPaused} />
+      <PersonalAgents locale={locale} sessionMode={sessionMode} motionPaused={mascotMotionPaused} />
 
       <section className="decision-studio" aria-labelledby="decision-title">
         <div className="decision-heading">
@@ -207,7 +186,7 @@ export function AgentsPanel({
                 onClick={() => {
                   setEngine(item);
                   setDecision(null);
-                  setError("");
+                  setError(null);
                   setApiKey("");
                 }}
               >
@@ -283,16 +262,16 @@ export function AgentsPanel({
           </div>
           {error && (
             <p className="decision-error" role="alert">
-              {error}
+              {c(...error)}
             </p>
           )}
           {decision && selectedCategory && (
             <div className="decision-result" role="status">
               <span>{c("الفئة المقترحة", "SUGGESTED CATEGORY")}</span>
               <strong>
-                {ar ? selectedCategory.name : selectedCategory.en}
+                {translate(locale, selectedCategory.id)}
               </strong>
-              <p>{ar ? selectedCategory.description : selectedCategory.en}</p>
+              <p>{translate(locale, selectedCategory.id + "Description")}</p>
               {decision.confidence !== null && (
                 <small>
                   {c("مؤشر ثقة المحرك", "Engine confidence")}:{" "}
@@ -361,16 +340,19 @@ export function AgentsPanel({
               aria-pressed={filter === item.id}
               onClick={() => setFilter(item.id)}
             >
-              {ar ? item.ar : item.en}
+              {c(item.ar, item.en)}
             </button>
           ))}
         </div>
         <div className="agent-list">
           {shown.map((item, index) => (
-            <article className="agent-row" key={item.id}>
+            <article className="agent-row" key={item.id} data-agent-id={item.id} tabIndex={-1}>
               <span className="agent-index" aria-hidden="true">
                 {String(index + 1).padStart(2, "0")}
               </span>
+              <div className="agent-directory-symbol">
+                <SuperAgentMascot agentId={item.id} compact motionPaused={mascotMotionPaused} />
+              </div>
               <div className="agent-description">
                 <div className="agent-name-line">
                   <h4 lang="en" dir="ltr">
@@ -378,13 +360,16 @@ export function AgentsPanel({
                   </h4>
                   <span>
                     {item.mode === "connected"
-                      ? c("ربط داخل المنصة", "Connect in Hessara")
+                      ? c("تكامل يحتاج إعدادًا", "Integration requires setup")
                       : item.mode === "selfhost"
                         ? c("تشغيل مستقل", "Separate setup")
-                        : c("إطار تطوير", "Developer framework")}
+                        : item.mode === "framework"
+                          ? c("إطار تطوير", "Developer framework")
+                          : c("External product · not integrated with HESSARA", "External product · not integrated with HESSARA")}
                   </span>
                 </div>
-                <p>{ar ? item.summaryAr : item.summaryEn}</p>
+                <p>{agentDescription(item, locale)}</p>
+                {item.releaseDate && <small className="agent-release-date">{c("First released: ", "First released: ")}{new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeZone: "UTC" }).format(new Date(`${item.releaseDate}T00:00:00Z`))}</small>}
               </div>
               <div className="agent-row-actions">
                 {item.id === "paperclip" && (
@@ -392,7 +377,7 @@ export function AgentsPanel({
                     {c("تكامل Hessara", "Hessara integration")}
                   </button>
                 )}
-                {item.category === "decision" && (
+                {(item.id === "jev" || item.id === "laya") && (
                   <button
                     onClick={() =>
                       document
@@ -406,14 +391,19 @@ export function AgentsPanel({
                         })
                     }
                   >
-                    {c("جرّبه هنا", "Try it here")}
+                    {c("إعداد الاتصال", "Configure connection")}
                   </button>
                 )}
                 <a href={item.url} target="_blank" rel="noopener noreferrer">
-                  {c("المشروع الأصلي", "Source project")}{" "}
+                  {item.mode === "external" ? c("المنتج الرسمي", "Official product") : c("المشروع الأصلي", "Source project")}{" "}
                   <ArrowUpRight size={16} aria-hidden="true" />
                 </a>
               </div>
+              <details className="agent-activation">
+                <summary>{c("طريقة التفعيل", "Activation guide")}</summary>
+                <p>{item.mode === "external" ? c("This product requires an eligible provider account and runs outside HESSARA. Access, pricing, regions and limits are controlled by the provider.", "This product requires an eligible provider account and runs outside HESSARA. Access, pricing, regions and limits are controlled by the provider.") : item.id === "jev" ? c("أنشئ مفتاحًا من خدمة jev، ثم اختر jev في مساحة القرار أعلاه وأدخل وصف المهمة والمفتاح.", "Create a jev key, select jev in the decision workspace above, and enter your task description and key.") : item.id === "laya" ? c("شغّل Laya باتباع توثيق المشروع، وانشره عبر اتصال آمن. اختر Laya في مساحة القرار وأدخل رابط خادمك ومفتاحه إن وجد.", "Set up Laya using its documentation and publish it over HTTPS. Select Laya above and enter your server URL and key, if configured.") : item.id === "paperclip" ? c("أعدّ خادم بيبركليب وحسابك، ثم افتح تكامل Hessara من الزر أعلاه لإرسال مسودة مراجعة لتجربة مكتملة.", "Set up your Paperclip server and account, then open the Hessara integration above to send a review draft for a completed run.") : item.mode === "framework" ? c("افتح المشروع الأصلي، واتبع دليل البدء السريع لتثبيت الإطار في بيئة تطويرك. أضف مفاتيح النماذج والأدوات التي تحتاجها ثم شغّل المثال الأول. هذا الإطار يعمل في تطبيقك، وليس داخل حساب Hessara.", "Open the source project and follow its quickstart in your development environment. Add the model and tool keys you need, then run the first example. This framework runs in your application, not inside your Hessara account.") : c("افتح توثيق المشروع الأصلي وثبّت المتطلبات المناسبة لنظامك. شغّل الوكيل في بيئة منفصلة، وأضف مفاتيح الخدمات والصلاحيات التي تحتاجها مهمتك فقط. التشغيل وإدارة الملفات يتمان في بيئتك الخاصة.", "Follow the source project documentation and install the requirements for your system. Run the agent separately, granting only the service keys and permissions your task needs. Execution and file management happen in your own environment.")}</p>
+                <a href={item.url} target="_blank" rel="noopener noreferrer">{c("افتح التوثيق وخطوات الإعداد", "Open setup documentation")}</a>
+              </details>
             </article>
           ))}
           {!shown.length && (
@@ -460,3 +450,4 @@ export function AgentsPanel({
     </div>
   );
 }
+

@@ -1,0 +1,5 @@
+.cinematic-media{position:relative;isolation:isolate;aspect-ratio:8/5;min-height:0;overflow:hidden;border-radius:14px;background:#171e2a}
+.cinematic-poster,.cinematic-film{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.cinematic-poster{z-index:0}.cinematic-film{z-index:1;opacity:0;pointer-events:none}.cinematic-film[data-ready=true]{opacity:1}
+.cinematic-film::-webkit-media-controls,.cinematic-film::-webkit-media-controls-start-playback-button,.cinematic-film::-webkit-media-controls-overlay-play-button,.cinematic-film::-webkit-media-controls-play-button{display:none!important;-webkit-appearance:none;appearance:none}
+@media(prefers-reduced-motion:no-preference){.cinematic-film{transition:opacity 250ms ease}}

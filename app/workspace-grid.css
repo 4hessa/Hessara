@@ -1,0 +1,20 @@
+/* Quiet shared canvas: data, controls and typography define the hierarchy. */
+html body .app.workspace-shell,
+html body .re-app {
+  background: var(--hessara-paper);
+}
+
+
+.workspace-shell .workspace-discovery-art {
+  margin-block-end: var(--hessara-space-6);
+  padding-block-end: var(--hessara-space-6);
+  border-block-end: 1px solid var(--hessara-line);
+}
+.workspace-shell .workspace-discovery-art p {
+  max-inline-size: var(--hessara-reading-width);
+  margin: 0;
+  color: var(--hessara-muted);
+  line-height: var(--hessara-leading-reading);
+}
+.workspace-shell .workspace-comparison-heading { margin-block-end: var(--hessara-space-4); }
+@media (forced-colors: active) { html body .app.workspace-shell, html body .re-app { background: Canvas; } }

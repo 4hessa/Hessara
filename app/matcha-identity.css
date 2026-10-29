@@ -1,0 +1,352 @@
+/*
+ * HESSARA — Matcha / Coconut identity.
+ * Exact reference colours remain the foundation. Large surfaces deliberately use
+ * lighter mixes; Cinder and Chimney carry readable text rather than dark panels.
+ * Legacy aliases keep every existing feature on the same system while it evolves.
+ */
+:root {
+  --hessara-cinder: #24292e;
+  --hessara-chimney: #4a5156;
+  --hessara-matcha: #c2d8c4;
+  --hessara-blue: #bdc7ce;
+  --hessara-coconut: #f2f1ea;
+  --hessara-canvas: #fcfcf9;
+  --hessara-paper: #ffffff;
+  --hessara-surface: #f5f7f2;
+  --hessara-surface-matcha: #f1f6f0;
+  --hessara-surface-blue: #f2f5f6;
+  --hessara-surface-warm: #f8f7f2;
+  --hessara-line: #dce3dc;
+  --hessara-line-strong: #829188;
+  --hessara-muted: #5b666b;
+  --hessara-sage-ink: #46604f;
+  --hessara-blue-ink: #536b7c;
+  --hessara-error: #884d52;
+  --hessara-shadow-sm: 0 5px 18px -13px #24292e22;
+  --hessara-shadow-card: 0 15px 42px -30px #24292e2a;
+  --hessara-shadow-float: 0 22px 64px -38px #24292e3d;
+  --hessara-radius-sm: 12px;
+  --hessara-radius-card: 24px;
+  --hessara-radius-panel: 32px;
+  --hessara-ease: cubic-bezier(.22, 1, .36, 1);
+  --hessara-duration: 240ms;
+  --hessara-font: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, Arial, sans-serif;
+  --background: var(--hessara-canvas);
+  --foreground: var(--hessara-cinder);
+  --card: var(--hessara-paper);
+  --card-foreground: var(--hessara-cinder);
+  --popover: var(--hessara-paper);
+  --popover-foreground: var(--hessara-cinder);
+  --primary: var(--hessara-cinder);
+  --primary-foreground: #fff;
+  --secondary: var(--hessara-surface-matcha);
+  --secondary-foreground: var(--hessara-cinder);
+  --muted: var(--hessara-surface);
+  --muted-foreground: var(--hessara-muted);
+  --accent: var(--hessara-matcha);
+  --accent-foreground: var(--hessara-cinder);
+  --destructive: var(--hessara-error);
+  --border: var(--hessara-line);
+  --input: var(--hessara-line-strong);
+  --ring: var(--hessara-sage-ink);
+  --sidebar: var(--hessara-canvas);
+  --sidebar-foreground: var(--hessara-cinder);
+  --chart-1: var(--hessara-sage-ink);
+  --chart-2: var(--hessara-blue-ink);
+  --chart-3: var(--hessara-chimney);
+  --font-sans: var(--hessara-font);
+  --radius: .75rem;
+  --orchid-tint: var(--hessara-matcha);
+  --brilliant-white: var(--hessara-canvas);
+  --blue-grey: var(--hessara-blue);
+  --orchid-ink: var(--hessara-chimney);
+  --orchid-brand: var(--hessara-sage-ink);
+  --brand-orchid: var(--hessara-sage-ink);
+  --orchid-line: var(--hessara-line);
+  --dust: var(--hessara-matcha);
+  --dust-ink: var(--hessara-cinder);
+  --dust-muted: var(--hessara-muted);
+  --dust-brand: var(--hessara-chimney);
+  --dust-soft: var(--hessara-surface);
+  --dust-line: var(--hessara-line);
+  --warm-sand: var(--hessara-coconut);
+  --ash-cloud: var(--hessara-blue);
+  --weathered-taupe: var(--hessara-chimney);
+  --heading-ink: var(--hessara-cinder);
+  --input-ink: var(--hessara-cinder);
+}
+
+html,
+html body {
+  color-scheme: light;
+  background: var(--hessara-coconut);
+  color: var(--hessara-cinder);
+  font-family: var(--hessara-font);
+}
+html body { padding: clamp(10px, 2vw, 28px); }
+html body .app {
+  max-width: 1440px;
+  min-height: calc(100dvh - 56px);
+  border: 1px solid #ffffffd9;
+  border-radius: var(--hessara-radius-panel);
+  background: var(--hessara-canvas);
+  color: var(--hessara-cinder);
+  box-shadow: 0 20px 80px -45px #24292e33;
+}
+html body .app :is(h1,h2,h3,h4,h5,h6,.intro-title,.path-title) {
+  color: var(--hessara-cinder);
+  font-family: var(--hessara-font);
+  text-wrap: balance;
+}
+html body .app :is(h1,h2) {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  box-decoration-break: initial;
+}
+html body .app :is(p,label,dt,dd,summary,.numeric,.intro-description,.path-description) { color: var(--hessara-chimney); }
+html body .app :is(.kicker,.hero-eyebrow,.overline,.eyebrow,.code-muted,.code-id,.code-status) { color: var(--hessara-muted); }
+html body .app :is(.masthead,.nav-shell,.content) {
+  max-width: 1440px;
+  padding-inline: clamp(22px, 4.4vw, 64px);
+}
+html body .app .masthead { height: 96px; border-color: var(--hessara-line); }
+html body .app .content { padding-block: 34px 56px; }
+html body :is(.wordmark,.wordmark strong,.signin-brand) { color: var(--hessara-chimney); }
+html body .wordmark strong { font-weight: 500; letter-spacing: .055em; }
+html body .wordmark .brand-symbol { color: inherit; background-color: currentColor; }
+html body .app :is(.privacy,.session-link,.wordmark-caption,.language-select) { color: var(--hessara-chimney); }
+html body .app .session-link { border: 1px solid var(--hessara-line); border-radius: 100px; min-height: 44px; padding-inline: 15px; }
+html body .app .session-link:hover { background: var(--hessara-surface-matcha); }
+html body .app .nav-shell { background: #fcfcf9e8; border-color: var(--hessara-line); }
+html body .app .main-tabs { gap: clamp(10px, 1.8vw, 24px); border-color: var(--hessara-line); scrollbar-color: var(--hessara-line-strong) transparent; padding-block: 6px 10px; }
+html body .app .main-tabs [data-slot=tabs-trigger] { color: var(--hessara-muted); border-radius: 100px; padding: 10px 15px; min-height: 44px; font-size: 13px; }
+html body .app .main-tabs [data-slot=tabs-trigger][data-state=active] { color: var(--hessara-cinder); background: var(--hessara-surface-matcha); box-shadow: inset 0 0 0 1px var(--hessara-line); }
+html body .app .main-tabs [data-slot=tabs-trigger][data-state=active]:after { background: var(--hessara-sage-ink); width: 18px; inset-inline: calc(50% - 9px) auto; bottom: 1px; height: 2px; }
+html body .app .main-tabs [data-slot=tabs-trigger]:hover { color: var(--hessara-cinder); background: var(--hessara-surface); }
+
+/* A centred, spacious masthead. Artwork is kept clear of the copy by its own grid. */
+html body .app .meadow-welcome {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  justify-items: center;
+  min-height: 570px;
+  gap: 0;
+  padding: clamp(38px, 4vw, 56px) clamp(20px, 4vw, 56px);
+  border: 1px solid #e9eee7;
+  border-radius: var(--hessara-radius-panel);
+  background: radial-gradient(ellipse at 15% 90%, #edf3ee88, transparent 55%), linear-gradient(125deg, #fcfcf9, #f5f8f2 68%, #f4f7f7);
+  text-align: center;
+  isolation: isolate;
+  overflow: hidden;
+}
+html body .app .meadow-copy { width: 100%; max-width: 880px; padding: 0; margin-inline: auto; text-align: center; }
+html body .app .meadow-copy :is(h1,.hero-title) { max-width: 100%; margin-inline: auto; font-size: clamp(40px, 5.2vw, 68px); line-height: 1.4; font-weight: 500; letter-spacing: -.025em; color: var(--hessara-cinder); }
+html[dir=rtl] body .app .meadow-copy :is(h1,.hero-title) { line-height: 1.65; letter-spacing: -.025em; font-size: clamp(38px, 4.8vw, 63px); }
+html body .app .meadow-copy h1 span { color: var(--hessara-sage-ink); }
+html body .app .meadow-copy > p,
+html body .app .meadow-copy .hero-statement { max-width: 630px; margin: 20px auto 0; color: var(--hessara-chimney); font-size: clamp(15px, 1.7vw, 19px); line-height: 1.95; text-wrap: balance; }
+html body .app .meadow-copy .hero-description { max-width: 580px; margin: 15px auto 0; color: var(--hessara-muted); font-size: 14px; line-height: 1.95; text-wrap: pretty; }
+html body .app .hero-visual { display: grid; place-items: center; width: min(216px, 100%); height: 120px; max-width: 100%; margin: 20px auto 0; isolation: isolate; pointer-events: none; }
+html body .app .hero-actions .hero-rocket { flex: 0 0 auto; width: 48px; height: 32px; object-fit: contain; overflow: visible; }
+html body .app .hero-eyebrow { margin: 0 auto 20px; font-size: 13px; color: var(--hessara-sage-ink); }
+html body .app .hero-actions { justify-content: center; gap: 12px; margin-top: 30px; }
+html body .app .hero-indicators { justify-content: center; max-width: 600px; margin: 36px auto 0; gap: clamp(22px, 4vw, 54px); }
+html body .app .hero-indicators > span { align-items: center; color: var(--hessara-muted); }
+html body .app .hero-indicators strong { color: var(--hessara-chimney); font-size: 26px; }
+
+/* Shared controls: readable contrast, generous targets, quiet tactile feedback. */
+html body .app :is(.primary,.signin-button.primary),
+html body [role=dialog] .primary { background: var(--hessara-cinder); border-color: var(--hessara-cinder); color: #fff; box-shadow: 0 4px 14px -8px #24292e66; }
+html body .app :is(.primary,.signin-button.primary):hover,
+html body [role=dialog] .primary:hover { background: var(--hessara-chimney); border-color: var(--hessara-chimney); color: #fff; }
+html body .app :is(.secondary,.hero-secondary,.icon-button),
+html body [role=dialog] .secondary { background: #ffffffd9; border-color: var(--hessara-line-strong); color: var(--hessara-chimney); }
+html body .app :is(.secondary,.hero-secondary,.icon-button):hover { background: var(--hessara-surface-matcha); border-color: var(--hessara-sage-ink); }
+html body .app :is(.primary,.secondary,.hero-secondary) :is(p,span) { color: inherit; }
+html body .app :is(.primary,.secondary,.hero-secondary) { min-height: 46px; border-radius: 100px; padding-inline: 20px; font-size: 14px; font-weight: 500; }
+html body .app :is(input:not([type=checkbox]):not([type=radio]),textarea,select),
+html body [role=dialog] :is(input,textarea,select) {
+  color: var(--hessara-cinder);
+  background: var(--hessara-paper);
+  border-color: var(--hessara-line-strong);
+  border-radius: var(--hessara-radius-sm);
+  caret-color: var(--hessara-cinder);
+  box-shadow: none;
+}
+html body .app :is(input,textarea)::placeholder,
+html body [role=dialog] :is(input,textarea)::placeholder { color: var(--hessara-muted); opacity: .88; }
+html body .app input:is([type=checkbox],[type=radio]) { accent-color: var(--hessara-sage-ink); }
+html body .app :is(a,button,summary,input,textarea,select,[role=tab]):focus-visible,
+html body [role=dialog] :is(a,button,input,textarea,select):focus-visible { outline: 2px solid var(--hessara-sage-ink); outline-offset: 4px; }
+html body .app .main-tabs [data-slot=tabs-trigger]:focus-visible { outline-offset: -2px; }
+html body .app :is(.catalog-search,.agent-search):focus-within { outline-color: var(--hessara-sage-ink); }
+html body .app :is(.catalog-search,.agent-search) { border-color: var(--hessara-line-strong); background: #fff; border-radius: 100px; }
+html body .app :is(.catalog-search,.agent-search) input { border-radius: 0; }
+html body .app :is(.category-filters,.agent-filters,.decision-engine) button { color: var(--hessara-chimney); border-color: transparent; }
+html body .app :is(.category-filters,.agent-filters) button:hover { background: var(--hessara-surface-matcha); }
+html body .app :is(.category-filters,.agent-filters) button[aria-pressed=true] { background: var(--hessara-cinder); color: #fff; }
+html body .app .decision-engine { background: var(--hessara-surface-matcha); }
+html body .app .decision-engine button[aria-pressed=true] { background: #fff; color: var(--hessara-cinder); box-shadow: var(--hessara-shadow-sm); }
+
+/* Overview, catalog, tools and their compact analytical surfaces. */
+html body .app :is(.explore-path,.assistant-card,.agent-card,.metric,.plot,.speed-plot,.comparison,.results,.atlas-entry,.tool-entry,.advisor-candidate) {
+  background: var(--hessara-paper);
+  border-color: var(--hessara-line);
+  border-radius: var(--hessara-radius-card);
+  box-shadow: var(--hessara-shadow-card);
+}
+html body .app :is(.explore-path:nth-child(even),.assistant-card:nth-child(even)) { background: linear-gradient(140deg, #fff, var(--hessara-surface-matcha)); }
+html body .app :is(.explore-path,.assistant-card,.atlas-entry,.tool-entry):hover { background: var(--hessara-surface-matcha); border-color: var(--hessara-line-strong); box-shadow: var(--hessara-shadow-float); }
+html body .app :is(.explore-path,.assistant-card)[data-selected=true],
+html body .app .atlas-entry.selected { background: var(--hessara-surface-matcha); border-color: var(--hessara-sage-ink); }
+html body .app :is(.path-icon,.path-arrow,.advisor-mark,.lab-mark,.code-workspace-mark) { color: var(--hessara-sage-ink); background: var(--hessara-surface-matcha); border-color: var(--hessara-line); }
+html body .app .path-title { font-size: 18px; line-height: 1.6; }
+html body .app :is(.path-description,.atlas-pricing-note,.atlas-publisher,.tool-meta,.tool-category,.catalog-footnote,.catalog-count,.tools-editorial-note,.form-help,.footnote) { color: var(--hessara-muted); }
+html body .app :is(.catalog-intro,.tools-editorial,.agents-lead,.lab-header,.code-workspace-header) p { max-width: 72ch; text-wrap: pretty; }
+html body .app :is(.intro,.catalog-intro,.tools-editorial,.agents-lead) h2 { font-size: clamp(28px, 3vw, 42px); line-height: 1.55; font-weight: 500; }
+html body .app :is(.catalog-intro,.tools-editorial,.agents-lead) { margin-bottom: 32px; }
+html body .app :is(.model-atlas,.tool-list) { gap: 18px; }
+html body .app :is(.atlas-entry,.tool-entry) { padding: 24px; }
+html body .app :is(.atlas-bottom,.atlas-entry dl>div,.tool-meta,.agent-list,.explore-section,.security-note,.comparison,.results,.plot-foot) { border-color: var(--hessara-line); }
+html body .app :is(.paperclip-feature,.tools-editorial-note,.start-surface,.how-hero) { background: var(--hessara-surface-matcha); color: var(--hessara-chimney); border-color: var(--hessara-line); }
+html body .app .paperclip-feature :is(p,h3,.eyebrow) { color: var(--hessara-chimney); }
+html body .app .how-hero:after { opacity: .3; }
+html body .app .how-index a:hover { background: var(--hessara-surface-matcha); }
+html body .app .how-articles article { border-color: var(--hessara-line); }
+html body .app .evaluation-dashboard { --dashboard-line: var(--hessara-line); gap: 24px; }
+html body .app .evaluation-dashboard .metric { background: #fff; border-color: var(--hessara-line); }
+html body .app .evaluation-dashboard .metric:first-child { background: var(--hessara-surface-matcha); }
+html body .app .evaluation-dashboard .metric:nth-child(3) { background: var(--hessara-surface-blue); }
+html body .app .evaluation-dashboard .metric strong { color: var(--hessara-cinder); font-size: clamp(29px, 3vw, 40px); font-weight: 500; }
+html body .app .evaluation-dashboard .metric > span { color: var(--hessara-chimney); }
+html body .app .evaluation-dashboard .metric p { color: var(--hessara-muted); }
+html body .app :is(.evaluation-dashboard .model-letter,.execution,.result-row:hover) { background: var(--hessara-surface-matcha); border-color: var(--hessara-line); color: var(--hessara-chimney); }
+html body .app :is(.speed-rule,.bars) { background-color: var(--hessara-surface); border-color: var(--hessara-line); }
+html body .app .speed-time { color: var(--hessara-muted); }
+html body :is(.app [data-slot=table-container],.form-dialog,.task-dialog) { border-color: var(--hessara-line); }
+html body .app [data-slot=table-header] { background: var(--hessara-surface-matcha); }
+html body .app :is([data-slot=table-head],[data-slot=table-cell]) { color: var(--hessara-chimney); border-color: var(--hessara-line); }
+html body .app [data-slot=table-row] { border-color: var(--hessara-line); }
+html body .app [data-slot=table-row]:hover { background: var(--hessara-surface-matcha); }
+
+/* All workspaces use the same light paper / sage / blue hierarchy. */
+html body .app :is(.model-advisor,.advisor,.assistant-workbench,.decision-studio,.student-notebook,.nvidia-start,.model-connection-status) {
+  color: var(--hessara-chimney);
+  background: linear-gradient(135deg, #fcfdfb, var(--hessara-surface-matcha));
+  border-color: var(--hessara-line);
+  border-radius: var(--hessara-radius-panel);
+  box-shadow: none;
+}
+html body .app .nvidia-start { padding: clamp(24px, 3vw, 42px); gap: clamp(24px, 4vw, 56px); margin-block: 24px 34px; border: 1px solid var(--hessara-line); }
+html body .app .nvidia-connect { background: #ffffffd9; border-color: var(--hessara-line); border-radius: 24px; box-shadow: var(--hessara-shadow-sm); }
+html body .app .nvidia-model { border-color: var(--hessara-line); }
+html body .app .nvidia-model a:hover { background: var(--hessara-surface-matcha); }
+html body .app .nvidia-story h2 { font-size: clamp(25px, 2.7vw, 36px); line-height: 1.6; }
+html body .app :is(.model-connection-start,.student-notebook__open) { background: var(--hessara-matcha); color: var(--hessara-cinder); border-color: var(--hessara-line-strong); }
+html body .app :is(.model-connection-start,.student-notebook__open):hover { background: #b5ceb8; }
+html body .app :is(.model-connection-provider,.model-connection-refresh,.decision-form,.assistant-result,.decision-result) { background: #fff; border-color: var(--hessara-line); box-shadow: var(--hessara-shadow-sm); }
+html body .app .model-connection-provider button { background: var(--hessara-surface-matcha); border-color: var(--hessara-line-strong); }
+html body .app :is(.notice,.code-notice,.code-empty,.lab-notice,.advisor-alert,.lab-alert,.code-alert,.assistant-error,.decision-error) { background: var(--hessara-surface-blue); border-color: var(--hessara-blue); color: var(--hessara-chimney); }
+html body .app :is(.notice.error,.assistant-error,.decision-error) { color: var(--hessara-error); background: #faf5f4; border-color: #d8bdbe; }
+html body .app :is(.advisor-review,.advisor-results,.advisor-candidate details,.advisor-comparison,.advisor-measurement-heading th,.advisor-advanced,.decision-provenance,.assistant-guide) { border-color: var(--hessara-line); }
+html body .app .advisor-measurement-heading th { background: var(--hessara-surface-blue); }
+html body .app :is(.student-notebook__workspace,.student-notebook__steps li>span) { border-color: var(--hessara-line); }
+html body .app .student-notebook__workspace textarea.student-notebook__prompt { background: var(--hessara-surface-blue); }
+html body .app :is(.student-notebook__modes button,.student-notebook__copy) { color: var(--hessara-chimney); border-color: var(--hessara-line-strong); background: #fff; min-height: 44px; font-size: 12px; }
+html body .app .student-notebook__modes button[aria-pressed=true] { background: var(--hessara-surface-matcha); border-color: var(--hessara-sage-ink); }
+
+/* Lab, evidence, reports and programming workspace retain their functional grids. */
+html body .app :is(.lab-panel,.code-workspace-panel) { color: var(--hessara-chimney); padding: clamp(4px, 1.8vw, 24px) 0; }
+html body .app :is(.lab-header,.code-workspace-header) { border-color: var(--hessara-line); }
+html body .app :is(.lab-composer,.lab-run,.lab-answer,.code-card,.code-task,.lab-recover,.lab-claim,.code-change) { background: var(--hessara-paper); border-color: var(--hessara-line); border-radius: 22px; box-shadow: var(--hessara-shadow-sm); }
+html body .app :is(.lab-history,.lab-question,.lab-model-option,.lab-stats>div,.lab-check-results>li,.lab-preferences,.lab-report-panel,.lab-suggestions,.lab-delete,.lab-launch,.code-project-list,.code-launch,.code-file,.code-stats>div,.code-choice-list>label,.code-revisions li) { background: var(--hessara-surface); border-color: var(--hessara-line); color: var(--hessara-chimney); }
+html body .app :is(.lab-history button,.code-project-list button):hover { background: var(--hessara-surface-matcha); }
+html body .app :is(.lab-history button,.code-project-list button)[aria-current=true],
+html body .app .lab-model-option:has(input:checked) { background: #e7f0e5; border-color: var(--hessara-sage-ink); color: var(--hessara-cinder); }
+html body .app :is(.lab-number,.code-field-number,.lab-icon-button,.code-icon-button) { background: #fff; border-color: var(--hessara-line-strong); color: var(--hessara-chimney); }
+html body .app :is(.lab-status,.code-status) { background: var(--hessara-surface-blue); border-color: var(--hessara-line); color: var(--hessara-chimney); }
+html body .app :is(.lab-prompt,.lab-answer pre,.lab-run-details>pre,.code-tests pre,.code-diff pre,.code-task-details>pre,.code-revision-preview pre,.lab-preferences .lab-prompt) { background: var(--hessara-surface-blue); color: var(--hessara-cinder); border-color: var(--hessara-line); }
+html body .app :is(.lab-settings,.lab-answer>details,.lab-result-case,.lab-run-details,.lab-evaluation,.lab-judgement,.code-project-facts,.code-task-details,.code-scope,.code-event-log li) { border-color: var(--hessara-line); }
+html body .app :is(.lab-evaluation blockquote,.lab-report-view blockquote) { border-color: var(--hessara-line-strong); color: var(--hessara-chimney); }
+html body .app .code-line-added { background: #e7f0e5; border-color: var(--hessara-sage-ink); }
+html body .app .code-line-removed { background: #f5e9e6; border-color: var(--hessara-error); }
+html body .app .code-line-number { color: var(--hessara-muted); }
+html body .app .lab-run progress,
+html body .app .lab-run progress::-webkit-progress-bar { background: #e5ebe5; }
+html body .app .lab-run progress::-webkit-progress-value { background: var(--hessara-sage-ink); }
+html body .app .lab-run progress::-moz-progress-bar { background: var(--hessara-sage-ink); }
+html body .lab-public-report { background: var(--hessara-canvas); border-color: var(--hessara-line); color: var(--hessara-cinder); }
+html body .lab-home-link { color: var(--hessara-chimney); }
+
+/* Character cards stay light: their individual artwork supplies the colour. */
+html body .app .agent-directory { background: transparent; border-color: var(--hessara-line); }
+html body .app .agents-page .agent-row,
+html body .app .agents-page .agent-row:hover { background: linear-gradient(145deg, #fff, var(--hessara-surface-matcha)); border-color: var(--hessara-line); box-shadow: var(--hessara-shadow-card); }
+html body .app .agents-page .agent-row:hover { border-color: var(--hessara-line-strong); }
+html body .app :is(.agent-name-line h4,.assistant-card h4) { font-family: var(--hessara-font); font-weight: 500; }
+html body .app :is(.agent-name-line span,.assistant-provider,.agent-description p,.agent-availability,.agent-index) { color: var(--hessara-muted); }
+html body .app :is(.agent-row-actions a,.agent-row-actions button,.assistant-card-copy>button,.assistant-actions a,.assistant-actions button,.agent-activation a) { color: var(--hessara-chimney); border-color: var(--hessara-line); }
+html body .app .assistant-actions button.primary { color: #fff; background: var(--hessara-cinder); border-color: var(--hessara-cinder); }
+html body .app .assistant-gallery-heading { gap: 28px; }
+
+
+html body :is(.form-dialog,.task-dialog) { color: var(--hessara-cinder); background: var(--hessara-canvas); border-color: var(--hessara-line); border-radius: 24px; box-shadow: var(--hessara-shadow-float); }
+html body :is(.form-dialog,.task-dialog) [data-slot=dialog-title] { color: var(--hessara-cinder); }
+html body :is(.form-dialog,.task-dialog) :is([data-slot=dialog-description],.form-help,.field small) { color: var(--hessara-muted); }
+html body .app .developer-credit { color: var(--hessara-muted); border-color: var(--hessara-line); }
+html body .pointer-halo span { border-color: #536b5870; background: #c2d8c410; }
+html body .pointer-halo[data-interactive=true] span { border-color: #46604f99; background: #c2d8c42b; }
+::selection { background: #c2d8c4cc; color: var(--hessara-cinder); }
+
+@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  html body .app .hero-rocket { transition:transform 320ms var(--hessara-ease); }
+  html body .app .hero-actions .primary:hover .hero-rocket { transform:translate(-2px,-2px) rotate(-4deg); }
+  html body .app :is(.primary,.secondary,.hero-secondary,.explore-path,.assistant-card,.atlas-entry,.tool-entry) { transition: background var(--hessara-duration) ease, border-color var(--hessara-duration) ease, box-shadow var(--hessara-duration) ease, transform var(--hessara-duration) var(--hessara-ease); }
+  html body .app :is(.primary,.secondary,.hero-secondary):hover { transform: translateY(-1px); }
+  html body .app :is(.primary,.secondary,.hero-secondary):active { transform: translateY(1px); }
+  html body .app :is(.explore-path,.assistant-card):hover { transform: translateY(-3px); }
+}
+@media (max-width:900px) {
+  html body .app .masthead { height: 88px; }
+  html body .app .main-tabs { gap: 6px; }
+  html body .app .meadow-welcome { min-height: 510px; padding-block: 54px; }
+  html body .app :is(.model-atlas,.tool-list) { gap: 14px; }
+}
+@media (max-width:600px) {
+  html body { padding: 8px; }
+  html body .app { border-radius: 22px; min-height: calc(100dvh - 16px); }
+  html body .app :is(.masthead,.nav-shell,.content) { padding-inline: 18px; }
+  html body .app .masthead { height: 82px; gap: 10px; }
+  html body .app .content { padding-block: 22px 36px; }
+  html body .app .session-link { padding-inline: 12px; font-size: 12px; }
+  html body .app .main-tabs [data-slot=tabs-trigger] { font-size: 12px; padding-inline: 12px; }
+  html body .app .meadow-welcome { min-height: 430px; padding: 40px 18px; border-radius: 24px; }
+  html body .app .meadow-copy :is(h1,.hero-title),
+  html[dir=rtl] body .app .meadow-copy :is(h1,.hero-title) { font-size: clamp(31px, 8.6vw, 44px); line-height: 1.7; letter-spacing: -.025em; }
+  html body .app .meadow-copy > p,
+  html body .app .meadow-copy .hero-statement { font-size: 15px; margin-top: 16px; }
+  html body .app .hero-actions { margin-top: 24px; gap: 10px; }
+  html body .app .hero-actions button { padding-inline: 17px; font-size: 13px; }
+  html body .app .hero-indicators { gap: 22px; margin-top: 28px; }
+  html body .app .hero-indicators strong { font-size: 23px; }
+  html body .app :is(.catalog-intro,.tools-editorial,.agents-lead) h2 { font-size: 28px; line-height: 1.6; }
+  html body .app :is(.atlas-entry,.tool-entry) { padding: 21px; border-radius: 20px; }
+  html body .app .nvidia-start { padding: 22px 17px; border-radius: 22px; }
+  html body .app .nvidia-connect { padding: 20px 16px; border-radius: 18px; }
+  html body .app :is(.model-advisor,.assistant-workbench,.decision-studio,.student-notebook,.model-connection-status) { border-radius: 22px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  html body .app :is(.primary,.secondary,.hero-secondary,.explore-path,.assistant-card,.atlas-entry,.tool-entry) { transition: none; transform: none; }
+}
+@media (forced-colors:active) {
+  .primary .hessara-thinking-orb,.signin-submit .hessara-thinking-orb { filter:none; }
+  html body,
+  html body .app,
+  html body .app :is(.meadow-welcome,.metric,.plot,.speed-plot,.comparison,.results,.atlas-entry,.tool-entry,.assistant-card,.agent-row,.model-advisor,.lab-composer,.lab-run,.code-card,.code-task) { background: Canvas; color: CanvasText; border-color: CanvasText; box-shadow: none; }
+  html body .app :is(h1,h2,h3,h4,p,label,dt,dd,summary) { color: CanvasText; }
+  html body .app :is(.primary,.secondary,.hero-secondary,.icon-button) { color: ButtonText; background: ButtonFace; border-color: ButtonText; }
+  html body .app :is(a,button,summary,input,textarea,select):focus-visible { outline-color: Highlight; }
+  html body .app .main-tabs [data-slot=tabs-trigger][data-state=active] { color: HighlightText; background: Highlight; }
+}

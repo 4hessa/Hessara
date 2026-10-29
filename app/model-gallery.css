@@ -1,0 +1,42 @@
+/* Editorial hierarchy informed by the recorded REA observation. Real connection
+   state stays separate from the reference catalogue; no decorative render loop. */
+html body .app .model-gallery .catalog-intro { align-items: flex-end; margin-block: 8px 40px; gap: 32px; }
+html body .app .model-gallery .catalog-intro h1 { max-width: 22ch; margin: 0; font-size: clamp(28px,3.3vw,44px); line-height: 1.5; font-weight: 500; text-wrap: balance; color: var(--hessara-ink); }
+html body .app .model-gallery .catalog-intro p { max-width: 66ch; font-size: 14px; }
+.model-gallery .gallery-connections { display: grid; grid-template-columns: minmax(180px,.7fr) minmax(0,1.3fr); gap: 32px; padding: 28px; margin-block-end: 24px; background: var(--hessara-surface-blue); border: 1px solid var(--hessara-line); border-radius: 12px; }
+.model-gallery .gallery-connections h3 { margin: 0 0 10px; font-size: 20px; }
+.model-gallery .gallery-connections header p { max-width: 38ch; margin: 0; font-size: 12px; line-height: 1.8; color: var(--hessara-muted); }
+.model-gallery .gallery-connections ul { list-style: none; padding: 0; margin: 0; }
+.model-gallery .gallery-connections li { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-block: 14px; }
+.model-gallery .gallery-connections li:first-child { padding-block-start: 0; }
+.model-gallery .gallery-connections li + li { border-block-start: 1px solid var(--hessara-line); }
+.model-gallery .gallery-connections li > div { display: grid; gap: 5px; min-width: 0; }
+.model-gallery .gallery-connections strong { font-size: 16px; font-weight: 500; overflow-wrap: anywhere; }
+.model-gallery .gallery-provider { color: var(--hessara-muted); font-size: 11px; }
+.model-gallery .gallery-status { display: flex; align-items: center; gap: 7px; margin: 4px 0 14px; font-size: 12px; line-height: 1.7; color: var(--hessara-muted); }
+.model-gallery .gallery-status::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--hessara-silver); flex-shrink: 0; }
+.model-gallery .gallery-status[data-verified=true]::before { background: var(--hessara-action); }
+.model-gallery .gallery-connections .gallery-status { margin: 0; }
+.model-gallery .gallery-connections button, .model-gallery .gallery-action { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding: 10px 0; background: none; border: 0; color: var(--hessara-action); font: inherit; font-size: 13px; cursor: pointer; text-align: start; }
+.model-gallery .gallery-connections button { flex-shrink: 0; }
+.model-gallery .gallery-advisor { margin-block: 24px 32px; border-block: 1px solid var(--hessara-line); }
+.model-gallery .gallery-advisor > summary { padding: 19px 4px; min-height: 56px; font-size: 14px; color: var(--hessara-ink); cursor: pointer; }
+.model-gallery .gallery-advisor[open] > summary { border-block-end: 1px solid var(--hessara-line); margin-block-end: 24px; }
+html body .app .model-gallery .model-atlas { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; }
+html body .app .model-gallery .atlas-entry { display: flex; flex-direction: column; padding: 26px; border: 1px solid var(--hessara-line); border-radius: 10px; background: var(--hessara-paper); box-shadow: none; }
+html body .app .model-gallery .atlas-entry.selected { border-color: var(--hessara-action); background: var(--hessara-surface-blue); }
+html body .app .model-gallery .atlas-top { min-height: 32px; margin-block-end: 24px; }
+html body .app .model-gallery .atlas-number { font-size: 30px; font-variant-numeric: tabular-nums; color: var(--hessara-muted); }
+html body .app .model-gallery .atlas-entry h3 { font-size: clamp(21px,2vw,27px); line-height: 1.4; margin-block: 6px; }
+html body .app .model-gallery .atlas-entry dl { margin-block: 24px 10px; }
+.model-gallery .gallery-action { width: 100%; margin-block-start: auto; padding-block-start: 20px; }
+.model-gallery .gallery-action:hover, .model-gallery .gallery-connections button:hover { color: var(--hessara-action-hover); text-decoration: underline; text-underline-offset: 4px; }
+.model-gallery :is(.gallery-action,.gallery-connections button,.gallery-advisor > summary):focus-visible { outline: 2px solid var(--hessara-focus); outline-offset: 4px; border-radius: 4px; }
+@media (max-width: 1100px) { html body .app .model-gallery .model-atlas { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media (max-width: 700px) {
+  html body .app .model-gallery .catalog-intro { align-items: flex-start; flex-direction: column; gap: 20px; }
+  .model-gallery .gallery-connections { grid-template-columns: minmax(0,1fr); gap: 24px; padding: 20px; }
+  html body .app .model-gallery .model-atlas { grid-template-columns: minmax(0,1fr); gap: 16px; }
+  html body .app .model-gallery .atlas-entry { padding: 22px; }
+}
+@media (forced-colors: active) { .model-gallery .gallery-status::before { background: CanvasText; } }

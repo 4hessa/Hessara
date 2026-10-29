@@ -15,7 +15,9 @@
     "tools": true,
     "url": "https://openrouter.ai/openai/gpt-6-astra",
     "checkedAt": "2026-09-27",
-    "source": "https://openrouter.ai/api/v1/models"
+    "source": "https://openrouter.ai/api/v1/models",
+    "releaseDate": "2026-09-03",
+    "releaseUrl": "https://openai.com/index/gpt-6-astra/"
   },
   {
     "id": "openai/gpt-6-sol",
@@ -33,7 +35,9 @@
     "tools": true,
     "url": "https://openrouter.ai/openai/gpt-6-sol",
     "checkedAt": "2026-09-27",
-    "source": "https://openrouter.ai/api/v1/models"
+    "source": "https://openrouter.ai/api/v1/models",
+    "releaseDate": "2026-09-22",
+    "releaseUrl": "https://openai.com/index/introducing-gpt-6-sol-and-luna/"
   },
   {
     "id": "openai/gpt-6-luna",
@@ -51,7 +55,41 @@
     "tools": true,
     "url": "https://openrouter.ai/openai/gpt-6-luna",
     "checkedAt": "2026-09-27",
-    "source": "https://openrouter.ai/api/v1/models"
+    "source": "https://openrouter.ai/api/v1/models",
+    "releaseDate": "2026-09-22",
+    "releaseUrl": "https://openai.com/index/introducing-gpt-6-sol-and-luna/"
+  },
+  {
+    "id": "openai/gpt-6.1-sol",
+    "name": "GPT-6.1 Sol",
+    "publisher": "OpenAI",
+    "context": 1050000,
+    "inputPrice": 2,
+    "outputPrice": 10,
+    "inputModalities": ["file", "image", "text"],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/openai/gpt-6.1-sol",
+    "checkedAt": "2026-10-29",
+    "source": "https://openrouter.ai/api/v1/models",
+    "releaseDate": "2026-09-29",
+    "releaseUrl": "https://openai.com/index/introducing-gpt-6-1-sol/"
+  },
+  {
+    "id": "openai/gpt-6.1-terra",
+    "name": "GPT-6.1 Terra",
+    "publisher": "OpenAI",
+    "context": 1050000,
+    "inputPrice": 1,
+    "outputPrice": 5,
+    "inputModalities": ["file", "image", "text"],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/openai/gpt-6.1-terra",
+    "checkedAt": "2026-10-29",
+    "source": "https://openrouter.ai/api/v1/models",
+    "releaseDate": "2026-10-26",
+    "releaseUrl": "https://openai.com/index/introducing-gpt-6-1-terra/"
   },
   {
     "id": "anthropic/claude-opus-5.5",
@@ -69,7 +107,41 @@
     "tools": true,
     "url": "https://openrouter.ai/anthropic/claude-opus-5.5",
     "checkedAt": "2026-09-27",
-    "source": "https://openrouter.ai/api/v1/models"
+    "source": "https://openrouter.ai/api/v1/models",
+    "releaseDate": "2026-09-22",
+    "releaseUrl": "https://www.anthropic.com/claude-opus-5-5"
+  },
+  {
+    "id": "anthropic/claude-sonnet-5.5",
+    "name": "Claude Sonnet 5.5",
+    "publisher": "Anthropic",
+    "context": 1000000,
+    "inputPrice": 2,
+    "outputPrice": 10,
+    "inputModalities": ["text", "image", "file"],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/anthropic/claude-sonnet-5.5",
+    "checkedAt": "2026-10-29",
+    "source": "https://openrouter.ai/api/v1/models",
+    "releaseDate": "2026-09-28",
+    "releaseUrl": "https://www.anthropic.com/claude-sonnet-5-5"
+  },
+  {
+    "id": "anthropic/claude-haiku-5.5",
+    "name": "Claude Haiku 5.5",
+    "publisher": "Anthropic",
+    "context": 1000000,
+    "inputPrice": 0.1,
+    "outputPrice": 0.5,
+    "inputModalities": ["text", "image", "file"],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/anthropic/claude-haiku-5.5",
+    "checkedAt": "2026-10-29",
+    "source": "https://openrouter.ai/api/v1/models",
+    "releaseDate": "2026-10-07",
+    "releaseUrl": "https://www.anthropic.com/claude-haiku-5-5"
   },
   {
     "id": "anthropic/claude-sonnet-5",
@@ -126,6 +198,23 @@
     "url": "https://openrouter.ai/google/gemini-3.8-flash",
     "checkedAt": "2026-09-27",
     "source": "https://openrouter.ai/api/v1/models"
+  },
+  {
+    "id": "google/gemini-4-argon",
+    "name": "Gemini 4 Argon",
+    "publisher": "Google",
+    "context": 1048576,
+    "inputPrice": 2,
+    "outputPrice": 10,
+    "inputModalities": ["audio", "file", "image", "text", "video"],
+    "reasoning": true,
+    "tools": true,
+    "url": "https://openrouter.ai/google/gemini-4-argon",
+    "checkedAt": "2026-10-29",
+    "source": "https://openrouter.ai/api/v1/models",
+    "releaseDate": "2026-09-30",
+    "apiGaDate": "2026-10-13",
+    "releaseUrl": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-argon/"
   },
   {
     "id": "google/gemini-3.1-pro-preview",

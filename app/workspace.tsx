@@ -1,19 +1,24 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { coreLanguage as language } from "@/lib/core-ui-locales";
+import { useCallback, useEffect, useRef, useState, type MouseEvent } from "react";
+import Link from "next/link";
+import { BrandLockup } from "./brand-mark";
+import { legalCopy } from "@/lib/legal-copy";
+import { useRouter, useSearchParams } from "next/navigation";
+import { isPlainNavigation, workspaceHref, workspaceLocation } from "@/lib/workspace-location";
+import { useLocale } from "@/hooks/use-locale";
 import {
   ArrowDownToLine,
-  ArrowUpRight,
   Check,
   ChevronLeft,
   ChevronRight,
-  ChevronDown,
   FlaskConical,
   Globe2,
-  KeyRound,
   Plus,
   Play,
   Search,
   ShieldCheck,
+  UserRound,
   Square,
   X,
   RefreshCw,
@@ -34,6 +39,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { DirectionProvider } from "@/components/ui/direction";
 import { Progress } from "@/components/ui/progress";
 import {
   Table,
@@ -44,6 +50,7 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { WorkspaceNavigation } from "./workspace-navigation";
 import { Toaster, toast } from "sonner";
 import {
   CATEGORIES,
@@ -56,7 +63,7 @@ import {
   type Trial,
   type Task,
 } from "@/lib/benchmarks";
-import { LANGUAGES, isRTL, translate, type Locale } from "@/lib/i18n";
+import { LANGUAGES, LOCALE_COOKIE, isRTL, translate, type Locale } from "@/lib/i18n";
 import {
   LLMDirectory,
   ToolsDirectory,
@@ -64,10 +71,19 @@ import {
   PaperclipPanel,
 } from "./discover";
 import { NvidiaStart } from "./nvidia-start";
-import { PointerMotion } from "./pointer-motion";
-import { SectionIcon } from "./section-icon";
-import { heroCopy } from "./hero-copy";
+import { SectionMotion } from "./section-motion";
+import { MotionFeedback } from "./motion-feedback";
+import { LandingHero } from "./landing-hero";
+import { LandingHeader } from "./landing-header";
+import { ThinkingOrb } from "./thinking-orb";
 import { AgentsPanel } from "./agents";
+import { labCopy } from "@/lib/lab-copy";
+import { LabPanel } from "./lab-panel";
+import { CodeWorkspacePanel } from "./code-workspace-panel";
+import { codeWorkspaceCopy } from "@/lib/code-workspace-copy";
+import "./workspace-grid.css";
+import { workspaceStartCopy } from "@/lib/workspace-start-copy";
+import { ModelConnectionStatus, type ConnectionProvider } from "./model-connection-status";
 import { displayName, ARABIC_LANGUAGES } from "@/lib/display-names";
 type Run = {
   id: string;
@@ -94,43 +110,79 @@ type ApiData = {
   };
   vaultReady?: boolean;
 };
-async function api(path: string, body?: unknown): Promise<ApiData> {
+async function api(path: string, body?: unknown, signal?: AbortSignal): Promise<ApiData> {
   const response = await fetch(
     "/api/" + path,
-    body
-      ? {
+    {
+      signal,
+      ...(body ? {
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify(body),
-        }
-      : undefined,
+        } : {}),
+    },
   );
   const data = (await response.json()) as ApiData;
   if (!response.ok) throw new Error(data.error ?? "UNAVAILABLE");
   return data;
 }
+async function readRun(id: string, signal?: AbortSignal) {
+  let page = await api("runs/" + id, undefined, signal);
+  const rows = [...page.trials];
+  while (page.pagination?.nextOffset != null) {
+    page = await api(`runs/${id}?offset=${page.pagination.nextOffset}&limit=250`, undefined, signal);
+    rows.push(...page.trials);
+  }
+  return { run: page.run, trials: rows };
+}
 const providerColors: Record<string, string> = {
-  simulation: "#775b6e",
-  nvidia: "#957d86",
-  openrouter: "#547773",
-  openai: "#775b6e",
-  anthropic: "#547773",
-  gemini: "#957d86",
+  simulation: "#4a5156",
+  nvidia: "#536b58",
+  openrouter: "#7d898c",
+  openai: "#24292e",
+  anthropic: "#596e80",
+  gemini: "#536b58",
 };
 const comparisonColors = [
-  "#806386", "#557e78", "#a96b76", "#957243",
-  "#657d9b", "#84734f", "#72586d", "#497b87",
+  "#121212", "#425f7e", "#6c849e", "#8b8886",
+  "#344659", "#526174", "#7b6f67", "#63707c",
 ];
-export default function Workspace() {
-  const [locale, setLocale] = useState<Locale>("ar"),
-    [view, setView] = useState("overview");
+function focusNvidiaConnection() {
+  const field = document.getElementById('nvidia-key');
+  field?.closest('section')?.scrollIntoView({ block: 'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  field?.focus({ preventScroll: true });
+}
+export default function Workspace({ sessionMode = "none", initialLocale = "ar" }: { sessionMode?: "guest" | "account" | "none"; initialLocale?: Locale }) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { view, runId } = workspaceLocation(searchParams);
+  const [locale, setLocale] = useLocale(initialLocale);
+  const [verifyingModel, setVerifyingModel] = useState<string | null>(null);
+  const agentTarget = useRef<string | null>(null);
+  useEffect(() => {
+    if (view !== "agents" || !agentTarget.current) return;
+    const targetId = agentTarget.current;
+    const frame = requestAnimationFrame(() => {
+      const card = document.querySelector<HTMLElement>(`[data-agent-id="${CSS.escape(targetId)}"]`);
+      if (card) {
+        card.scrollIntoView({ block: "center", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+        card.focus({ preventScroll: true });
+      }
+      agentTarget.current = null;
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [view]);
+  const [labPreselected,setLabPreselected]=useState<string[]>([]);
   const [runs, setRuns] = useState<Run[]>([]),
     [models, setModels] = useState<Model[]>(DEMO_MODELS),
     [trials, setTrials] = useState<Trial[]>([]),
-    [selected, setSelected] = useState<Run | null>(null),
-    [loading, setLoading] = useState(true),
-    [error, setError] = useState(""),
-    [vaultReady, setVaultReady] = useState(false);
+    [storedRun, setSelected] = useState<Run | null>(null),
+    [loading, setLoading] = useState(sessionMode !== "none"),
+    [error, setError] = useState(sessionMode === "none" ? "AUTH_REQUIRED" : ""),
+    [vaultReady, setVaultReady] = useState<boolean | null>(null);
+  const selected = storedRun?.id === runId ? storedRun : null;
+  const [runLoadError, setRunLoadError] = useState<{ id: string; code: string } | null>(null);
+  const [runRefresh, setRunRefresh] = useState(0);
   const [runDialog, setRunDialog] = useState(false),
     [modelDialog, setModelDialog] = useState(false),
     [busy, setBusy] = useState(false),
@@ -157,12 +209,35 @@ export default function Workspace() {
   const stop = useRef(false),
     execution = useRef(false),
     current = useRef<string | null>(null),
-    initialized = useRef(false),
     trialsCache = useRef<Trial[]>([]);
+  useEffect(() => {
+    // Back/Forward must not replace the evidence context of a live execution.
+    // Preserve its report while still allowing movement between workspace views.
+    if (execution.current && current.current !== runId) {
+      window.history.replaceState(null, "", workspaceHref(view, window.location.search, current.current));
+      return;
+    }
+    if (!runId || storedRun?.id === runId) return;
+    const controller = new AbortController();
+    // A link or browser refresh retrieves saved evidence only; execution still
+    // requires the existing explicit Resume action and server authorization.
+    readRun(runId, controller.signal).then(result => {
+      if (controller.signal.aborted) return;
+      current.current = result.run.id;
+      trialsCache.current = result.trials;
+      setTrials(result.trials);
+      setSelected(result.run);
+    }).catch(error => {
+      if (!controller.signal.aborted) setRunLoadError({ id: runId, code: error instanceof Error ? error.message : "UNAVAILABLE" });
+    });
+    return () => controller.abort();
+  }, [runId, storedRun?.id, runRefresh, view]);
+  const c = language(locale);
   const t = (key: string) => translate(locale, key),
     dir = isRTL(locale) ? "rtl" : "ltr",
     format = (n: number, d = 1) =>
       new Intl.NumberFormat(locale, { maximumFractionDigits: d }).format(n);
+  const signInHref = `/signin?lang=${locale}&next=${encodeURIComponent(workspaceHref(view, searchParams.toString()))}`;
   const message = (code: string) =>
     t("error_" + code) === "error_" + code ? t("error") : t("error_" + code);
   const visibleModels = models.map((m) => ({
@@ -177,16 +252,16 @@ export default function Workspace() {
                 ? "fastSimulator"
                 : "analyticalSimulator",
           )
-        : m.ready
+        : m.ready || m.configured
           ? m.label
           : t("notConnected"),
     color:
       m.provider === "simulation"
         ? (
             {
-              "sim-atlas": "#775b6e",
-              "sim-swift": "#957d86",
-              "sim-prism": "#547773",
+              "sim-atlas": "#4a5156",
+              "sim-swift": "#536b58",
+              "sim-prism": "#596e80",
             } as Record<string, string>
           )[m.id]
         : (providerColors[m.provider] ?? m.color),
@@ -198,7 +273,7 @@ export default function Workspace() {
     ...snapshotModels.map((m: Model & { model?: string }) => ({
       ...m,
       name: displayName(m.name, locale),
-      color: providerColors[m.provider] ?? "#aaa",
+      color: providerColors[m.provider] ?? "#7d898c",
       label: m.model ?? m.name,
       ready: true,
     })),
@@ -223,17 +298,6 @@ export default function Workspace() {
     trialsCache.current = next;
     setTrials(next);
   }
-  async function readRun(id: string, first?: ApiData) {
-    let page = first ?? (await api("runs/" + id));
-    const rows = [...page.trials];
-    while (page.pagination?.nextOffset != null) {
-      page = await api(
-        `runs/${id}?offset=${page.pagination.nextOffset}&limit=250`,
-      );
-      rows.push(...page.trials);
-    }
-    return { run: page.run, trials: rows };
-  }
   async function readNewTrials(id: string, total: number) {
     const rows = [...trialsCache.current];
     while (rows.length < total) {
@@ -243,58 +307,72 @@ export default function Workspace() {
     }
     return rows;
   }
-  async function load(initial = false) {
+  const load = useCallback(async () => {
+    if (sessionMode === "none") {
+      setError("AUTH_REQUIRED");
+      setLoading(false);
+      return;
+    }
     try {
       const [r, m] = await Promise.all([api("runs"), api("models")]);
       setRuns(r.runs);
       setModels(m.models);
       setVaultReady(!!m.vaultReady);
       setError("");
-      if (initial && r.runs.length && !current.current) {
-        const latest = await readRun(r.runs[0].id);
-        current.current = latest.run.id;
-        setSelected(latest.run);
-        showTrials(latest.trials);
-      }
+      // The root remains the landing page; reports open through explicit selection.
     } catch (e) {
       setError((e as Error).message);
     } finally {
       setLoading(false);
     }
-  }
+  }, [sessionMode]);
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem("hessara:locale");
-      if (LANGUAGES.some(([code]) => code === saved))
-        setLocale(saved as Locale);
-    } catch {}
-    if (!initialized.current) {
-      initialized.current = true;
-      load(true);
-    }
+    // Public browsing does not request private records. Account data is loaded
+    // after async I/O and refreshed if the authenticated session mode changes.
+    if (sessionMode === "none") return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void load();
     return () => {
       stop.current = true;
     };
-  }, []);
+  }, [load, sessionMode]);
   useEffect(() => {
     document.documentElement.lang = locale;
     document.documentElement.dir = isRTL(locale) ? "rtl" : "ltr";
     document.title =
       translate(locale, "brand") + " — " + translate(locale, "lab");
-    try {
-      localStorage.setItem("hessara:locale", locale);
-    } catch {}
+    document.cookie = `${LOCALE_COOKIE}=${locale}; Path=/; Max-Age=31536000; SameSite=Lax${location.protocol === "https:" ? "; Secure" : ""}`;
   }, [locale]);
   const pendingViewFocus = useRef(false);
-  function navigateTo(next: string) {
+  const pendingNvidiaFocus = useRef(false);
+  function navigateTo(next: string, reportId?: string | null) {
     pendingViewFocus.current = true;
-    setView(next);
+    const href = workspaceHref(next, window.location.search, reportId);
+    if (href !== window.location.pathname + window.location.search) window.history.pushState(null, "", href);
+  }
+  function openModelConnection(provider: ConnectionProvider = 'openai') {
+    if (sessionMode === 'none') { router.push(signInHref); return; }
+    if (provider === 'nvidia') {
+      if (view === 'personal-lab') focusNvidiaConnection();
+      else { pendingNvidiaFocus.current = true; navigateTo('personal-lab'); }
+      return;
+    }
+    setConnection({ provider, name: '', model: '', apiKey: '', inputPrice: '', outputPrice: '' });
+    setModelDialog(true);
   }
   useEffect(() => {
+    if (view === 'personal-lab' && pendingNvidiaFocus.current) {
+      pendingViewFocus.current = false;
+      const frame = requestAnimationFrame(() => {
+        focusNvidiaConnection();
+        pendingNvidiaFocus.current = false;
+      });
+      return () => cancelAnimationFrame(frame);
+    }
     if (!pendingViewFocus.current) return;
     pendingViewFocus.current = false;
     document
-      .querySelector<HTMLElement>('.main-tabs [data-state="active"]')
+      .querySelector<HTMLElement>(view === "overview" ? "#main-content" : '.main-tabs [data-state="active"]')
       ?.focus();
   }, [view]);
   function newRun() {
@@ -312,7 +390,7 @@ export default function Workspace() {
       current.current = run.id;
       setSelected(d.run);
       showTrials(d.trials);
-      setView("overview");
+      navigateTo("overview", d.run.id);
     } catch (e) {
       toast.error(message((e as Error).message));
     }
@@ -335,9 +413,7 @@ export default function Workspace() {
         }
         if (d.pauseReason) {
           toast.info(
-            locale === "ar"
-              ? "أُوقف التنفيذ مؤقتًا لأن المزوّد يحتاج إلى مراجعة المفتاح أو الحصة أو الطلب المعلّق. راجع نتيجة المحاولة قبل الاستئناف."
-              : "Paused: check provider credentials, quota or pending request before resuming.",
+            c("أُوقف التنفيذ مؤقتًا لأن المزوّد يحتاج إلى مراجعة المفتاح أو الحصة أو الطلب المعلّق. راجع نتيجة المحاولة قبل الاستئناف.", "Paused: check provider credentials, quota or pending request before resuming."),
           );
           break;
         }
@@ -366,7 +442,7 @@ export default function Workspace() {
       setSelected(d.run);
       showTrials([]);
       current.current = d.run.id;
-      setView("overview");
+      navigateTo("overview", d.run.id);
       setBusy(false);
       await pump(d.run.id);
     } catch (e) {
@@ -459,44 +535,26 @@ export default function Workspace() {
   const title =
       view === "overview"
         ? t("mainTitle")
+        : view === "personal-lab"
+          ? labCopy(locale).title
+        : view === "code-workspace"
+          ? codeWorkspaceCopy(locale).title
         : view === "llms"
-          ? locale === "ar"
-            ? "النماذج اللغوية"
-            : "LLMs"
+          ? c("النماذج اللغوية", "LLMs")
           : view === "agents"
             ? t("agents")
             : view === "tools"
-              ? locale === "ar"
-                ? "أدوات الذكاء الاصطناعي"
-                : "Tools"
+              ? c("أدوات الذكاء الاصطناعي", "Tools")
               : view === "how"
-                ? locale === "ar"
-                  ? "كيف تعمل المنصة"
-                  : "How it works"
+                ? c("كيف تعمل المنصة", "How it works")
                 : t(view),
     description =
       view === "overview"
         ? t("mainDescription")
+        : view === "personal-lab" ? labCopy(locale).intro
+        : view === "code-workspace" ? codeWorkspaceCopy(locale).intro
         : ["llms", "agents", "tools", "how"].includes(view)
-          ? locale === "ar"
-            ? (
-                {
-                  llms: "اختر نماذجك على أساس واضح.",
-                  agents:
-                    "محركات قرار ووكلاء ومشاريع عملية تدعم ما بعد التقييم.",
-                  tools: "دليل عملي لأدوات الذكاء الاصطناعي.",
-                  how: "من السؤال الأول إلى القرار المبني على الدليل.",
-                } as Record<string, string>
-              )[view]
-            : (
-                {
-                  llms: "Choose your models with evidence.",
-                  agents:
-                    "Decision engines and agents for work beyond evaluation.",
-                  tools: "A practical directory of AI tools.",
-                  how: "From a first question to an evidence-based decision.",
-                } as Record<string, string>
-              )[view]
+          ? ({llms: c("اختر نماذجك على أساس واضح.", "Choose your models with evidence."),agents: c("محركات قرار ووكلاء ومشاريع عملية تدعم ما بعد التقييم.", "Decision engines and agents for work beyond evaluation."),tools: c("دليل عملي لأدوات الذكاء الاصطناعي.", "A practical directory of AI tools."),how: c("من السؤال الأول إلى القرار المبني على الدليل.", "From a first question to an evidence-based decision.")} as Record<string,string>)[view]
           : t(
               view === "benchmarks"
                 ? "libraryDescription"
@@ -515,7 +573,7 @@ export default function Workspace() {
         setChosen(ids);
         setMode("live");
         setName(
-          locale === "ar" ? "مقارنة نماذج إنفيديا" : "NVIDIA model comparison",
+          c("مقارنة نماذج إنفيديا", "NVIDIA model comparison"),
         );
         setCount("4");
         setRepeats("1");
@@ -524,40 +582,82 @@ export default function Workspace() {
       }}
     />
   );
+  const isLanding = view === "overview" && !runId;
+  function showOverview(event: MouseEvent<HTMLAnchorElement>) {
+    if (!isPlainNavigation(event)) return;
+    event.preventDefault();
+    if (execution.current) { toast.info(t("runningNotice")); return; }
+    setSelected(null);
+    navigateTo("overview", null);
+  }
   return (
-    <div className="app" dir={dir} data-view={view} data-report={!!selected}>
+    <DirectionProvider dir={dir}>
+    <div className="app workspace-shell" dir={dir} data-view={view} data-report={!!runId}>
       <a className="skip-link" href="#main-content">
         {t("skipContent")}
       </a>
-      <PointerMotion />
+      {!isLanding && <SectionMotion section={view} />}
       <Toaster position="bottom-center" dir={dir} />
-      <header className="masthead">
-        <a
+      {isLanding ? <LandingHeader
+        locale={locale}
+        primary={[
+          { id: "overview", label: t("overview") },
+          { id: "llms", label: c("النماذج اللغوية", "LLMs") },
+          { id: "agents", label: c("دليل الوكلاء", "Agent directory") },
+          { id: "personal-lab", label: labCopy(locale).title },
+        ]}
+        secondary={[
+          { id: "code-workspace", label: c("مساعدة عمل الوكلاء", "Agent workspace") },
+          { id: "runs", label: t("runs") },
+          { id: "tools", label: c("أدوات الذكاء الاصطناعي", "AI tools") },
+          { id: "benchmarks", label: t("benchmarks") },
+          { id: "models", label: t("models") },
+          { id: "how", label: c("كيف تعمل المنصة", "How it works") },
+          { id: "method", label: t("method") },
+        ]}
+        moreLabel={c("المزيد", "More")} menuLabel={c("أقسام المنصة", "Platform sections")}
+        onNavigate={navigateTo} onHome={showOverview}>
+        <div className="header-tools">
+          <a href={signInHref} className="session-link" aria-label={sessionMode === "account" ? c("حسابي", "My account") : t("signIn")}><UserRound size={14} aria-hidden="true" />
+            <span className="landing-account-label">{sessionMode === "guest" ? c("جلسة ضيف", "Guest session") : sessionMode === "account" ? c("حسابي", "My account") : t("signIn")}</span>
+          </a>
+          <button type="button" className="landing-private" onClick={() => navigateTo("personal-lab")}><FlaskConical size={14} aria-hidden="true" />{c("تجارب خاصة", "Private experiments")}</button>
+          <Globe2 size={17} />
+          <Select value={locale} onValueChange={(v) => setLocale(v as Locale)}>
+            <SelectTrigger
+              aria-label={t("language")}
+              className="language-select"
+            >
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {LANGUAGES.map(([code, label]) => (
+                <SelectItem key={code} value={code}>
+                  <span lang={locale === "ar" ? "ar" : code}>
+                    {locale === "ar" ? ARABIC_LANGUAGES[code] : label}
+                  </span>
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </LandingHeader> : <header className="masthead">
+        <Link
           className="wordmark"
           href="/"
           aria-label={t("brand")}
-          onClick={(event) => {
-            event.preventDefault();
-            if (execution.current) {
-              toast.info(t("runningNotice"));
-              return;
-            }
-            setSelected(null);
-            setView("overview");
-          }}
+          onClick={showOverview}
         >
-          <img
-            className="brand-symbol"
-            src="/hessara-mark.png"
-            alt=""
-            width="56"
-            height="56"
-          />
-          <strong lang="en" dir="ltr">
-            Hessara
-          </strong>
-        </a>
+          <BrandLockup />
+        </Link>
+        <nav className="top-level-sections" aria-label={c("أقسام المنصة", "Platform sections")}>
+          <Link href="/" className="top-level-section-link" aria-current="page" onClick={showOverview}>{workspaceStartCopy(locale).topNavWorkspace}</Link>
+          <Link href="/reverse-engineering" className="top-level-section-link" lang="en" dir="ltr">Reverse Engineering <span aria-hidden="true">↗</span></Link>
+        </nav>
         <div className="header-tools">
+          <a href={signInHref} className="session-link">
+            {sessionMode === "guest" ? c("جلسة ضيف", "Guest session") : sessionMode === "account" ? c("حسابي", "My account") : t("signIn")}
+          </a>
           <span className="privacy">
             <ShieldCheck size={15} />
             {t("private")}
@@ -581,14 +681,15 @@ export default function Workspace() {
             </SelectContent>
           </Select>
         </div>
-      </header>
-      <Tabs value={view} onValueChange={setView} dir={dir}>
-        <nav className="nav-shell" aria-label={t("workspace")}>
-          <TabsList className="main-tabs">
+      </header>}
+      <Tabs value={view} onValueChange={navigateTo} dir={dir}>
+        <div className={isLanding ? "landing-hidden-tabs" : undefined}><WorkspaceNavigation locale={locale} value={view} label={t("workspace")}>
             {[
               "overview",
               "llms",
+              "personal-lab",
               "agents",
+              "code-workspace",
               "runs",
               "tools",
               "benchmarks",
@@ -597,25 +698,18 @@ export default function Workspace() {
               "method",
             ].map((v) => (
               <TabsTrigger key={v} value={v}>
-                {v === "llms"
-                  ? locale === "ar"
-                    ? "النماذج اللغوية"
-                    : "LLMs"
+                {v === "code-workspace" ? codeWorkspaceCopy(locale).title : v === "personal-lab" ? labCopy(locale).title : v === "llms"
+                  ? c("النماذج اللغوية", "LLMs")
                   : v === "tools"
-                    ? locale === "ar"
-                      ? "أدوات الذكاء الاصطناعي"
-                      : "Tools"
+                    ? c("أدوات الذكاء الاصطناعي", "Tools")
                     : v === "how"
-                      ? locale === "ar"
-                        ? "كيف تعمل المنصة"
-                        : "How it works"
+                      ? c("كيف تعمل المنصة", "How it works")
                       : t(v)}
               </TabsTrigger>
             ))}
-          </TabsList>
-        </nav>
+        </WorkspaceNavigation></div>
         <main id="main-content" className="content" tabIndex={-1}>
-          <div className="intro">
+          {!isLanding && !["personal-lab", "code-workspace", "llms"].includes(view) && <div className="intro">
             <div>
               <p className="kicker">{t("lab")}</p>
               <h1>{title}</h1>
@@ -625,11 +719,11 @@ export default function Workspace() {
               <Plus size={17} />
               {t("newRun")}
             </button>
-          </div>
-          {error &&
+          </div>}
+          {error && view !== "code-workspace" &&
             !(
               error === "AUTH_REQUIRED" &&
-              ["llms", "agents", "tools", "how"].includes(view)
+              (isLanding || ["llms", "agents", "tools", "how"].includes(view))
             ) && (
               <div
                 className={
@@ -639,7 +733,7 @@ export default function Workspace() {
               >
                 <span>{message(error)}</span>
                 {error === "AUTH_REQUIRED" ? (
-                  <a href="/signin-with-chatgpt?return_to=/" target="_top">
+                  <a href={signInHref} target="_top">
                     {t("signIn")}
                   </a>
                 ) : (
@@ -647,10 +741,20 @@ export default function Workspace() {
                 )}
               </div>
             )}
+          <TabsContent value="personal-lab" className="view-content">
+            <LabPanel key={labPreselected.join('|')+sessionMode} initialModels={labPreselected} locale={locale} sessionMode={sessionMode} onConnect={() => navigateTo("models")} connectionPanel={nvidiaPanel} />
+          </TabsContent>
+          <TabsContent value="code-workspace" className="view-content">
+            <CodeWorkspacePanel locale={locale} sessionMode={sessionMode} />
+          </TabsContent>
           <TabsContent value="llms" className="view-content">
             <LLMDirectory
               locale={locale}
+              connections={models}
+              onUse={(id) => { setLabPreselected([id]); navigateTo("personal-lab"); }}
+              onRequireAuth={sessionMode === "none" ? () => router.push(signInHref) : undefined}
               onCustom={() => {
+                if (sessionMode === "none") { router.push(signInHref); return; }
                 setConnection({
                   name: "",
                   provider: "openrouter",
@@ -663,16 +767,15 @@ export default function Workspace() {
               }}
               onLinked={(ids, linked) => {
                 setModels(linked);
-                setChosen(ids);
-                setMode("live");
-                setName("");
-                setRunDialog(true);
+                setLabPreselected(ids);
+                navigateTo('personal-lab');
               }}
             />
           </TabsContent>
           <TabsContent value="agents" className="view-content">
             <AgentsPanel
               locale={locale}
+              sessionMode={sessionMode}
               onCreate={(category) => {
                 setCats([category]);
                 newRun();
@@ -720,146 +823,17 @@ export default function Workspace() {
               onAgents={() => navigateTo("agents")}
             />
           </TabsContent>
-          <TabsContent value="overview" className="view-content">
-            {!selected && (
+          <TabsContent value="overview" className="view-content" aria-labelledby={isLanding ? "landing-title" : undefined}>
+            {!runId && (
               <>
-                <section
-                  className="meadow-welcome"
-                  aria-labelledby="welcome-title"
-                >
-                  <div className="meadow-copy">
-                    <span className="hero-eyebrow">{t("lab")}</span>
-                    <h1 id="welcome-title">
-                      {locale === "ar" ? (
-                        <>
-                          <span>وضوح أكثر</span>
-                          <br />
-                          في اختيار النموذج
-                        </>
-                      ) : (
-                        heroCopy[locale].headline
-                      )}
-                    </h1>
-                    <p>{heroCopy[locale].description}</p>
-                    <div className="hero-actions">
-                      <button
-                        className="primary"
-                        onClick={newRun}
-                        disabled={active}
-                      >
-                        {t("newRun")}
-                        <ArrowUpRight size={17} />
-                      </button>
-                      <button
-                        className="hero-secondary"
-                        onClick={() => navigateTo("llms")}
-                      >
-                        {heroCopy[locale].explore}
-                      </button>
-                    </div>
-                    <div className="hero-indicators">
-                      <span>
-                        <strong className="numeric">{format(30, 0)}</strong>
-                        {heroCopy[locale].models}
-                      </span>
-                      <span>
-                        <strong className="numeric">{format(317, 0)}</strong>
-                        {heroCopy[locale].tools}
-                      </span>
-                      <span>
-                        <strong className="numeric">{format(240, 0)}</strong>
-                        {heroCopy[locale].tasks}
-                      </span>
-                    </div>
-                  </div>
-                </section>
-                <section
-                  className="agents-invitation"
-                  aria-labelledby="agents-invitation-title"
-                >
-                  <div>
-                    <p className="kicker">
-                      {locale === "ar" ? "ما بعد التقييم" : "BEYOND EVALUATION"}
-                    </p>
-                    <h2 id="agents-invitation-title">{t("agents")}</h2>
-                    <p>
-                      {locale === "ar"
-                        ? "من اختيار فئة الاختبار بمحرك قرار إلى اكتشاف وكلاء يمكن وصلهم بسير العمل: مساحة واحدة تقودك من القياس إلى الفعل."
-                        : "Move from measurement to action with decision engines and a curated directory of agents."}
-                    </p>
-                  </div>
-                  <button
-                    className="secondary"
-                    onClick={() => navigateTo("agents")}
-                  >
-                    {locale === "ar" ? "استكشف الوكلاء" : "Explore agents"}{" "}
-                    <ArrowUpRight size={17} aria-hidden="true" />
-                  </button>
-                </section>
-                <section
-                  className="explore-section"
-                  aria-labelledby="explore-title"
-                >
-                  <div className="explore-heading">
-                    <div>
-                      <p className="kicker">{t("workspace")}</p>
-                      <h2 id="explore-title">{t("mainTitle")}</h2>
-                    </div>
-                    <p>{t("mainDescription")}</p>
-                    <button
-                      className="secondary"
-                      onClick={() => navigateTo("how")}
-                    >
-                      {heroCopy[locale].how}
-                      <ArrowUpRight size={16} />
-                    </button>
-                  </div>
-                  <div className="explore-paths">
-                    {[
-                      {
-                        title: heroCopy[locale].explore,
-                        detail: t("comparison"),
-                        target: "llms",
-                      },
-                      {
-                        title: t("benchmarks"),
-                        detail: t("sixCategories"),
-                        target: "benchmarks",
-                      },
-                      {
-                        title: t("aiTools"),
-                        detail: heroCopy[locale].tools,
-                        target: "tools",
-                      },
-                      {
-                        title: t("method"),
-                        detail: t("methodDescription"),
-                        target: "method",
-                      },
-                    ].map(({ title, detail, target }) => (
-                      <button
-                        className="explore-path"
-                        data-section={target}
-                        key={target}
-                        onClick={() => navigateTo(target)}
-                      >
-                        <span className="path-top">
-                          <span className="path-icon" aria-hidden="true">
-                            <SectionIcon section={target} />
-                          </span>
-                          <span className="path-arrow" aria-hidden="true">
-                            <ArrowUpRight size={17} />
-                          </span>
-                        </span>
-                        <span className="path-title">{title}</span>
-                        <span className="path-description">{detail}</span>
-                      </button>
-                    ))}
-                  </div>
-                </section>
-                {nvidiaPanel}
+                <LandingHero locale={locale} disabled={active} onExplore={() => navigateTo("llms")} onHow={() => navigateTo("how")} onNavigate={navigateTo} />
               </>
             )}
+            {runId && !selected && <div className="notice" role={runLoadError?.id === runId ? "alert" : "status"}>
+              <span>{runLoadError?.id === runId ? message(runLoadError.code) : c("جارٍ فتح التجربة المحفوظة…", "Opening the saved run…")}</span>
+              {runLoadError?.id === runId && <button type="button" onClick={() => { setRunLoadError(null); setRunRefresh(value => value + 1); }}>{t("retry")}</button>}
+              <button type="button" onClick={() => navigateTo("runs", null)}>{t("runs")}</button>
+            </div>}
             {selected && (
               <div className="evaluation-dashboard">
                 <div className="experiment-toolbar">
@@ -1033,6 +1007,7 @@ export default function Workspace() {
                   </section>
                 </div>
                 <section className="comparison">
+                  <div className="workspace-comparison-heading">
                   <Heading
                     title={t("comparison")}
                     note={
@@ -1050,6 +1025,7 @@ export default function Workspace() {
                       </button>
                     }
                   />
+                  </div>
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -1118,7 +1094,7 @@ export default function Workspace() {
                       ))}
                     </TableBody>
                   </Table>
-                  {!data.length && <p className="empty-line">{t("loading")}</p>}
+                  {!data.length && <p className="empty-line"><ThinkingOrb />{t("loading")}</p>}
                 </section>
                 <section className="results">
                   <Heading
@@ -1200,7 +1176,7 @@ export default function Workspace() {
               }
             />
             {loading ? (
-              <p className="empty-line">{t("loading")}</p>
+              <p className="empty-line"><ThinkingOrb />{t("loading")}</p>
             ) : runs.length ? (
               runs.map((r) => (
                 <button
@@ -1316,7 +1292,8 @@ export default function Workspace() {
             </div>
           </TabsContent>
           <TabsContent value="models">
-            {nvidiaPanel}
+            <ModelConnectionStatus locale={locale} connectedCount={visibleModels.filter(model => model.provider !== "cloudflare" && model.configured).length} platformCount={visibleModels.filter(model => model.provider === "cloudflare" && model.configured).length} loading={loading}
+              onConnect={openModelConnection} onRefresh={() => { setLoading(true); void load(); }} />
             <section>
               <Heading
                 title={t("connections")}
@@ -1324,17 +1301,17 @@ export default function Workspace() {
                 aside={
                   <button
                     className="primary"
-                    onClick={() => setModelDialog(true)}
+                    onClick={() => openModelConnection()}
                   >
                     <Plus size={17} />
                     {t("addModel")}
                   </button>
                 }
               />
-              {!vaultReady && <p className="notice">{t("vaultUnavailable")}</p>}
+              {vaultReady === false && <p className="notice">{t("vaultUnavailable")}</p>}
               <div className="connection-list">
                 {visibleModels
-                  .filter((m) => m.provider !== "simulation")
+                  .filter((m) => m.provider !== "simulation" && (m.configured || m.ready))
                   .map((m) => (
                     <div className="connection-row" key={m.id}>
                       <span
@@ -1345,14 +1322,21 @@ export default function Workspace() {
                       </span>
                       <div>
                         <strong>{m.name}</strong>
-                        <small>{m.ready ? m.label : t("notConnected")}</small>
+                        <small>{m.label}</small>
                       </div>
                       <span className="provider-name">
                         {displayName(m.provider, locale)}
                       </span>
                       <span className={m.ready ? "live-label" : "quiet"}>
-                        {t(m.ready ? "connected" : "notConnected")}
+                        {c(m.ready ? "تم التحقق من التشغيل" : m.verification === "failed" ? "فشل فحص الاتصال" : "اتصال مُعدّ — لم يُتحقق من التشغيل", m.ready ? "Operation verified" : m.verification === "failed" ? "Verification failed" : "Configured — unverified")}
+                        {m.verifiedAt && <small>{new Date(m.verifiedAt).toLocaleTimeString(locale)}</small>}
                       </span>
+                      <button type="button" disabled={verifyingModel !== null} onClick={async () => {
+                        setVerifyingModel(m.id); setError("");
+                        try { const result = await api("models/verify", {modelId:m.id}); setModels(result.models); }
+                        catch (e) { setError(e instanceof Error ? e.message : "UNAVAILABLE"); }
+                        finally { setVerifyingModel(null); }
+                      }}>{c(verifyingModel === m.id ? "جارٍ التحقق…" : "اختبار اتصال فعلي", verifyingModel === m.id ? "Verifying…" : "Verify with a real request")}</button>
                     </div>
                   ))}
               </div>
@@ -1391,10 +1375,12 @@ export default function Workspace() {
             <p className="footnote">{t("promptLanguage")}</p>
           </TabsContent>
           <footer>
+            <nav style={{display:"flex",gap:18,flexWrap:"wrap"}}><Link href={`/privacy?lang=${locale}`}>{legalCopy(locale).privacy}</Link><Link href={`/terms?lang=${locale}`}>{legalCopy(locale).terms}</Link></nav>
             <span>
               {t("brand")} <i>/</i> {t("footer")}
             </span>
             <span className="numeric">{VERSION}</span>
+            <p className="developer-credit" lang="en" dir="ltr">This platform was developed by Engineer Hessa Ahmed Alzahrani.</p>
           </footer>
         </main>
       </Tabs>
@@ -1466,7 +1452,7 @@ export default function Workspace() {
                 className="inline-link"
                 onClick={() => {
                   setRunDialog(false);
-                  setView("models");
+                navigateTo("models");
                   setModelDialog(true);
                 }}
               >
@@ -1519,20 +1505,25 @@ export default function Workspace() {
               </Select>
             </label>
           </div>
-          <div className="run-budget">
+          <MotionFeedback
+            className="run-budget"
+            role="status"
+            eventKey={`${mode}:${[...chosen].sort().join(",")}:${[...cats].sort().join(",")}:${count}:${repeats}`}
+          >
             <span>{t("requests")}</span>
             <strong className="numeric">
               {format(cats.length * chosen.length * +count * +repeats, 0)}
             </strong>
             <p>{t(mode === "demo" ? "noApiCost" : "paidNote")}</p>
-          </div>
+          </MotionFeedback>
           <button
             className="primary full"
             onClick={create}
+            aria-busy={busy}
             disabled={busy || !name.trim() || !chosen.length || !cats.length}
           >
             {busy ? (
-              <RefreshCw className="spin" size={17} />
+              <ThinkingOrb />
             ) : (
               <Play size={17} />
             )}{" "}
@@ -1559,33 +1550,31 @@ export default function Workspace() {
             <DialogTitle>{t("addModel")}</DialogTitle>
             <DialogDescription>{t("connectionDescription")}</DialogDescription>
           </DialogHeader>
-          {!vaultReady && <p className="notice">{t("vaultUnavailable")}</p>}
+          {vaultReady === false && <p className="notice">{t("vaultUnavailable")}</p>}
           <label className="field">
             {t("provider")}
             <Select
               value={connection.provider}
-              onValueChange={(provider) =>
-                setConnection({ ...connection, provider })
-              }
+              onValueChange={(provider) => setConnection({ provider, name: '', model: '', apiKey: '', inputPrice: '', outputPrice: '' })}
             >
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="openai">
-                  {locale === "ar" ? "أوبن إيه آي" : "OpenAI"}
+                  {c("أوبن إيه آي", "OpenAI")}
                 </SelectItem>
                 <SelectItem value="anthropic">
-                  {locale === "ar" ? "أنثروبيك" : "Anthropic"}
+                  {c("أنثروبيك", "Anthropic")}
                 </SelectItem>
                 <SelectItem value="gemini">
-                  {locale === "ar" ? "غوغل جيميني" : "Google Gemini"}
+                  {c("غوغل جيميني", "Google Gemini")}
                 </SelectItem>
                 <SelectItem value="nvidia">
-                  {locale === "ar" ? "إنفيديا" : "NVIDIA"}
+                  {c("إنفيديا", "NVIDIA")}
                 </SelectItem>
                 <SelectItem value="openrouter">
-                  {locale === "ar" ? "أوبن راوتر" : "OpenRouter"}
+                  {c("أوبن راوتر", "OpenRouter")}
                 </SelectItem>
               </SelectContent>
             </Select>
@@ -1664,6 +1653,7 @@ export default function Workspace() {
               !connection.model.trim() ||
               connection.apiKey.length < 10
             }
+            aria-busy={busy}
             onClick={saveModel}
           >
             {busy ? t("saving") : t("saveModel")}
@@ -1732,6 +1722,7 @@ export default function Workspace() {
         </DialogContent>
       </Dialog>
     </div>
+    </DirectionProvider>
   );
 }
 function Heading({
@@ -1775,3 +1766,5 @@ function Metric({
     </div>
   );
 }
+
+

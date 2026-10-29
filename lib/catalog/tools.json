@@ -4119,5 +4119,35 @@
     "updatedAt": "2026-09-26",
     "checkedAt": "2026-09-27",
     "archived": false
+  },
+  {
+    "id": "google/gemini-notebook",
+    "name": "دفتر جيمناي — NotebookLM",
+    "url": "https://notebook.google.com/",
+    "category": "nlp",
+    "summaryAr": "مساعد للدراسة يجمع المصادر ويتيح الأسئلة والملخصات وبطاقات المراجعة والاختبارات. افتح الخدمة بحساب جوجل وأضف مصادر دراستك؛ تعرّف إلى طريقة استخدامها في مساحة الطلاب.",
+    "summaryEn": "Google study assistant for source-grounded questions, summaries, flashcards, and quizzes. Sign in with a Google account and add your study sources; see the student workspace for setup guidance.",
+    "license": "خدمة خارجية — شروط Google",
+    "stars": 0,
+    "updatedAt": "2026-10-01",
+    "checkedAt": "2026-10-01",
+    "archived": false
+  },
+  {
+    "id": "EverMind-AI/SkillCorpus",
+    "name": "SkillCorpus",
+    "url": "https://github.com/EverMind-AI/SkillCorpus",
+    "category": "agents",
+    "summaryAr": "خطّ أنابيب مفتوح المصدر لجمع مهارات SKILL.md العامة ومراجعة السلامة والتراخيص وفهرستها. يتطلب تثبيتًا وإعداد خدمات الاسترجاع؛ وتختلف تراخيص المهارات بحسب مصادرها.",
+    "summaryEn": "An open-source pipeline for curating public SKILL.md sources with safety and license review, retrieval, evaluation, and export. Requires setup for retrieval services; individual skill licenses vary by source.",
+    "license": "Apache-2.0 (repository; source skill licenses vary)",
+    "stars": 694,
+    "updatedAt": "2026-10-27",
+    "checkedAt": "2026-10-29",
+    "archived": false,
+    "firstReleasedAt": "2026-08-31",
+    "latestRelease": "0.4.0",
+    "latestReleaseAt": "2026-09-17",
+    "releaseUrl": "https://github.com/EverMind-AI/SkillCorpus/releases"
   }
 ]

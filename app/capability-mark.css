@@ -1,0 +1,18 @@
+.capability-mark {
+  display:grid;
+  place-items:center;
+  width:100%;
+  min-width:0;
+  min-height:132px;
+  overflow:hidden;
+  color:var(--hessara-action,#496b94);
+  background:var(--hessara-surface-blue,#eaf1f8);
+  border:1px solid var(--hessara-line,#dce2ea);
+  border-radius:var(--hessara-radius-card,14px);
+}
+.capability-mark svg { display:block;flex:none;width:96px;height:96px; }
+.capability-mark--compact { min-height:96px; }
+.capability-mark--compact svg { width:72px;height:72px; }
+@media(forced-colors:active) {
+  .capability-mark { color:CanvasText;background:Canvas;border-color:CanvasText; }
+}

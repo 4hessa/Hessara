@@ -1,0 +1,46 @@
+.student-notebook {
+  display: grid;
+  grid-template-columns: minmax(0, .88fr) minmax(0, 1.12fr);
+  gap: clamp(28px, 4vw, 64px);
+  padding: clamp(24px, 3.5vw, 48px);
+  margin-block: 28px 36px;
+  border: 1px solid #cbcbcb;
+  border-radius: 26px;
+  background: #fff;
+  color: #343a32;
+}
+.student-notebook__eyebrow { display: flex; align-items: center; gap: 9px; color: #626b5e; font-size: 12px; font-weight: 600; }
+.student-notebook__intro h3 { font-size: clamp(25px, 2.4vw, 34px); font-weight: 500; line-height: 1.5; margin-block: 18px 10px; max-width: 400px; }
+.student-notebook__intro p { max-width: 440px; font-size: 14px; line-height: 1.9; color: #596154; }
+.student-notebook__intro .student-notebook__name { color: #343a32; font-size: 12px; margin-block-end: 16px; }
+.student-notebook__name span { color: #626b5e; }
+.student-notebook__steps { list-style: none; padding: 0; margin-block: 25px; display: grid; gap: 15px; }
+.student-notebook__steps li { display: flex; align-items: start; gap: 12px; font-size: 13px; line-height: 1.85; color: #4d5548; }
+.student-notebook__steps li > span { flex-shrink: 0; display: grid; place-items: center; width: 26px; height: 26px; margin-block-start: 1px; border-radius: 50%; border: 1px solid #cbcbcb; font-size: 11px; }
+.student-notebook__open { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 46px; padding: 9px 20px; border-radius: 100px; background: #cbcbcb; color: #343a32; text-decoration: none; font-size: 13px; font-weight: 600; }
+.student-notebook__guide { display: block; width: fit-content; margin-block-start: 16px; color: #596154; font-size: 11px; line-height: 1.7; text-underline-offset: 4px; }
+.student-notebook__workspace { min-width: 0; padding-inline-start: clamp(0px, 2vw, 26px); border-inline-start: 1px solid #e4e7e2; }
+.student-notebook__workspace-heading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-block-end: 22px; }
+.student-notebook__workspace-heading h4 { margin: 0; font-size: 16px; font-weight: 500; }
+.student-notebook__workspace-heading > span { color: #626b5e; font-size: 10px; }
+.student-notebook__workspace > label,
+.student-notebook__modes legend { display: block; margin-block-end: 8px; font-size: 12px; color: #4d5548; }
+.student-notebook__workspace textarea { display: block; resize: vertical; width: 100%; min-height: 75px; padding: 12px 14px; border: 1px solid #cbcbcb; border-radius: 12px; background: #fff; color: #343a32; font: inherit; font-size: 13px; line-height: 1.8; }
+.student-notebook__workspace textarea::placeholder { color: #70796a; opacity: 1; }
+.student-notebook__workspace textarea.student-notebook__prompt { min-height: 178px; background: #f6f7f5; font-size: 12px; }
+.student-notebook__modes { padding: 0; border: 0; margin: 18px 0; min-width: 0; }
+.student-notebook__modes > div { display: flex; flex-wrap: wrap; gap: 6px; }
+.student-notebook__modes button { min-height: 40px; padding: 7px 12px; border: 1px solid #dfe3dc; border-radius: 8px; background: #fff; color: #596154; font: inherit; font-size: 11px; cursor: pointer; }
+.student-notebook__modes button[aria-pressed="true"] { border-color: #626b5e; background: #ecefe9; color: #343a32; }
+.student-notebook__copy-row { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-block-start: 13px; min-height: 44px; }
+.student-notebook__copy { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 8px 16px; border: 1px solid #cbcbcb; border-radius: 9px; background: #fff; color: #343a32; font: inherit; font-size: 12px; cursor: pointer; }
+.student-notebook__copy-row > span { font-size: 11px; color: #596154; }
+.student-notebook__privacy { margin-block-start: 12px; color: #626b5e; font-size: 11px; line-height: 1.8; }
+.student-notebook a:hover,
+.student-notebook button:hover { text-decoration: underline; text-underline-offset: 3px; }
+.student-notebook :is(a, button, textarea):focus-visible { outline: 2px solid #596154; outline-offset: 3px; }
+@media (max-width: 760px) {
+  .student-notebook { grid-template-columns: minmax(0, 1fr); padding: 23px 20px; gap: 28px; border-radius: 20px; }
+  .student-notebook__intro h3 { max-width: 100%; }
+  .student-notebook__workspace { border-inline-start: 0; border-block-start: 1px solid #e4e7e2; padding-inline-start: 0; padding-block-start: 25px; }
+}

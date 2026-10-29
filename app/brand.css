@@ -1,0 +1,55 @@
+/* Shared corporate lockup. The vector is a mask so symbol and name share one ink. */
+:root {
+  --hessara-brand-ink: var(--hessara-slate-shadow);
+  --hessara-brand-on-dark: #f7f9fc;
+  --hessara-brand-gap: 10px;
+}
+.hessara-brand-mark {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: var(--brand-mark-size, 38px);
+  height: var(--brand-mark-size, 38px);
+  aspect-ratio: 1;
+  background-color: currentColor;
+  -webkit-mask: url('/brand/hessara-monogram.svg') center / contain no-repeat;
+  mask: url('/brand/hessara-monogram.svg') center / contain no-repeat;
+  vertical-align: middle;
+}
+.hessara-brand-lockup {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--brand-gap, var(--hessara-brand-gap));
+  color: var(--hessara-brand-ink);
+  direction: ltr;
+  white-space: nowrap;
+  line-height: 1;
+}
+.hessara-brand-lockup .hessara-brand-name {
+  color: inherit;
+  font-family: var(--hessara-display, "DM Serif Display", Georgia, serif);
+  font-size: var(--brand-name-size, 25px);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: .015em;
+}
+.hessara-brand-mark[data-brand-tone=slate],
+.hessara-brand-lockup[data-brand-tone=slate] { color: var(--hessara-brand-ink); }
+.hessara-brand-mark[data-brand-tone=inverse],
+.hessara-brand-lockup[data-brand-tone=inverse] { color: var(--hessara-brand-on-dark); }
+.hessara-brand-mark[data-brand-tone=inherit],
+.hessara-brand-lockup[data-brand-tone=inherit] { color: inherit; }
+.wordmark .hessara-brand-lockup { --brand-mark-size: 38px; --brand-name-size: 24px; }
+.re-brand .hessara-brand-lockup { --brand-mark-size: 34px; --brand-name-size: 23px; }
+.legal-brand .hessara-brand-lockup { --brand-mark-size: 34px; --brand-name-size: 24px; }
+.lab-home-link .hessara-brand-lockup { --brand-mark-size: 30px; --brand-name-size: 21px; }
+@media (max-width: 600px) {
+  .hessara-brand-lockup { --brand-gap: 8px; }
+  .wordmark .hessara-brand-lockup,
+  .re-brand .hessara-brand-lockup,
+  .legal-brand .hessara-brand-lockup { --brand-mark-size: 28px; --brand-name-size: 21px; }
+}
+@media (forced-colors: active) {
+  .hessara-brand-lockup[data-brand-tone] { color: LinkText; }
+  .hessara-brand-mark { forced-color-adjust: none; background-color: LinkText; }
+}

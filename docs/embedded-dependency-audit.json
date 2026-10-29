@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-29T08:25:04.908Z",
+  "scope": "Static version-marker review of the public cli-config and CLI OAuth entrypoints only. No account/configuration files are read. Not a complete bundle vulnerability scan.",
+  "entries": [
+    {
+      "name": "@vercel/cli-config",
+      "packageVersion": "0.3.1",
+      "entry": "node_modules/@vercel/cli-config/dist/index.js",
+      "sha256": "653761ad32e10601c746068d40ce5b6db518519080ac78a7e98a4d075862e4cc",
+      "resolvedZod": "4.6.7",
+      "state": "embedded",
+      "versions": [
+        "4.1.11"
+      ],
+      "needsReview": true,
+      "externalDependencyAffected": false
+    },
+    {
+      "name": "@vercel/cli-auth",
+      "packageVersion": "0.0.1",
+      "entry": "node_modules/@vercel/cli-auth/oauth.js",
+      "sha256": "3811195326fa5feb06a1185f6a0fc0fa99af760c73c4e0003c8465ee330889b3",
+      "resolvedZod": "4.6.7",
+      "state": "external",
+      "versions": [],
+      "needsReview": false,
+      "externalDependencyAffected": false
+    }
+  ],
+  "releaseReviewRequired": true
+}

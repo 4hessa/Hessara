@@ -1,0 +1,5 @@
+.nvidia-model-availability { min-width: 0; flex: 1; padding-block: 8px; }
+.nvidia-model-availability label { min-height: 44px; overflow-wrap: anywhere; }
+.nvidia-model-availability small { display: block; margin-inline-start: 30px; margin-block-end: 6px; color: var(--hessara-ink-secondary, #626b7c); font-size: 12px; line-height: 1.7; }
+.nvidia-catalog-status { margin-block-start: 16px; }
+.nvidia-catalog-status button { min-height: 44px; }

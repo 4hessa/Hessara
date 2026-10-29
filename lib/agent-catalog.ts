@@ -8,7 +8,9 @@ export type AgentEntry = {
   summaryAr: string;
   summaryEn: string;
   url: string;
-  mode: "connected" | "selfhost" | "framework";
+  mode: "connected" | "selfhost" | "framework" | "external";
+  releaseDate?: string;
+  access?: "paid_or_eligible_plan" | "limited_free";
 };
 
 export const AGENTS: AgentEntry[] = [
@@ -190,5 +192,27 @@ export const AGENTS: AgentEntry[] = [
     summaryEn: "Build agents with persistent state and memory.",
     url: "https://github.com/letta-ai/letta",
     mode: "framework",
+  },
+  {
+    id: "openai-dots",
+    name: "OpenAI dots",
+    category: "personal",
+    summaryAr: "وكيل سحابي مستمر يعمل عبر ChatGPT وتطبيقات متصلة، مع متابعة للعمل وطلب الموافقة على الإجراءات الحساسة. أُعلن عنه في 29 سبتمبر 2026؛ الإتاحة تدريجية لخطط ومناطق مؤهلة، ولا يتكامل مع HESSARA.",
+    summaryEn: "Always-on cloud agents across ChatGPT and connected apps, with progress updates and approval controls. Announced September 29, 2026; rolling out to eligible plans and regions. Not integrated with HESSARA.",
+    url: "https://openai.com/index/introducing-dots/",
+    mode: "external",
+    releaseDate: "2026-09-29",
+    access: "paid_or_eligible_plan",
+  },
+  {
+    id: "meta-muse",
+    name: "Meta Muse",
+    category: "personal",
+    summaryAr: "وكيل شخصي متعدد الخطوات يعمل عبر تطبيق Meta AI وواتساب وMac، ويتصل بخدماتك بموافقتك. أُعلن عنه في 8 سبتمبر 2026؛ يتطلب حساب Meta وتخضعه حدود الاستخدام وشروط Meta. لا يتكامل مع HESSARA.",
+    summaryEn: "A multi-step personal agent across the Meta AI app, WhatsApp, and Mac, with user approval for connected actions. Announced September 8, 2026; requires a Meta account and is subject to Meta usage limits and terms. Not integrated with HESSARA.",
+    url: "https://ai.meta.com/muse/",
+    mode: "external",
+    releaseDate: "2026-09-08",
+    access: "limited_free",
   },
 ];

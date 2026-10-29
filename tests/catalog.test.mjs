@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import { paperclipIssue } from "../lib/paperclip.ts";
-test("catalog contains 30 distinct routable models and at least 300 distinct AI tools", () => {
+test("catalog contains 35 distinct routable models and at least 300 distinct AI tools", () => {
   const models = JSON.parse(
     fs.readFileSync(
       new URL("../lib/catalog/models.json", import.meta.url),
@@ -15,8 +15,8 @@ test("catalog contains 30 distinct routable models and at least 300 distinct AI 
       "utf8",
     ),
   );
-  assert.equal(models.length, 30);
-  assert.equal(new Set(models.map((m) => m.id)).size, 30);
+  assert.equal(models.length, 35);
+  assert.equal(new Set(models.map((m) => m.id)).size, 35);
   assert.ok(tools.length >= 300);
   assert.equal(
     new Set(tools.map((t) => t.url.toLowerCase())).size,
@@ -29,11 +29,38 @@ test("catalog contains 30 distinct routable models and at least 300 distinct AI 
     assert.ok(Number.isFinite(m.outputPrice) && m.outputPrice >= 0);
   }
   for (const t of tools) {
-    assert.equal(new URL(t.url).hostname, "github.com");
+    const url = new URL(t.url);
+    assert.equal(url.protocol, "https:");
+    assert.equal(url.hostname, t.id === "google/gemini-notebook" ? "notebook.google.com" : "github.com");
     assert.ok(t.summaryAr.length > 15);
     assert.ok(t.category);
     assert.equal(t.archived, false);
   }
+  const notebook = tools.find((tool) => tool.id === "google/gemini-notebook");
+  assert.ok(notebook && notebook.summaryAr.includes("مصادر"));
+  assert.ok(notebook.license.includes("خدمة"));
+  const newReleases = [
+    ["openai/gpt-6.1-sol", "2026-09-29"],
+    ["openai/gpt-6.1-terra", "2026-10-26"],
+    ["anthropic/claude-sonnet-5.5", "2026-09-28"],
+    ["anthropic/claude-haiku-5.5", "2026-10-07"],
+    ["google/gemini-4-argon", "2026-09-30"],
+  ];
+  for (const [id, date] of newReleases) {
+    const model = models.find((entry) => entry.id === id);
+    assert.ok(model, id);
+    assert.equal(model.releaseDate, date);
+    assert.equal(new URL(model.releaseUrl).protocol, "https:");
+    assert.equal(new URL(model.releaseUrl).hostname, id.startsWith("openai/") ? "openai.com" : id.startsWith("anthropic/") ? "www.anthropic.com" : "blog.google");
+    assert.equal(model.checkedAt, "2026-10-29");
+  }
+  const skillCorpus = tools.find((tool) => tool.id === "EverMind-AI/SkillCorpus");
+  assert.ok(skillCorpus);
+  assert.equal(skillCorpus.license, "Apache-2.0 (repository; source skill licenses vary)");
+  assert.equal(skillCorpus.firstReleasedAt, "2026-08-31");
+  assert.equal(skillCorpus.latestRelease, "0.4.0");
+  assert.equal(skillCorpus.latestReleaseAt, "2026-09-17");
+  assert.equal(new URL(skillCorpus.releaseUrl).hostname, "github.com");
 });
 test("Paperclip exports an unassigned backlog draft with metrics and without response bodies", () => {
   const run = {

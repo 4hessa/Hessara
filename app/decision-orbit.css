@@ -1,0 +1,1 @@
+.decision-orbit{pointer-events:none;position:relative;contain:layout paint;flex-shrink:0}.decision-orbit canvas{display:block;width:270px;max-width:100%;height:auto;margin-inline:auto}.decision-orbit:after{content:"";position:absolute;inset:20% 16%;background:radial-gradient(ellipse,#c2d8c418,transparent 70%);z-index:-1}@media(forced-colors:active){.decision-orbit{display:none}}

@@ -1,0 +1,149 @@
+{
+  "rea": {
+    "enabled": false,
+    "image": "",
+    "benchmarkApproved": false,
+    "memoryMb": 1024,
+    "cpu": 1,
+    "diskMb": 1024,
+    "timeoutSeconds": 180,
+    "formats": [
+      "asar",
+      "zip"
+    ],
+    "capabilities": [
+      "javascript-static-analysis",
+      "evidence"
+    ],
+    "reason": "Dedicated Linux runtime and safe sample benchmark required; static CLI only.",
+    "verificationReport": ""
+  },
+  "ghidra": {
+    "enabled": false,
+    "image": "",
+    "benchmarkApproved": false,
+    "memoryMb": 2048,
+    "cpu": 1,
+    "diskMb": 2048,
+    "timeoutSeconds": 300,
+    "formats": [
+      "elf",
+      "pe",
+      "macho"
+    ],
+    "capabilities": [
+      "functions",
+      "strings",
+      "decompilation"
+    ],
+    "reason": "Pinned Ghidra release, compatible JDK and headless benchmark required.",
+    "verificationReport": ""
+  },
+  "mobsf": {
+    "enabled": false,
+    "image": "",
+    "benchmarkApproved": false,
+    "memoryMb": 2048,
+    "cpu": 1,
+    "diskMb": 2048,
+    "timeoutSeconds": 300,
+    "formats": [
+      "apk"
+    ],
+    "capabilities": [
+      "permissions",
+      "manifest",
+      "security-findings"
+    ],
+    "reason": "Per-job offline MobSF API image must be built and verified; dynamic analysis disabled.",
+    "verificationReport": ""
+  },
+  "jadx": {
+    "enabled": false,
+    "image": "",
+    "benchmarkApproved": false,
+    "memoryMb": 1536,
+    "cpu": 1,
+    "diskMb": 2048,
+    "timeoutSeconds": 180,
+    "formats": [
+      "apk",
+      "dex",
+      "jar",
+      "aab"
+    ],
+    "capabilities": [
+      "decompilation",
+      "source-file-navigation",
+      "method-navigation"
+    ],
+    "reason": "Pinned JADX release and bounded decompilation benchmark required.",
+    "verificationReport": ""
+  },
+  "rizin": {
+    "enabled": false,
+    "image": "",
+    "benchmarkApproved": false,
+    "memoryMb": 768,
+    "cpu": 1,
+    "diskMb": 512,
+    "timeoutSeconds": 120,
+    "formats": [
+      "elf",
+      "pe",
+      "macho",
+      "dex"
+    ],
+    "capabilities": [
+      "functions",
+      "symbols",
+      "strings",
+      "dependencies"
+    ],
+    "reason": "Pinned source build and JSON command validation required.",
+    "verificationReport": ""
+  },
+  "angr": {
+    "enabled": false,
+    "image": "",
+    "benchmarkApproved": false,
+    "memoryMb": 2048,
+    "cpu": 1,
+    "diskMb": 1024,
+    "timeoutSeconds": 120,
+    "formats": [
+      "elf",
+      "pe"
+    ],
+    "capabilities": [
+      "control-flow",
+      "functions",
+      "bounded-symbolic-paths"
+    ],
+    "reason": "Strict state-limited symbolic analysis benchmark required.",
+    "verificationReport": ""
+  },
+  "radare2": {
+    "enabled": false,
+    "image": "",
+    "benchmarkApproved": false,
+    "memoryMb": 768,
+    "cpu": 1,
+    "diskMb": 512,
+    "timeoutSeconds": 120,
+    "formats": [
+      "elf",
+      "pe",
+      "macho",
+      "dex"
+    ],
+    "capabilities": [
+      "functions",
+      "symbols",
+      "strings",
+      "dependencies"
+    ],
+    "reason": "Pinned source build and JSON command validation required.",
+    "verificationReport": ""
+  }
+}

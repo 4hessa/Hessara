@@ -9,9 +9,21 @@ const eslintConfig = defineConfig([
   globalIgnores([
     // Default ignores of eslint-config-next:
     ".next/**",
+    // Generated checkpoints and isolated test bundles are not application sources.
+    ".next.*/**",
+    ".next-premium/**",
+    ".vercel/**",
+    ".*-test-*/**",
+    ".agents/**",
+    "work/**",
+    "app/.well-known/workflow/**",
+    "**/.cloudflare/types/**",
+    "**/.cloudflare/output/**",
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Isolated research has its own verification; do not lint upstream demos as Next.js.
+    "research/**",
   ]),
   {
     files: ["components/ui/**/*.{ts,tsx}", "hooks/use-mobile.ts"],

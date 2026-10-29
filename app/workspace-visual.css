@@ -1,0 +1,58 @@
+/* A code-native pearl ribbon: reserved space remains identical without WebGL. */
+.hessara-scene {
+  position: relative;
+  isolation: isolate;
+  inline-size: 100%;
+  min-inline-size: 0;
+  block-size: 240px;
+  margin: 0;
+  contain: layout style;
+}
+.hessara-scene-art {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.hessara-scene-fallback,
+.hessara-scene-canvas {
+  position: absolute !important;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  display: block;
+}
+.hessara-scene-fallback { opacity: 1; }
+.hessara-scene-fallback[data-covered=true] { opacity: 0; }
+.hessara-scene--overview { block-size: clamp(172px, 18vw, 232px); margin-block: 16px 0; }
+.hessara-scene--discovery { block-size: 144px; }
+.hessara-scene--comparison { inline-size: 160px; block-size: 104px; flex: 0 0 160px; }
+.hessara-scene--comparison .hessara-scene-art { inset-inline: -12px; }
+.hessara-scene--empty { inline-size: min(100%, 300px); block-size: 180px; margin-inline: auto; margin-block-end: 12px; }
+.workspace-discovery-art {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 280px);
+  align-items: center;
+  gap: var(--hessara-space-8, 32px);
+  margin-block-end: var(--hessara-space-6, 24px);
+  border-block-end: 1px solid var(--hessara-line, #c6cdd8);
+}
+html body .app .workspace-discovery-art p { max-inline-size: 54ch; color: var(--hessara-muted, #666f75); font-size: var(--hessara-text-body, 1rem); line-height: 1.85; margin: 0; }
+.workspace-comparison-heading { display: flex; align-items: center; gap: 20px; }
+.workspace-comparison-heading > :first-child { flex: 1; min-inline-size: 0; }
+@media (max-width: 700px) {
+  .hessara-scene--overview { block-size: 172px; }
+  .workspace-discovery-art { grid-template-columns: minmax(0, 1fr) 136px; gap: 8px; }
+  .hessara-scene--discovery { block-size: 120px; }
+  .hessara-scene--comparison { inline-size: 112px; block-size: 92px; flex-basis: 112px; }
+  .workspace-comparison-heading { gap: 8px; }
+  html body .app .workspace-discovery-art p { font-size: var(--hessara-text-sm, .8125rem); }
+}
+@media (max-width: 420px) {
+  .workspace-discovery-art { grid-template-columns: minmax(0, 1fr) 112px; }
+  .hessara-scene--comparison { inline-size: 88px; flex-basis: 88px; }
+}
+@media (forced-colors: active) {
+  .hessara-scene-art { display: none; }
+  .hessara-scene { block-size: 0; margin: 0; }
+}

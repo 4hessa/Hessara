@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { readRunJson, RunInputError, RUN_INPUT_LIMITS } from "@/lib/runs-input";
 import { CATEGORIES, VERSION } from "@/lib/benchmarks";
 import { NVIDIA_POLICY } from "@/lib/nvidia";
 import {
@@ -13,7 +14,7 @@ const input = z
   .object({
     name: z.string().trim().min(1).max(80),
     mode: z.enum(["demo", "live"]),
-    models: z.array(z.string()).min(1).max(30),
+    models: z.array(z.string()).min(1).max(RUN_INPUT_LIMITS.models),
     categories: z
       .array(
         z.enum([
@@ -26,7 +27,7 @@ const input = z
         ]),
       )
       .min(1)
-      .max(6),
+      .max(RUN_INPUT_LIMITS.categories),
     count: z.union([z.literal(4), z.literal(12), z.literal(40)]),
     repeats: z.union([z.literal(1), z.literal(3)]),
   })
@@ -36,7 +37,7 @@ export async function GET() {
     const owner = await identity();
     const rows = await database()
       .prepare(
-        "SELECT r.*, (SELECT count(*) FROM trials t WHERE t.run_id=r.id AND t.status IN ('done','error')) AS done FROM runs r WHERE owner=? ORDER BY created_at DESC LIMIT 100",
+        "SELECT r.*, (SELECT count(*) FROM trials t WHERE t.run_id=r.id AND t.status IN ('done','error')) AS done FROM runs r WHERE owner=? AND mode IN ('demo','live') ORDER BY created_at DESC LIMIT 100",
       )
       .bind(owner)
       .all();
@@ -51,7 +52,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const owner = await identity(request);
-    const result = input.safeParse(await request.json());
+    const result = input.safeParse(await readRunJson(request));
     if (!result.success) throw new HttpError("INVALID_INPUT");
     const c = result.data;
     if (
@@ -124,7 +125,7 @@ export async function POST(request: Request) {
       pricing_recorded_at: created_at,
     });
     const total = c.models.length * c.categories.length * c.count * c.repeats;
-    const inserted = await db
+    const statement = db
       .prepare(
         "INSERT INTO runs(id,owner,name,mode,status,created_at,config,total) SELECT ?,?,?,?,?,?,?,? WHERE (SELECT count(*) FROM runs WHERE owner=? AND status='running')<10",
       )
@@ -138,8 +139,8 @@ export async function POST(request: Request) {
         config,
         total,
         owner,
-      )
-      .run();
+      );
+    const [inserted] = await db.ownerQuotaBatch(owner, [statement]);
     if (inserted.meta.changes !== 1) throw new HttpError("LIMIT", 429);
     return Response.json(
       {
@@ -157,6 +158,7 @@ export async function POST(request: Request) {
       { status: 201 },
     );
   } catch (e) {
+    if (e instanceof RunInputError) return fail(new HttpError(e.message, e.status));
     if (e instanceof SyntaxError) return fail(new HttpError("INVALID_INPUT"));
     return fail(e);
   }

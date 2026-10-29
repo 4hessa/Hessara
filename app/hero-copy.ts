@@ -1,5 +1,21 @@
 import type { Locale } from "@/lib/i18n";
 
+export const heroStatement: Record<Locale, string> = {
+  ar: "اختبر النماذج على مهام واضحة",
+  en: "Test models on clearly defined tasks",
+  fr: "Testez les modèles sur des tâches précises",
+  es: "Prueba modelos con tareas bien definidas",
+  zh: "用明确的任务测试模型",
+  ko: "명확하게 정의된 과제로 모델을 테스트하세요",
+  ur: "واضح کاموں پر ماڈلز کو آزمائیں",
+  fa: "مدل‌ها را با وظایف مشخص بیازمایید",
+  pt: "Teste modelos com tarefas bem definidas",
+  it: "Metti alla prova i modelli con attività precise",
+  ru: "Проверяйте модели на чётко заданных задачах",
+  de: "Testen Sie Modelle mit klar definierten Aufgaben",
+  nl: "Test modellen met duidelijk omschreven taken",
+};
+
 type HeroCopy = {
   eyebrow: string;
   headline: string;

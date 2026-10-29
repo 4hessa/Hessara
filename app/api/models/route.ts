@@ -7,6 +7,7 @@ import {
   HttpError,
 } from "@/lib/server";
 import { vaultReady, encryptSecret } from "@/lib/vault";
+import { readJsonRequest, RequestJsonError } from "@/lib/request-json";
 const schema = z
   .object({
     name: z.string().trim().min(1).max(80),
@@ -37,12 +38,13 @@ export async function POST(request: Request) {
   try {
     const owner = await identity(request);
     if (!vaultReady()) throw new HttpError("VAULT", 503);
-    const value = schema.safeParse(await request.json());
+    const value = schema.safeParse(await readJsonRequest(request));
     if (!value.success) throw new HttpError("INVALID_INPUT");
     const c = value.data,
       id = crypto.randomUUID();
     const cipher = await encryptSecret(c.apiKey, `${owner}:${id}`);
-    const inserted = await database()
+    const db = database();
+    const statement = db
       .prepare(
         "INSERT INTO model_profiles(id,owner,name,provider,model,key_cipher,input_price,output_price,created_at) SELECT ?,?,?,?,?,?,?,?,? WHERE (SELECT count(*) FROM model_profiles WHERE owner=?)<100",
       )
@@ -57,15 +59,17 @@ export async function POST(request: Request) {
         c.outputPrice,
         new Date().toISOString(),
         owner,
-      )
-      .run();
+      );
+    const [inserted] = await db.ownerQuotaBatch(owner, [statement]);
     if (inserted.meta.changes !== 1) throw new HttpError("LIMIT", 429);
     return Response.json(
       { models: await availableModels(owner) },
       { status: 201, headers: { "cache-control": "no-store" } },
     );
   } catch (e) {
+    if (e instanceof RequestJsonError) return fail(new HttpError(e.message, e.status));
     if (e instanceof SyntaxError) return fail(new HttpError("INVALID_INPUT"));
     return fail(e);
   }
 }
+

@@ -1,0 +1,132 @@
+{
+  "createdAt": "2026-10-29T02:55:20.175Z",
+  "source": {
+    "file": "outputs/branding/hessara-monogram-source.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "7548bce4e7722dc494a958c241e81b9a8cfc5a55bb76ee3d8d2fe427f8ebc939"
+  },
+  "method": "Interpolated luminance marching-squares contour plus bounded cubic Bezier fitting; no generative redraw",
+  "threshold": 127.5,
+  "curveFitToleranceSourcePixels": 0.18,
+  "contours": 4,
+  "cubicSegments": 612,
+  "viewBox": {
+    "x": 265.848275862069,
+    "y": 299.0490797546012,
+    "width": 722.1919925943068,
+    "height": 617.1632107481921
+  },
+  "sourceForegroundPixels": 116663,
+  "silhouetteIoU": 0.9970134437817161,
+  "sourceMaskMismatchedPixels": 349,
+  "mismatchesBeyondOnePixelBoundary": 0,
+  "svgBytes": 28014,
+  "svgSha256": "07785d112e301b5261d17d6f72a8eee4f82a63977dd4bf0a3dbb7841206ad2fc",
+  "ink": "#626b7c",
+  "web": {
+    "sizes": [
+      64,
+      192,
+      512,
+      1024
+    ],
+    "transparent": true,
+    "assets": [
+      {
+        "path": "public/brand/hessara-monogram-64.png",
+        "width": 64,
+        "height": 64,
+        "bytes": 1590,
+        "sha256": "afcb7eb7015c82b824ed52747ba5ca6679b605bbd0db84cd667cc31bb5180959",
+        "pixels": {
+          "transparent": 2793,
+          "opaque": 557,
+          "antialiased": 746
+        },
+        "visibleNonInkRGB": 0,
+        "transparentRGBZero": true
+      },
+      {
+        "path": "public/brand/hessara-monogram-192.png",
+        "width": 192,
+        "height": 192,
+        "bytes": 5532,
+        "sha256": "a1a37d253e6b4140a08fe04927bc4b726f05988fa705e7a8c6f0e8964aefcac0",
+        "pixels": {
+          "transparent": 27427,
+          "opaque": 7025,
+          "antialiased": 2412
+        },
+        "visibleNonInkRGB": 0,
+        "transparentRGBZero": true
+      },
+      {
+        "path": "public/brand/hessara-monogram-512.png",
+        "width": 512,
+        "height": 512,
+        "bytes": 18311,
+        "sha256": "c5536749ddd74bd5ccc20416f1584a37c91b07eed0e41b3f95401f9976accc2b",
+        "pixels": {
+          "transparent": 200213,
+          "opaque": 55458,
+          "antialiased": 6473
+        },
+        "visibleNonInkRGB": 0,
+        "transparentRGBZero": true
+      },
+      {
+        "path": "public/brand/hessara-monogram-1024.png",
+        "width": 1024,
+        "height": 1024,
+        "bytes": 42640,
+        "sha256": "f8ccfce8d8543c2f04292af25213a82d9b3261f886aba2bba339ebeef00190e6",
+        "pixels": {
+          "transparent": 807522,
+          "opaque": 228199,
+          "antialiased": 12855
+        },
+        "visibleNonInkRGB": 0,
+        "transparentRGBZero": true
+      }
+    ]
+  },
+  "master": {
+    "status": "verified",
+    "path": "outputs/branding/hessara-monogram-15360.png",
+    "width": 15360,
+    "height": 15360,
+    "channels": 4,
+    "hasAlpha": true,
+    "bytes": 2055375,
+    "sha256": "0b8f7742c20616f83271b42a5e9711144b65afe38d4bbbc8c0e7063a52c7bf9c",
+    "pixels": {
+      "transparent": 183040377,
+      "opaque": 52694414,
+      "antialiased": 194809
+    },
+    "ink": "#626b7c",
+    "whiteRGBPixels": 0,
+    "transparentRGBZero": true,
+    "bounds": {
+      "minX": 41,
+      "minY": 1158,
+      "maxX": 15317,
+      "maxY": 14203
+    },
+    "rendering": "256-row vector tiles and streaming PNG; visible/antialiased RGB is exact brand ink, zero-alpha RGB is normalized to zero",
+    "independentPNGDecode": {
+      "passed": true,
+      "crcValid": true,
+      "decodedRows": 15360,
+      "pixelCountsMatch": true,
+      "allVisibleRGBExactInk": true,
+      "transparentRGBZero": true,
+      "whiteRGBPixels": 0,
+      "preview": "outputs/branding/hessara-monogram-master-preview.png",
+      "checkedAt": "2026-10-29T02:55:47.369Z"
+    }
+  },
+  "masterVerifiedAt": "2026-10-29T02:55:42.307Z",
+  "limitation": "The source is a 1254px raster. SVG preserves the measured silhouette within subpixel tolerance; a 16K export does not recover details absent from the source."
+}

@@ -1,6 +1,11 @@
 import { z } from "zod";
+import { requestBodyDeadline } from "@/lib/request-body-deadline";
 import { identity, database, fail, HttpError } from "@/lib/server";
 import { decisionQuestion, layaEndpoint, parseDecision } from "@/lib/decisions";
+import { fetchLayaDecision, LayaTransportError } from "@/lib/laya-fetch";
+
+export const maxDuration = 120;
+export const runtime = "nodejs";
 
 const schema = z
   .object({
@@ -18,19 +23,19 @@ async function limitedJson(
   const reader = response.body?.getReader();
   if (!reader)
     throw new HttpError(errorCode, errorCode === "INVALID_INPUT" ? 400 : 502);
+  const deadline = requestBodyDeadline(response, reader, reason => new HttpError(errorCode, reason === "timeout" ? 408 : 499));
   const maxBytes = errorCode === "INVALID_INPUT" ? 12_000 : 128_000;
   const chunks: Uint8Array[] = [];
   let size = 0;
-  while (true) {
-    const part = await reader.read();
-    if (part.done) break;
-    size += part.value.byteLength;
-    if (size > maxBytes) {
-      await reader.cancel();
-      throw new HttpError(errorCode, errorCode === "INVALID_INPUT" ? 413 : 502);
+  try {
+    while (true) {
+      const part = await deadline.read();
+      if (part.done) break;
+      size += part.value.byteLength;
+      if (size > maxBytes) throw new HttpError(errorCode, errorCode === "INVALID_INPUT" ? 413 : 502);
+      chunks.push(part.value);
     }
-    chunks.push(part.value);
-  }
+  } finally { deadline.dispose(); void reader.cancel().catch(() => {}); reader.releaseLock(); }
   const bytes = new Uint8Array(size);
   let offset = 0;
   for (const chunk of chunks) {
@@ -48,7 +53,7 @@ export async function POST(request: Request) {
   try {
     const owner = await identity(request);
     const size = Number(request.headers.get("content-length") || 0);
-    if (size > 12_000) throw new HttpError("INVALID_INPUT", 413);
+    if (size > 12_000) { void request.body?.cancel().catch(() => {}); throw new HttpError("INVALID_INPUT", 413); }
     const parsed = schema.safeParse(
       await limitedJson(request, "INVALID_INPUT"),
     );
@@ -68,27 +73,30 @@ export async function POST(request: Request) {
       .bind(owner, today)
       .first<{ used: number }>();
     if (!budget) throw new HttpError("LIMIT", 429);
-    const response = await fetch(url, {
+    const body = JSON.stringify({
+      state,
+      ...(engine === "jev" ? { model: "jev-latest" } : {}),
+      questions: decisionQuestion,
+    });
+    const response = engine === "laya" ? await fetchLayaDecision(url, body, apiKey) : await fetch(url, {
       method: "POST",
       headers: {
         "content-type": "application/json",
         ...(apiKey ? { authorization: `Bearer ${apiKey}` } : {}),
       },
-      body: JSON.stringify({
-        state,
-        ...(engine === "jev" ? { model: "jev-latest" } : {}),
-        questions: decisionQuestion,
-      }),
+      body,
       redirect: "error",
       signal: AbortSignal.timeout(20_000),
     });
-    if (!response.ok)
+    if (!response.ok) {
+      void response.body?.cancel().catch(() => {});
       throw new HttpError(
         response.status === 401 || response.status === 403
           ? "PROVIDER_AUTH"
           : "PROVIDER_UNAVAILABLE",
         502,
       );
+    }
     const decision = parseDecision(await limitedJson(response));
     if (!decision) throw new HttpError("PROVIDER_RESPONSE", 502);
     return Response.json(
@@ -97,7 +105,7 @@ export async function POST(request: Request) {
     );
   } catch (error) {
     return fail(
-      error instanceof SyntaxError ? new HttpError("INVALID_INPUT") : error,
+      error instanceof LayaTransportError ? new HttpError(error.code, 502) : error instanceof SyntaxError ? new HttpError("INVALID_INPUT") : error,
     );
   }
 }

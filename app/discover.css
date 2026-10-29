@@ -1,45 +1,45 @@
 /* Pearl, blush and warm ink; final layout rules live in identity.css. */
 :root {
-  --primary: #665260;
-  --primary-foreground: #fbf7f4;
-  --foreground: #3e3538;
-  --muted-foreground: #665260;
-  --border: #eee3e3;
-  --ring: #775b6e;
-  --background: #fbf7f4;
+  --primary: #686157;
+  --primary-foreground: #ffffff;
+  --foreground: #514c46;
+  --muted-foreground: #686157;
+  --border: #eee8e0;
+  --ring: #686157;
+  --background: #ffffff;
 }
 html,
 body {
-  background: #3e3538;
+  background: #514c46;
 }
 .app {
-  background: #fbf7f4;
+  background: #ffffff;
 }
 .primary {
-  background: #665260;
-  color: #fbf7f4;
-  border-color: #665260;
+  background: #686157;
+  color: #ffffff;
+  border-color: #686157;
 }
 .primary:hover {
-  background: #3e3538;
+  background: #514c46;
 }
 .secondary {
-  border-color: #d9c8c9;
-  color: #665260;
-  background: #fbf7f4;
+  border-color: #cbcbcb;
+  color: #686157;
+  background: #ffffff;
 }
 .secondary:hover {
-  background: #eee3e3;
+  background: #eee8e0;
 }
 .wordmark strong {
-  color: #665260;
+  color: #686157;
 }
 .brand-symbol {
   width: 60px;
   height: 60px;
 }
 .privacy {
-  color: #6c5c64;
+  color: #686157;
 }
 .main-tabs {
   gap: 21px;
@@ -48,20 +48,20 @@ body {
   font-size: 14px;
 }
 .main-tabs [data-slot="tabs-trigger"][data-state="active"] {
-  color: #3e3538;
+  color: #514c46;
 }
 .main-tabs [data-slot="tabs-trigger"][data-state="active"]:after {
-  background: #665260;
+  background: #686157;
 }
 .nav-shell:after {
   display: none;
 }
 .nav-shell {
-  border-bottom: 1px solid #eee3e3;
+  border-bottom: 1px solid #eee8e0;
 }
 .notice {
-  background: #fbf7f4;
-  color: #665260;
+  background: #ffffff;
+  color: #686157;
 }
 .content {
   padding-top: 34px;
@@ -78,13 +78,13 @@ body {
   letter-spacing: 1.4px;
   font-family: Arial, sans-serif;
   font-weight: 600;
-  color: #665260;
+  color: #686157;
   margin-bottom: 16px;
   direction: ltr;
   text-align: start;
 }
 .start-surface {
-  background: #eee3e3;
+  background: #eee8e0;
   border-radius: 30px 8px 30px 8px;
   padding: 32px 40px;
 }
@@ -104,11 +104,11 @@ body {
   line-height: 1.7;
   font-weight: 500;
   white-space: pre-line;
-  color: #3e3538;
+  color: #514c46;
 }
 .catalog-intro p {
   max-width: 800px;
-  color: #665260;
+  color: #686157;
   font-size: 15px;
   line-height: 1.95;
   margin-top: 10px;
@@ -126,17 +126,17 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: #fbf7f4;
-  border: 1px solid #d9c8c9;
+  background: #ffffff;
+  border: 1px solid #cbcbcb;
   min-height: 50px;
   border-radius: 7px;
   padding: 0 16px;
   flex: 1;
   max-width: 660px;
-  color: #6c5c64;
+  color: #686157;
 }
 .catalog-search:focus-within {
-  outline: 2px solid #665260;
+  outline: 2px solid #686157;
   outline-offset: 3px;
 }
 .catalog-search input {
@@ -149,30 +149,30 @@ body {
   padding: 0;
   font-size: 14px;
   min-width: 0;
-  color: #3e3538;
+  color: #514c46;
 }
 .catalog-search input::placeholder {
-  color: #6c5c64;
+  color: #686157;
 }
 .catalog-select {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #665260;
+  color: #686157;
   font-size: 13px;
 }
 .catalog-select select {
   min-height: 48px;
-  border: 1px solid #d9c8c9;
-  background: #fbf7f4;
-  color: #3e3538;
+  border: 1px solid #cbcbcb;
+  background: #ffffff;
+  color: #514c46;
   border-radius: 6px;
   padding: 0 12px;
   max-width: 200px;
 }
 .catalog-count {
   font-size: 13px;
-  color: #6c5c64;
+  color: #686157;
   white-space: nowrap;
 }
 .model-atlas {
@@ -182,14 +182,14 @@ body {
   row-gap: 8px;
 }
 .atlas-entry {
-  border-bottom: 1px solid #d9c8c9;
+  border-bottom: 1px solid #cbcbcb;
   padding: 22px 16px 24px;
   min-width: 0;
   position: relative;
   transition: background 0.2s;
 }
 .atlas-entry.selected {
-  background: #fbf7f4;
+  background: #ffffff;
 }
 .atlas-top {
   display: flex;
@@ -200,20 +200,20 @@ body {
 .atlas-number {
   font-family: "DM Serif Display", serif;
   font-size: 25px;
-  color: #6c5c64;
+  color: #686157;
   line-height: 1;
 }
 .atlas-top [data-slot="checkbox"] {
   width: 22px;
   height: 22px;
   cursor: pointer;
-  border-color: #775b6e;
+  border-color: #686157;
 }
 .atlas-publisher {
   font-family: Arial, sans-serif;
   font-size: 11px;
   letter-spacing: 0.8px;
-  color: #6c5c64;
+  color: #686157;
 }
 .atlas-entry h3 {
   font-size: 23px;
@@ -225,7 +225,7 @@ body {
 }
 .atlas-id {
   font-size: 11px;
-  color: #6c5c64;
+  color: #686157;
   margin-bottom: 22px;
   overflow-wrap: anywhere;
   text-align: start;
@@ -242,18 +242,28 @@ body {
   align-items: baseline;
 }
 .atlas-entry dt {
-  color: #6c5c64;
+  color: #686157;
 }
 .atlas-entry dd {
   font-variant-numeric: tabular-nums;
-  color: #3e3538;
+  color: #514c46;
   font-weight: 500;
 }
 .atlas-pricing-note {
-  color: #6c5c64;
+  color: #686157;
   font-size: 11px;
   text-align: end;
   margin-top: 6px;
+}
+.atlas-release-meta {
+  margin: 7px 0 0;
+  color: var(--muted-foreground, #706b64);
+  font-size: 11px;
+  line-height: 1.65;
+}
+.atlas-release-meta .external-link {
+  display: inline-flex;
+  vertical-align: middle;
 }
 .atlas-bottom {
   display: flex;
@@ -262,13 +272,13 @@ body {
   gap: 10px;
   font-size: 11px;
   margin-top: 23px;
-  color: #6c5c64;
+  color: #686157;
 }
 .external-link {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  color: #665260;
+  color: #686157;
   text-decoration: none;
   min-height: 32px;
 }
@@ -288,11 +298,11 @@ body {
   justify-content: center;
   gap: 20px;
   flex-wrap: wrap;
-  background: #eee3e3f5;
-  color: #3e3538;
-  border: 1px solid #d9c8c9;
+  background: #eee8e0f5;
+  color: #514c46;
+  border: 1px solid #cbcbcb;
   border-radius: 12px;
-  box-shadow: 0 9px 24px #3e35381c;
+  box-shadow: 0 9px 24px #514c461c;
   margin-top: 30px;
   padding: 15px 20px;
   backdrop-filter: blur(12px);
@@ -319,17 +329,17 @@ body {
 .spec-comparison th,
 .spec-comparison td {
   padding: 15px 18px;
-  border-bottom: 1px solid #d9c8c9;
+  border-bottom: 1px solid #cbcbcb;
   text-align: start;
   min-width: 170px;
 }
 .spec-comparison th {
   font-weight: 500;
-  background: #fbf7f4;
+  background: #ffffff;
 }
 .spec-comparison caption {
   text-align: start;
-  color: #6c5c64;
+  color: #686157;
   font-size: 12px;
   padding: 12px 0;
   caption-side: bottom;
@@ -338,17 +348,17 @@ body {
   overflow-x: auto;
 }
 .catalog-footnote {
-  border-top: 1px solid #d9c8c9;
+  border-top: 1px solid #cbcbcb;
   padding-top: 22px;
   margin-top: 30px;
   font-size: 12px;
-  color: #6c5c64;
+  color: #686157;
   line-height: 1.9;
 }
 .catalog-empty {
   padding: 65px 20px;
   text-align: center;
-  color: #6c5c64;
+  color: #686157;
 }
 .catalog-empty h3 {
   font-size: 24px;
@@ -365,7 +375,7 @@ body {
   font-size: 15px;
   max-width: 700px;
   line-height: 1.9;
-  color: #6c5c64;
+  color: #686157;
   margin-top: 12px;
 }
 .tools-editorial-note {
@@ -374,9 +384,9 @@ body {
   align-items: center;
   justify-content: center;
   gap: 9px;
-  border-inline-start: 1px solid #d9c8c9;
+  border-inline-start: 1px solid #cbcbcb;
   min-height: 175px;
-  color: #665260;
+  color: #686157;
   font-size: 13px;
 }
 .tools-editorial-note strong {
@@ -384,10 +394,10 @@ body {
   font-size: 77px;
   line-height: 1;
   font-weight: 400;
-  color: #665260;
+  color: #686157;
 }
 .paperclip-feature {
-  background: #eee3e3;
+  background: #eee8e0;
   border-radius: 6px 30px 6px 30px;
   padding: 30px 35px;
   display: flex;
@@ -405,7 +415,7 @@ body {
 }
 .paperclip-feature p {
   font-size: 14px;
-  color: #6c5c64;
+  color: #686157;
   max-width: 760px;
   line-height: 1.9;
 }
@@ -430,15 +440,15 @@ body {
   border: 1px solid transparent;
   border-radius: 24px;
   font-size: 12px;
-  color: #6c5c64;
+  color: #686157;
   min-height: 42px;
 }
 .category-filters button:hover {
-  background: #fbf7f4;
+  background: #ffffff;
 }
 .category-filters button[aria-pressed="true"] {
-  background: #665260;
-  color: #fbf7f4;
+  background: #686157;
+  color: #ffffff;
 }
 .tool-list {
   display: grid;
@@ -447,7 +457,7 @@ body {
 }
 .tool-entry {
   padding: 20px 0 23px;
-  border-bottom: 1px solid #d9c8c9;
+  border-bottom: 1px solid #cbcbcb;
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -462,7 +472,7 @@ body {
 .tool-category {
   font-size: 11px;
   letter-spacing: 0.1px;
-  color: #6c5c64;
+  color: #686157;
 }
 .tool-entry h3 {
   font-size: 21px;
@@ -477,17 +487,24 @@ body {
 }
 .tool-entry p {
   font-size: 13px;
-  color: #6c5c64;
+  color: #686157;
   line-height: 1.9;
   margin: 11px 0 20px;
   flex: 1;
 }
 .tool-meta {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   gap: 12px;
   font-size: 10px;
-  color: #6c5c64;
+  color: #686157;
+}
+.tool-release-meta {
+  margin: 8px 0 0;
+  color: #77716a;
+  font-size: 10px;
+  line-height: 1.5;
 }
 .tool-meta span {
   overflow-wrap: anywhere;
@@ -500,16 +517,16 @@ body {
   width: 40px;
   height: 40px;
   min-width: 40px;
-  color: #6c5c64;
+  color: #686157;
   background: transparent;
 }
 .icon-button:hover {
-  background: #eee3e3;
+  background: #eee8e0;
 }
 .icon-button[aria-pressed="true"],
 .saved-active {
-  color: #665260;
-  background: #eee3e3;
+  color: #686157;
+  background: #eee8e0;
 }
 .catalog-pagination {
   display: flex;
@@ -522,7 +539,7 @@ body {
 .how-hero {
   padding: 52px 48px;
   border-radius: 6px 65px 6px 65px;
-  background: linear-gradient(110deg, #d9c8c9aa, #eee3e3 57%, #fbf7f4);
+  background: linear-gradient(110deg, #cbcbcbaa, #eee8e0 57%, #ffffff);
   position: relative;
   overflow: hidden;
   margin-bottom: 42px;
@@ -532,13 +549,13 @@ body {
   position: absolute;
   width: 320px;
   height: 320px;
-  border: 1px solid #dcc5d860;
+  border: 1px solid #cbcbcb60;
   border-radius: 50%;
   inset-inline-end: -90px;
   top: -60px;
   box-shadow:
-    0 0 0 40px #dcc5d812,
-    0 0 0 80px #dcc5d80c;
+    0 0 0 40px #cbcbcb12,
+    0 0 0 80px #cbcbcb0c;
   pointer-events: none;
 }
 .how-hero h2 {
@@ -546,14 +563,14 @@ body {
   font-size: 38px;
   line-height: 1.6;
   font-weight: 450;
-  color: #3e3538;
+  color: #514c46;
   position: relative;
   z-index: 1;
 }
 .how-hero p {
   font-size: 15px;
   line-height: 1.95;
-  color: #6c5c64;
+  color: #686157;
   max-width: 630px;
   margin-top: 16px;
 }
@@ -575,42 +592,42 @@ body {
   display: flex;
   align-items: baseline;
   gap: 11px;
-  color: #6c5c64;
+  color: #686157;
   font-size: 12px;
   line-height: 1.8;
   padding: 8px 0;
 }
 .how-index a:hover {
-  color: #3e3538;
+  color: #514c46;
   text-decoration: underline;
 }
 .how-index a span {
   font-size: 11px;
-  color: #6c5c64;
+  color: #686157;
 }
 .how-articles article {
   scroll-margin-top: 30px;
   padding: 20px 0 32px;
-  border-bottom: 1px solid #d9c8c9;
+  border-bottom: 1px solid #cbcbcb;
   margin-bottom: 15px;
 }
 .article-index {
   display: block;
   font-family: "DM Serif Display", serif;
-  color: #6c5c64;
+  color: #686157;
   font-size: 25px;
   margin-bottom: 8px;
 }
 .how-articles h3 {
   font-size: 24px;
-  color: #665260;
+  color: #686157;
   margin-bottom: 15px;
   font-weight: 500;
 }
 .how-articles p {
   font-size: 16px;
   line-height: 2.1;
-  color: #665260;
+  color: #686157;
   max-width: 800px;
 }
 .how-articles > button {
@@ -619,13 +636,13 @@ body {
 .paperclip-panel {
   margin-top: 55px;
   padding: 40px 0 20px;
-  border-top: 2px solid #dcc5d8;
+  border-top: 2px solid #cbcbcb;
   scroll-margin-top: 20px;
 }
 .paperclip-panel h2 {
   font-size: 30px;
   line-height: 1.8;
-  color: #665260;
+  color: #686157;
   font-weight: 500;
 }
 .paperclip-panel > p {
@@ -636,7 +653,7 @@ body {
 }
 .paperclip-panel ol {
   padding-inline-start: 24px;
-  color: #6c5c64;
+  color: #686157;
   font-size: 14px;
   line-height: 2.2;
   margin: 20px 0;
@@ -660,7 +677,7 @@ body {
 button:focus-visible,
 a:focus-visible,
 select:focus-visible {
-  outline: 2px solid #775b6e;
+  outline: 2px solid #686157;
   outline-offset: 4px;
 }
 @media (max-width: 1100px) {
@@ -739,7 +756,7 @@ select:focus-visible {
     position: static;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    border-bottom: 1px solid #d9c8c9;
+    border-bottom: 1px solid #cbcbcb;
   }
   .how-hero {
     padding: 35px 30px;
@@ -803,7 +820,7 @@ select:focus-visible {
   }
   .tools-editorial-note {
     border-inline-start: 0;
-    border-top: 1px solid #d9c8c9;
+    border-top: 1px solid #cbcbcb;
     min-height: 90px;
     align-items: baseline;
     flex-direction: row;

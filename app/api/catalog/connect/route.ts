@@ -8,6 +8,7 @@ import {
   HttpError,
 } from "@/lib/server";
 import { vaultReady, encryptSecret } from "@/lib/vault";
+import { readJsonRequest, RequestJsonError } from "@/lib/request-json";
 const input = z
   .object({
     ids: z.array(z.string()).min(1).max(30),
@@ -18,7 +19,7 @@ export async function POST(request: Request) {
   try {
     const owner = await identity(request);
     if (!vaultReady()) throw new HttpError("VAULT", 503);
-    const parsed = input.safeParse(await request.json());
+    const parsed = input.safeParse(await readJsonRequest(request));
     if (!parsed.success) throw new HttpError("INVALID_INPUT");
     const { ids, apiKey } = parsed.data;
     if (
@@ -69,7 +70,7 @@ export async function POST(request: Request) {
         };
       }),
     );
-    const results = await db.batch(created.map((x) => x.statement));
+    const results = await db.ownerQuotaBatch(owner, created.map((x) => x.statement));
     const connectedIds = created
       .filter((_, i) => results[i].meta.changes === 1)
       .map((x) => x.id);
@@ -83,6 +84,7 @@ export async function POST(request: Request) {
       { status: 201, headers: { "cache-control": "no-store" } },
     );
   } catch (e) {
-    return fail(e instanceof SyntaxError ? new HttpError("INVALID_INPUT") : e);
+    return fail(e instanceof RequestJsonError ? new HttpError(e.message, e.status) : e instanceof SyntaxError ? new HttpError("INVALID_INPUT") : e);
   }
 }
+

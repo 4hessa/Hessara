@@ -1,0 +1,112 @@
+/* Authentication shares one Slate Shadow canvas; only form controls have surfaces. */
+body:has(.signin-page) { padding: 0; margin: 0; background: var(--hessara-slate-shadow); }
+.signin-page {
+  --signin-canvas: var(--hessara-slate-shadow);
+  --signin-field: var(--hessara-faelight);
+  /* Rain Worn Stone variants: the original swatch cannot pass on Slate Shadow. */
+  --signin-ink: #303238;
+  --signin-field-muted: #464950;
+  --signin-text: #f3f5f7;
+  --signin-line: #abbac5;
+  --signin-focus: #ffffff;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.22fr) minmax(0, 1fr);
+  align-items: center;
+  min-height: 100svh;
+  width: 100%;
+  gap: clamp(32px, 4vw, 80px);
+  padding: 88px clamp(32px, 5vw, 88px) 56px;
+  direction: ltr;
+  color: var(--signin-text);
+  background: var(--signin-canvas);
+  font-family: var(--hessara-font);
+}
+.signin-page *, .signin-page *::before, .signin-page *::after { box-sizing: border-box; }
+.signin-art { display: grid; place-items: center; min-width: 0; align-self: stretch; }
+.signin-page .signin-art-mark { display: block; width: clamp(280px, 39vw, 620px); height: auto; max-width: 100%; aspect-ratio: 1; color: var(--signin-text); }
+.signin-panel { width: min(100%, 376px); min-width: 0; justify-self: center; }
+.signin-page[dir=rtl] .signin-panel { direction: rtl; }
+.signin-content { width: 100%; min-width: 0; }
+.signin-identity { margin: 0 0 28px; text-align: start; }
+.signin-page .signin-brand { display: inline-flex; text-decoration: none; color: var(--signin-text); margin-bottom: 28px; }
+.signin-page .signin-brand .hessara-brand-lockup { color: var(--signin-text); gap: 10px; font-size: 25px; }
+.signin-page .signin-new-emblem { width: 34px; height: 34px; }
+.signin-title { margin: 0; color: var(--signin-text); font-size: clamp(25px, 2.4vw, 32px); font-weight: 500; letter-spacing: -.025em; line-height: 1.5; }
+.signin-options { display: flex; flex-direction: column; gap: 18px; }
+.signin-page form { margin: 0; }
+.signin-page fieldset { display: grid; gap: 16px; min-width: 0; margin: 0; padding: 0; border: 0; }
+.signin-field { min-width: 0; position: relative; }
+.signin-field-label { display: block; margin: 0 0 6px; font-size: 13px; font-weight: 500; line-height: 1.7; color: var(--signin-text); }
+.signin-input-wrap { position: relative; direction: ltr; }
+.signin-input-wrap > svg { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--signin-field-muted); pointer-events: none; }
+.signin-field input { display: block; width: 100%; min-width: 0; height: 48px; border: 1px solid var(--signin-field); border-radius: 8px; background: var(--signin-field); color: var(--signin-ink); padding: 11px 44px; font: inherit; font-size: 16px; line-height: 1.5; caret-color: var(--signin-ink); box-shadow: none; }
+.signin-field input::placeholder { color: var(--signin-field-muted); opacity: 1; }
+.signin-field input:focus-visible { outline: 2px solid var(--signin-focus); outline-offset: 3px; border-color: var(--signin-ink); }
+.signin-field input[aria-invalid=true] { border-color: #4d1720; box-shadow: inset 0 0 0 1px #4d1720; }
+.signin-eye { position: absolute; right: 2px; top: 2px; width: 44px; height: 44px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 6px; background: transparent; color: var(--signin-field-muted); cursor: pointer; }
+.signin-utilities { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-block: -4px; min-height: 44px; font-size: 13px; }
+.signin-remember { display: inline-flex; align-items: center; gap: 8px; color: var(--signin-text); cursor: pointer; min-height: 44px; }
+.signin-remember input { accent-color: var(--signin-ink); width: 18px; height: 18px; margin: 0; }
+.signin-forgot { border: 0; background: transparent; color: var(--signin-text); padding: 6px 0; min-height: 44px; font: inherit; font-size: 13px; cursor: pointer; text-underline-offset: 4px; }
+.signin-submit { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; min-height: 48px; padding: 11px 16px; border: 1px solid var(--signin-text); border-radius: 24px; background: var(--signin-text); color: var(--signin-ink); font: inherit; font-size: 14px; font-weight: 600; text-decoration: none; cursor: pointer; box-shadow: none; }
+.signin-submit svg { flex-shrink: 0; }
+.signin-page .signin-submit .hessara-thinking-orb { filter: none; }
+.signin-page[dir=rtl] .signin-submit { flex-direction: row-reverse; }
+.signin-divider { display: flex; align-items: center; gap: 14px; color: var(--signin-text); font-size: 12px; line-height: 1.5; margin: 0; }
+.signin-divider::before, .signin-divider::after { content: ""; flex: 1; height: 1px; background: var(--signin-line); }
+.signin-provider { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; min-height: 48px; padding: 11px 14px; border: 1px solid var(--signin-field); border-radius: 24px; background: var(--signin-field); color: var(--signin-ink); font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; }
+.signin-switch { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 5px; margin: 0; color: var(--signin-text); font-size: 13px; line-height: 1.7; }
+.signin-switch button, .signin-text-button { border: 0; background: transparent; color: var(--signin-text); font: inherit; font-weight: 600; min-height: 44px; padding: 8px 0; cursor: pointer; text-underline-offset: 4px; }
+.signin-note, .signin-session { margin: 0; color: var(--signin-text); font-size: 13px; line-height: 1.8; }
+.signin-session { border-inline-start: 2px solid var(--signin-field); padding-inline-start: 12px; }
+.signin-page button:disabled { cursor: not-allowed; opacity: .65; }
+.signin-field input:disabled { opacity: .75; color: var(--signin-ink); -webkit-text-fill-color: var(--signin-ink); }
+.signin-message { font-size: 13px; line-height: 1.8; margin: 20px 0 0; padding: 12px 14px; border: 1px solid var(--signin-line); border-inline-start-width: 3px; background: transparent; color: var(--signin-text); overflow-wrap: anywhere; border-radius: 6px; }
+.signin-message[role=alert] { border-color: #ffdade; color: #fff; }
+.signin-guest-details { font-size: 13px; color: var(--signin-text); }
+.signin-guest-details summary { min-height: 44px; cursor: pointer; display: flex; align-items: center; }
+.signin-language { position: absolute; z-index: 3; top: 24px; inset-inline-end: clamp(24px, 5vw, 88px); display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--signin-text); }
+.signin-language select { font: inherit; min-height: 44px; max-width: 180px; border: 1px solid var(--signin-line); border-radius: 8px; padding: 7px 10px; background: var(--signin-canvas); color: var(--signin-text); color-scheme: dark; }
+.signin-legal { display: flex; justify-content: center; flex-wrap: wrap; gap: 24px; padding-block-start: 12px; margin-block-start: 12px; border-block-start: 1px solid var(--signin-line); font-size: 12px; }
+.signin-legal a, .signin-back { color: var(--signin-text); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; text-underline-offset: 4px; }
+.signin-back { display: flex; width: fit-content; font-size: 12px; margin: 12px auto 0; }
+.signin-page :is(button, a, input, select, summary):focus-visible { outline: 2px solid var(--signin-focus); outline-offset: 3px; }
+.signin-page .signin-eye:focus-visible { outline-color: var(--signin-ink); outline-offset: -3px; }
+@media (hover: hover) {
+  .signin-submit:hover:not(:disabled) { background: var(--signin-field); border-color: var(--signin-field); }
+  .signin-provider:hover:not(:disabled) { background: #dee7ed; border-color: #dee7ed; }
+  .signin-field input:hover:not(:disabled):not(:focus-visible) { border-color: var(--signin-ink); }
+  .signin-page :is(.signin-forgot, .signin-switch button, .signin-legal a, .signin-back):hover { text-decoration: underline; }
+  .signin-eye:hover:not(:disabled) { color: var(--signin-ink); background: rgb(48 50 56 / 8%); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .signin-page :is(.signin-submit, .signin-provider, .signin-field input, .signin-eye) { transition: background-color 140ms ease, border-color 140ms ease; }
+}
+@media (min-width: 1600px) { .signin-page { padding-inline: max(5vw, calc((100vw - 1536px) / 2)); } }
+@media (max-width: 1000px) {
+  .signin-page { gap: 24px; padding-inline: 32px; }
+  .signin-page .signin-art-mark { width: clamp(240px, 40vw, 440px); }
+  .signin-panel { width: min(100%, 360px); }
+}
+@media (max-width: 760px) {
+  .signin-page { grid-template-columns: minmax(0, 1fr); gap: 28px; align-content: start; padding: 88px 24px 24px; }
+  .signin-art { align-self: auto; }
+  .signin-page .signin-art-mark { width: clamp(104px, 23vw, 152px); }
+  .signin-panel { width: min(100%, 376px); }
+  .signin-identity { margin-bottom: 24px; }
+  .signin-page .signin-brand { margin-bottom: 20px; }
+  .signin-title { font-size: 27px; }
+  .signin-language { top: 16px; inset-inline-end: 24px; }
+}
+@media (max-width: 400px) {
+  .signin-page { padding-inline: 20px; }
+  .signin-language { inset-inline-end: 20px; }
+  .signin-utilities, .signin-forgot { font-size: 12px; }
+}
+@media (forced-colors: active) {
+  .signin-page, .signin-page :is(input, select, button) { background: Canvas; color: CanvasText; border-color: CanvasText; }
+  .signin-page .signin-submit { background: Highlight; color: HighlightText; }
+  .signin-page :focus-visible { outline-color: Highlight; }
+  .signin-page .hessara-brand-mark { background-color: CanvasText; }
+}

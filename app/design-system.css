@@ -1,0 +1,533 @@
+/* HESSARA — quiet paper, precise blue accents, and readable analytical surfaces.
+ * This is the final identity layer. Legacy names resolve here so existing
+ * workspaces, dialogs, and component styles share one palette.
+ */
+:root {
+  --hessara-faelight: #c7d9e5;
+  --hessara-pale-moor: #abbac5;
+  --hessara-rain-stone: #9a9da3;
+  --hessara-slate-shadow: #626b7c;
+  /* Overview: brand swatches + contrast-tested readable variants (see DESIGN.md). */
+  --overview-art: var(--hessara-pale-moor);
+  --overview-primary: var(--hessara-slate-shadow);
+  --overview-secondary: #686b73;
+  --overview-micro: #476377;
+  --overview-art-primary: #3e4653;
+  --overview-art-secondary: #41464f;
+  --overview-art-micro: #304a5b;
+  --overview-wire: #374251;
+  --overview-signal: #304a5b;
+  --overview-plane: #c7d9e5;
+  --overview-node-light: #f3f5f7;
+  --overview-node-mid: #626b7c;
+  --overview-node-shadow: #3e4653;
+  --hessara-slate: var(--hessara-slate-shadow);
+  --hessara-dolphin: var(--hessara-pale-moor);
+  --hessara-powder: var(--hessara-faelight);
+  --hessara-snow: #f3f5f7;
+  --hessara-silver: var(--hessara-rain-stone);
+  --hessara-charcoal: #24292e;
+  --hessara-dust: var(--hessara-silver);
+  --hessara-steel: var(--hessara-dolphin);
+  --hessara-olive: var(--hessara-slate);
+  --hessara-onyx: var(--hessara-charcoal);
+  --hessara-ink: var(--hessara-charcoal);
+  --hessara-ink-secondary: var(--hessara-slate);
+  --hessara-muted: var(--hessara-slate);
+  /* Accessible text/button variant: the raw dolphin swatch is decorative. */
+  --hessara-focus: #626b7c;
+  --hessara-action: #24292e;
+  --hessara-action-hover: #3b4652;
+  --hessara-canvas: var(--hessara-snow);
+  --hessara-paper: #ffffff;
+  --hessara-surface: #eef2f7;
+  --hessara-surface-blue: #e5edf2;
+  --hessara-surface-warm: #f3f5f8;
+  --hessara-line: #dce2ea;
+  --hessara-line-strong: #7d8a99;
+  --hessara-error: #8b444a;
+  --hessara-error-surface: #fbf3f3;
+  --hessara-success: #386451;
+  --hessara-success-surface: #eef6f1;
+  --hessara-warning: #785a2a;
+  --hessara-warning-surface: #faf5ea;
+  --hessara-state-hover: var(--hessara-surface);
+  --hessara-state-selected: var(--hessara-powder);
+  --hessara-state-readonly: var(--hessara-surface);
+  --hessara-state-invalid: var(--hessara-error);
+  /* A 4px rhythm, with smaller optical adjustments kept local to icons. */
+  --hessara-space-1: 4px;
+  --hessara-space-2: 8px;
+  --hessara-space-3: 12px;
+  --hessara-space-4: 16px;
+  --hessara-space-5: 20px;
+  --hessara-space-6: 24px;
+  --hessara-space-8: 32px;
+  --hessara-space-10: 40px;
+  --hessara-space-12: 48px;
+  --hessara-gutter: clamp(22px, 4vw, 56px);
+  --hessara-frame-space: clamp(8px, 1.6vw, 24px);
+  --hessara-content-width: 1440px;
+  --hessara-reading-width: 65ch;
+
+  --hessara-font: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+  --hessara-display: "DM Serif Display", Georgia, var(--hessara-font);
+  --hessara-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --hessara-text-xs: .75rem;
+  --hessara-text-sm: .8125rem;
+  --hessara-text-base: .875rem;
+  --hessara-text-body: 1rem;
+  --hessara-text-lead: 1.125rem;
+  --hessara-text-title: 1.5rem;
+  --hessara-text-section: clamp(1.75rem, 2.8vw, 2.375rem);
+  --hessara-leading-heading: 1.2;
+  --hessara-leading-ui: 1.7;
+  --hessara-leading-reading: 1.85;
+  --hessara-weight-regular: 400;
+  --hessara-weight-medium: 500;
+  --hessara-weight-semibold: 600;
+
+  --hessara-elevation-0: none;
+  --hessara-elevation-1: 0 2px 8px #1212120a;
+  --hessara-elevation-2: 0 12px 36px -18px #12121222;
+  --hessara-shadow-sm: 0 1px 3px #12121205;
+  --hessara-shadow-card: 0 2px 5px #12121204;
+  --hessara-shadow-float: 0 2px 6px #24292e08, 0 18px 48px -18px #24292e2b;
+  --hessara-shadow-overlay: var(--hessara-elevation-2);
+  --hessara-radius-xs: 6px;
+  --hessara-radius-sm: 9px;
+  --hessara-radius-card: 14px;
+  --hessara-radius-panel: 20px;
+  --hessara-press-scale: .96;
+  --hessara-target: 44px;
+  --hessara-focus-width: 2px;
+  --hessara-focus-offset: 3px;
+
+  /* Feedback uses color first; entrances travel at most 8px, once per view. */
+  --hessara-duration-fast: 120ms;
+  --hessara-duration-standard: 180ms;
+  --hessara-duration-state: 300ms;
+  --hessara-duration-entrance: 420ms;
+  --hessara-reveal-distance: 8px;
+  --hessara-ease-standard: cubic-bezier(.2, .65, .3, 1);
+  --hessara-ease-reveal: cubic-bezier(.22, 1, .36, 1);
+  --hessara-ease: var(--hessara-ease-standard);
+  --hessara-duration: var(--hessara-duration-standard);
+
+  /* Compatibility aliases for earlier identities and component modules. */
+  --hessara-cinder: var(--hessara-ink);
+  --hessara-chimney: var(--hessara-ink-secondary);
+  --hessara-matcha: var(--hessara-powder);
+  --hessara-blue: var(--hessara-steel);
+  --hessara-coconut: var(--hessara-snow);
+  --hessara-surface-matcha: var(--hessara-surface-blue);
+  --hessara-sage-ink: var(--hessara-focus);
+  --hessara-blue-ink: var(--hessara-focus);
+  --orchid-tint: var(--hessara-powder);
+  --brilliant-white: var(--hessara-canvas);
+  --blue-grey: var(--hessara-steel);
+  --orchid-ink: var(--hessara-ink-secondary);
+  --orchid-brand: var(--hessara-focus);
+  --brand-orchid: var(--hessara-focus);
+  --orchid-line: var(--hessara-line);
+  --dust: var(--hessara-dust);
+  --dust-ink: var(--hessara-ink);
+  --dust-muted: var(--hessara-muted);
+  --dust-brand: var(--hessara-ink-secondary);
+  --dust-soft: var(--hessara-surface);
+  --dust-line: var(--hessara-line);
+  --warm-sand: var(--hessara-dust);
+  --ash-cloud: var(--hessara-steel);
+  --weathered-taupe: var(--hessara-olive);
+  --heading-ink: var(--hessara-ink);
+  --input-ink: var(--hessara-ink);
+
+  --background: var(--hessara-canvas);
+  --foreground: var(--hessara-ink);
+  --card: var(--hessara-paper);
+  --card-foreground: var(--hessara-ink);
+  --popover: var(--hessara-paper);
+  --popover-foreground: var(--hessara-ink);
+  --primary: var(--hessara-action);
+  --primary-foreground: #ffffff;
+  --secondary: var(--hessara-surface-blue);
+  --secondary-foreground: var(--hessara-ink);
+  --muted: var(--hessara-surface);
+  --muted-foreground: var(--hessara-muted);
+  --accent: var(--hessara-powder);
+  --accent-foreground: var(--hessara-ink);
+  --destructive: var(--hessara-error);
+  --border: var(--hessara-line);
+  --input: var(--hessara-line-strong);
+  --ring: var(--hessara-focus);
+  --sidebar: var(--hessara-surface);
+  --sidebar-foreground: var(--hessara-ink);
+  --chart-1: var(--hessara-focus);
+  --chart-2: var(--hessara-steel);
+  --chart-3: var(--hessara-olive);
+  --font-sans: var(--hessara-font);
+  --radius: var(--hessara-radius-sm);
+}
+
+.top-level-sections { display: flex; justify-content: center; align-items: center; flex: 1; min-width: 0; gap: var(--hessara-space-2, 8px); }
+.top-level-section-link { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: var(--hessara-target, 44px); border: 0; border-radius: var(--hessara-radius-sm); padding: 8px 12px; font-size: 12px; color: var(--hessara-muted); background: transparent; text-decoration: none; white-space: nowrap; transition: background-color var(--hessara-duration) var(--hessara-ease), color var(--hessara-duration) var(--hessara-ease); }
+.top-level-section-link[aria-current=page] { background: var(--hessara-surface); color: var(--hessara-ink); }
+.top-level-section-link:hover { background: var(--hessara-surface-blue); color: var(--hessara-ink); }
+.top-level-section-link:focus-visible { outline: 2px solid var(--hessara-focus); outline-offset: 3px; }
+
+html,
+html body {
+  color-scheme: light;
+  background: var(--hessara-coconut);
+  color: var(--hessara-ink);
+  font-family: var(--hessara-font);
+  -webkit-font-smoothing: antialiased;
+  font-size: var(--hessara-text-body);
+  line-height: var(--hessara-leading-ui);
+}
+html body { padding: var(--hessara-frame-space); }
+/* Scroll-lock libraries own body padding. Put app spacing on its frame so
+   opening a portal cannot move a trigger beneath an in-progress pointer. */
+html body:has(.app) { padding: 0; display: flow-root; }
+html body:has(.app) .app {
+  width: calc(100% - 2 * var(--hessara-frame-space));
+  margin-block: var(--hessara-frame-space);
+  min-height: calc(100dvh - 2 * var(--hessara-frame-space));
+}
+html body:has(.app) .app[data-view=overview][data-report=false] { width: 100%; margin: 0; min-height: 100svh; }
+html body .app {
+  max-width: var(--hessara-content-width);
+  min-height: calc(100dvh - 48px);
+  margin-inline: auto;
+  border: 1px solid var(--hessara-line);
+  border-radius: var(--hessara-radius-panel);
+  background: var(--hessara-canvas);
+  color: var(--hessara-ink);
+  box-shadow: none;
+}
+html body .app :is(h1,h2,h3,h4,h5,h6,.intro-title,.path-title) {
+  color: var(--hessara-ink);
+  font-family: var(--hessara-font);
+  text-wrap: balance;
+}
+html body .app :is(h1,h2) { background: none; padding: 0; border-radius: 0; box-decoration-break: initial; }
+html body .app :is(.kicker,.hero-eyebrow,.overline,.eyebrow,.intro-description,.path-description,.code-muted,.code-id,.lab-muted,.advisor-muted,.assistant-provider,.agent-availability,.agent-index) { color: var(--hessara-muted); }
+html body .app :is(.masthead,.nav-shell,.content) { max-width: var(--hessara-content-width); min-width: 0; padding-inline: var(--hessara-gutter); }
+html body .app .masthead { height: 88px; border-color: var(--hessara-line); }
+html body .app .content { padding-block: 30px var(--hessara-space-12); }
+html body :is(.wordmark,.wordmark strong,.signin-brand) { color: var(--hessara-ink); }
+html body .wordmark strong { font-weight: 400; letter-spacing: .055em; }
+html body .wordmark .brand-symbol {
+  color: inherit; background: currentColor;
+  mask: url('/brand/hessara-monogram.svg') center/contain no-repeat;
+  width: 44px; height: 44px; filter: none; animation: none; transform: none;
+}
+html body .app :is(.privacy,.session-link,.wordmark-caption,.language-select) { color: var(--hessara-ink-secondary); }
+html body .app .header-tools { min-width: 0; }
+html body .app .session-link { border: 1px solid var(--hessara-line); border-radius: var(--hessara-radius-sm); min-height: var(--hessara-target); padding-inline: var(--hessara-space-3); white-space: nowrap; }
+html body .app .session-link:hover { background: var(--hessara-surface); }
+html body .app .language-select { min-height: var(--hessara-target); min-width: 92px; padding: var(--hessara-space-2) 10px; border: 1px solid var(--hessara-line); border-radius: var(--hessara-radius-sm); background: var(--hessara-paper); font-size: var(--hessara-text-sm); box-shadow: none; }
+
+/* Every tab stays in one scrollable row; adjacent controls expose overflow. */
+html body .app .nav-shell { gap: var(--hessara-space-3); background: var(--hessara-paper); border-color: var(--hessara-line); backdrop-filter: none; }
+html body .app .nav-shell:after { display: none; }
+html body .app .main-tabs {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
+  justify-content: flex-start;
+  gap: 5px;
+  padding: 6px 2px 10px;
+  border-bottom: 1px solid var(--hessara-line);
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: none;
+  scroll-padding-inline: var(--hessara-space-2);
+}
+html body .app .main-tabs::-webkit-scrollbar { display: none; }
+html body .app .main-tabs [data-slot=tabs-trigger] { flex: 0 0 auto; color: var(--hessara-muted); background: transparent; border: 0; border-radius: var(--hessara-radius-sm); padding: 10px var(--hessara-space-3); min-height: var(--hessara-target); font-size: var(--hessara-text-sm); font-weight: var(--hessara-weight-medium); box-shadow: none; }
+html body .app .main-tabs [data-slot=tabs-trigger]:hover:not(:disabled) { color: var(--hessara-ink); background: var(--hessara-state-hover); }
+html body .app .main-tabs [data-slot=tabs-trigger][data-state=active] { color: var(--hessara-ink); background: var(--hessara-state-selected); box-shadow: none; }
+html body .app .main-tabs [data-slot=tabs-trigger][data-state=active]:after { display: none; }
+html body .app .workspace-navigation { display: grid; grid-template-columns: minmax(0,1fr); align-items: center; gap: var(--hessara-space-2); }
+html body .app .workspace-navigation[data-overflow=true] { grid-template-columns: var(--hessara-target) minmax(0,1fr) var(--hessara-target); }
+html body .app .workspace-navigation .nav-scroll-button { display: none; width: var(--hessara-target); height: var(--hessara-target); min-width: var(--hessara-target); padding: 0; place-items: center; border: 1px solid var(--hessara-line); border-radius: var(--hessara-radius-sm); color: var(--hessara-ink-secondary); background: var(--hessara-paper); }
+html body .app .workspace-navigation[data-overflow=true] .nav-scroll-button { display: grid; }
+html body .app .workspace-navigation .nav-scroll-button:hover:not(:disabled) { background: var(--hessara-surface-blue); border-color: var(--hessara-steel); }
+html body .app .workspace-navigation .nav-scroll-button:disabled { opacity: .35; cursor: default; }
+
+/* Editorial welcome and the live assistant share the first screen. */
+html body .app .overview-composition { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr); gap: clamp(32px, 5vw, 72px); align-items: center; min-height: 370px; margin-block: 8px 42px; }
+html body .app .overview-composition > * { min-width: 0; max-width: 100%; }
+html body .app .meadow-welcome { display: grid; grid-template-columns: minmax(0,1fr); justify-items: start; align-items: center; min-height: 0; gap: 0; padding: 28px 0; border: 0; border-radius: 0; background: none; text-align: start; overflow: visible; }
+html body .app .meadow-copy { width: 100%; max-width: 880px; padding: 0; margin-inline: 0; text-align: start; }
+html body .app .meadow-copy :is(h1,.hero-title) { max-width: 100%; margin-inline: 0; font-size: clamp(38px, 4.1vw, 56px); line-height: 1.18; font-weight: 500; letter-spacing: -.025em; color: var(--hessara-ink); }
+html body .app[dir=ltr] .meadow-copy :is(h1,.hero-title) { font-family: var(--hessara-display); font-weight: 400; }
+html body .app[dir=rtl] .meadow-copy :is(h1,.hero-title) { line-height: 1.55; letter-spacing: 0; font-size: clamp(34px, 3.8vw, 50px); }
+html body .app .meadow-copy h1 span { color: var(--hessara-focus); }
+html body .app .meadow-copy > p,
+html body .app .meadow-copy .hero-statement { max-width: 55ch; margin: 20px 0 0; color: var(--hessara-ink-secondary); font-size: clamp(15px, 1.35vw, 17px); line-height: 1.9; text-wrap: pretty; }
+html body .app .meadow-copy .hero-description { max-width: 55ch; margin: 14px 0 0; color: var(--hessara-muted); font-size: 14px; line-height: 1.9; }
+html body .app .hero-eyebrow { display: block; margin: 0 0 18px; color: var(--hessara-focus); font-size: 12px; }
+html body .app .hero-actions { justify-content: flex-start; gap: 10px; margin-top: 26px; flex-wrap: wrap; }
+
+/* A compact directory of real working paths, separated by editorial rules. */
+html body .app .workspace-start { display: grid; grid-template-columns: minmax(160px,.7fr) minmax(0,1.7fr); gap: clamp(24px,4vw,64px); padding-block: 30px 12px; border-top: 1px solid var(--hessara-line); }
+html body .app .workspace-start-intro h2 { font-size: clamp(21px,2vw,27px); font-weight: 500; line-height: 1.6; }
+html body .app .workspace-start-intro p { color: var(--hessara-muted); font-size: 13px; line-height: 1.85; margin-top: 10px; }
+html body .app .workspace-start-list { list-style: none; padding: 0; margin: 0; min-width: 0; }
+html body .app .workspace-start-list li+li { border-top: 1px solid var(--hessara-line); }
+html body .app .workspace-start-action { display: grid; grid-template-columns: 24px 36px minmax(0,1fr) 20px; gap: 16px; align-items: center; width: 100%; min-height: 88px; padding: 14px 12px; border: 0; border-radius: var(--hessara-radius-sm); background: transparent; color: var(--hessara-ink); text-decoration: none; text-align: start; font: inherit; cursor: pointer; transition: background-color var(--hessara-duration) var(--hessara-ease); }
+html body .app .workspace-start-action:hover { background: var(--hessara-surface-blue); }
+html body .app .workspace-start-action:focus-visible { outline: 2px solid var(--hessara-focus); outline-offset: 3px; }
+html body .app .workspace-start-index { font-size: 11px; font-variant-numeric: tabular-nums; color: var(--hessara-muted); }
+html body .app .workspace-start-mark { width: 32px; color: var(--hessara-focus); }
+html body .app .workspace-start-mark svg { display: block; width: 32px; height: 32px; }
+html body .app .workspace-start-text { display: grid; gap: 5px; min-width: 0; }
+html body .app .workspace-start-text strong { font-size: 15px; font-weight: 500; line-height: 1.6; }
+html body .app .workspace-start-text>span { font-size: 12px; color: var(--hessara-muted); line-height: 1.7; text-wrap: pretty; }
+html body .app .workspace-start-arrow { transition: translate var(--hessara-duration) var(--hessara-ease); }
+html body .app[dir=rtl] .workspace-start-arrow { transform: rotate(180deg); }
+@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  html body .app .workspace-start-action:hover .workspace-start-arrow { translate: 3px 0; }
+  html body .app[dir=rtl] .workspace-start-action:hover .workspace-start-arrow { translate: -3px 0; }
+}
+@media (max-width:960px) {
+  html body .app .masthead { display: grid; grid-template-columns: max-content minmax(0,1fr); height: auto; min-height: 86px; gap: 10px 16px; padding-block: 14px 8px; }
+  html body .app .masthead .wordmark { grid-column: 1; grid-row: 1; }
+  html body .app .masthead .header-tools { grid-column: 2; grid-row: 1; justify-self: end; width: auto; }
+  html body .app .top-level-sections { grid-column: 1/-1; justify-content: flex-start; gap: 8px; }
+  html body .app .workspace-start { grid-template-columns: minmax(0,1fr); gap: 16px; }
+}
+@media (max-width:600px) {
+  html body .app .top-level-section-link { font-size: 11px; padding-inline: 10px; }
+  html body .app .workspace-start { padding-top: 24px; }
+  html body .app .workspace-start-action { grid-template-columns: 28px minmax(0,1fr) 16px; gap: 12px; padding-inline: 4px; }
+  html body .app .workspace-start-index { display: none; }
+  html body .app .workspace-start-mark,html body .app .workspace-start-mark svg { width: 26px; height: 26px; }
+  html body .app .workspace-start-text strong { font-size: 14px; }
+}
+
+/* Crisp controls retain clear labels, keyboard focus, and generous targets. */
+html body .app :is(.primary,.signin-button.primary),
+html body [role=dialog] .primary { background: var(--hessara-action); border-color: var(--hessara-action); color: #fff; box-shadow: none; }
+html body .app :is(.primary,.signin-button.primary):hover:not(:disabled):not([aria-disabled=true]),
+html body [role=dialog] .primary:hover:not(:disabled):not([aria-disabled=true]) { background: var(--hessara-action-hover); border-color: var(--hessara-action-hover); color: #fff; }
+html body .app :is(.secondary,.hero-secondary,.icon-button),
+html body [role=dialog] .secondary { background: var(--hessara-paper); border-color: var(--hessara-line-strong); color: var(--hessara-ink); }
+html body .app :is(.secondary,.hero-secondary,.icon-button):hover:not(:disabled):not([aria-disabled=true]) { background: var(--hessara-surface-blue); border-color: var(--hessara-focus); }
+html body .app :is(.primary,.secondary,.hero-secondary) :is(p,span) { color: inherit; }
+html body .app :is(.primary,.secondary,.hero-secondary) { min-height: calc(var(--hessara-target) + 2px); border-radius: var(--hessara-radius-sm); padding-inline: 18px; font-size: var(--hessara-text-base); font-weight: var(--hessara-weight-medium); }
+html body .app :is(input:not([type=checkbox]):not([type=radio]),textarea,select),
+html body [role=dialog] :is(input,textarea,select) { color: var(--hessara-ink); background: var(--hessara-paper); border-color: var(--hessara-line-strong); border-radius: var(--hessara-radius-sm); caret-color: var(--hessara-ink); box-shadow: none; }
+html body .app :is(input,textarea)::placeholder,
+html body [role=dialog] :is(input,textarea)::placeholder { color: var(--hessara-muted); opacity: 1; }
+html body .app :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=hidden]),select),
+html body [role=dialog] :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=hidden]),select) { min-height: var(--hessara-target); }
+html body .app :is(input,textarea)[readonly],
+html body [role=dialog] :is(input,textarea)[readonly] { background: var(--hessara-state-readonly); }
+html body .app :is(input,textarea,select)[aria-invalid=true],
+html body [role=dialog] :is(input,textarea,select)[aria-invalid=true] { border-color: var(--hessara-state-invalid); }
+html body .app input:is([type=checkbox],[type=radio]) { accent-color: var(--hessara-focus); }
+html body .app :is(a,button,summary,input,textarea,select,[role=tab]):focus-visible,
+html body [role=dialog] :is(a,button,input,textarea,select):focus-visible { outline: var(--hessara-focus-width) solid var(--hessara-focus); outline-offset: var(--hessara-focus-offset); }
+html body .app .main-tabs [data-slot=tabs-trigger]:focus-visible { outline-offset: -3px; box-shadow: none; }
+html body .app :is(.catalog-search,.agent-search):focus-within { outline-color: var(--hessara-focus); }
+html body .app :is(.catalog-search,.agent-search) { border-color: var(--hessara-line-strong); background: var(--hessara-paper); border-radius: var(--hessara-radius-sm); }
+html body .app :is(.catalog-search,.agent-search) input { border-radius: 0; }
+html body .app :is(.category-filters,.agent-filters,.decision-engine) button { color: var(--hessara-ink-secondary); border-color: transparent; border-radius: var(--hessara-radius-sm); }
+html body .app :is(.category-filters,.agent-filters) button:hover { background: var(--hessara-surface-blue); }
+html body .app :is(.category-filters,.agent-filters) button[aria-pressed=true] { background: var(--hessara-state-selected); color: var(--hessara-ink); }
+html body .app .decision-engine { background: var(--hessara-surface); }
+html body .app .decision-engine button[aria-pressed=true] { background: var(--hessara-paper); color: var(--hessara-ink); box-shadow: var(--hessara-shadow-sm); }
+
+/* Catalogs and analytical cards share quiet edges, without colored slabs. */
+html body .app :is(.explore-path,.assistant-card,.agent-card,.metric,.plot,.speed-plot,.comparison,.results,.atlas-entry,.tool-entry,.advisor-candidate) { background: var(--hessara-paper); border-color: var(--hessara-line); border-radius: var(--hessara-radius-card); box-shadow: var(--hessara-shadow-card); }
+html body .app :is(.explore-path:nth-child(even),.assistant-card:nth-child(even)) { background: var(--hessara-paper); }
+html body .app :is(.explore-path,.assistant-card,.atlas-entry,.tool-entry):hover { background: var(--hessara-surface-warm); border-color: var(--hessara-line-strong); box-shadow: var(--hessara-shadow-card); }
+html body .app :is(.explore-path,.assistant-card)[data-selected=true],
+html body .app .atlas-entry.selected { background: var(--hessara-surface-blue); border-color: var(--hessara-focus); }
+html body .app :is(.path-icon,.path-arrow,.advisor-mark,.lab-mark,.code-workspace-mark) { color: var(--hessara-focus); background: var(--hessara-surface-blue); border-color: var(--hessara-line); border-radius: 10px; }
+html body .app .path-title { font-size: 17px; line-height: 1.6; }
+html body .app :is(.path-description,.atlas-pricing-note,.atlas-publisher,.tool-meta,.tool-category,.catalog-footnote,.catalog-count,.tools-editorial-note,.form-help,.footnote) { color: var(--hessara-muted); }
+html body .app :is(.catalog-intro,.tools-editorial,.agents-lead,.lab-header,.code-workspace-header) p { max-width: var(--hessara-reading-width); color: var(--hessara-ink-secondary); line-height: var(--hessara-leading-reading); text-wrap: pretty; }
+html body .app :is(.intro,.catalog-intro,.tools-editorial,.agents-lead) h2 { font-size: var(--hessara-text-section); line-height: 1.5; font-weight: var(--hessara-weight-medium); }
+html body .app :is(.catalog-intro,.tools-editorial,.agents-lead) { margin-bottom: 30px; }
+html body .app :is(.model-atlas,.tool-list) { gap: 16px; }
+html body .app :is(.atlas-entry,.tool-entry) { padding: 22px; }
+html body .app :is(.atlas-bottom,.atlas-entry dl>div,.tool-meta,.agent-list,.explore-section,.security-note,.comparison,.results,.plot-foot) { border-color: var(--hessara-line); }
+html body .app :is(.paperclip-feature,.tools-editorial-note,.start-surface,.how-hero) { background: var(--hessara-surface); color: var(--hessara-ink-secondary); border-color: var(--hessara-line); border-radius: var(--hessara-radius-card); }
+html body .app .paperclip-feature :is(p,h3,.eyebrow) { color: var(--hessara-ink-secondary); }
+html body .app .how-hero:after { opacity: .2; }
+html body .app .how-index a:hover { background: var(--hessara-surface-blue); }
+html body .app .how-articles article { border-color: var(--hessara-line); }
+html body .app .evaluation-dashboard { --dashboard-line: var(--hessara-line); gap: 22px; }
+html body .app .evaluation-dashboard .metric { background: var(--hessara-paper); border-color: var(--hessara-line); }
+html body .app .evaluation-dashboard .metric:first-child { background: var(--hessara-surface-blue); }
+html body .app .evaluation-dashboard .metric:nth-child(3) { background: var(--hessara-surface-warm); }
+html body .app .evaluation-dashboard .metric strong { color: var(--hessara-ink); font-size: clamp(29px,3vw,40px); font-weight: 500; }
+html body .app .evaluation-dashboard .metric > span { color: var(--hessara-ink-secondary); }
+html body .app .evaluation-dashboard .metric p { color: var(--hessara-muted); }
+html body .app :is(.evaluation-dashboard .model-letter,.execution,.result-row:hover) { background: var(--hessara-surface-blue); border-color: var(--hessara-line); color: var(--hessara-ink-secondary); }
+html body .app :is(.speed-rule,.bars) { background-color: var(--hessara-surface); border-color: var(--hessara-line); }
+html body .app .speed-time { color: var(--hessara-muted); }
+html body :is(.app [data-slot=table-container],.form-dialog,.task-dialog) { border-color: var(--hessara-line); }
+html body .app [data-slot=table-header] { background: var(--hessara-surface); }
+html body .app :is([data-slot=table-head],[data-slot=table-cell]) { color: var(--hessara-ink-secondary); border-color: var(--hessara-line); }
+html body .app [data-slot=table-row] { border-color: var(--hessara-line); }
+html body .app [data-slot=table-row]:hover { background: var(--hessara-surface-blue); }
+
+/* Shared workspace surfaces preserve their existing functional grids. */
+html body .app :is(.model-advisor,.advisor,.assistant-workbench,.decision-studio,.student-notebook,.nvidia-start,.model-connection-status) { color: var(--hessara-ink-secondary); background: var(--hessara-surface); border-color: var(--hessara-line); border-radius: var(--hessara-radius-panel); box-shadow: none; }
+html body .app .nvidia-start { padding: clamp(22px,3vw,36px); gap: clamp(24px,4vw,48px); margin-block: 24px 32px; border: 1px solid var(--hessara-line); }
+html body .app .nvidia-connect { background: var(--hessara-paper); border-color: var(--hessara-line); border-radius: var(--hessara-radius-card); box-shadow: none; }
+html body .app .nvidia-model { border-color: var(--hessara-line); }
+html body .app .nvidia-model a:hover { background: var(--hessara-surface-blue); }
+html body .app .nvidia-story h2 { font-size: clamp(25px,2.5vw,34px); line-height: 1.6; }
+html body .app :is(.model-connection-start,.student-notebook__open) { background: var(--hessara-powder); color: var(--hessara-ink); border-color: var(--hessara-line-strong); border-radius: var(--hessara-radius-sm); }
+html body .app :is(.model-connection-start,.student-notebook__open):hover { background: #b4cce3; }
+html body .app :is(.model-connection-provider,.model-connection-refresh,.decision-form,.assistant-result,.decision-result) { background: var(--hessara-paper); border-color: var(--hessara-line); border-radius: var(--hessara-radius-card); box-shadow: none; }
+html body .app .model-connection-provider button { background: var(--hessara-surface-blue); border-color: var(--hessara-line-strong); border-radius: var(--hessara-radius-sm); }
+html body .app :is(.notice,.code-notice,.code-empty,.lab-notice,.advisor-alert,.lab-alert,.code-alert) { background: var(--hessara-surface-blue); border-color: var(--hessara-steel); color: var(--hessara-ink-secondary); }
+html body .app :is(.notice.error,.assistant-error,.decision-error,.lab-alert[role=alert],.code-alert[role=alert],.advisor-alert[role=alert]) { color: var(--hessara-error); background: var(--hessara-error-surface); border-color: #dbb9bd; }
+html body .app :is(.advisor-review,.advisor-results,.advisor-candidate details,.advisor-comparison,.advisor-measurement-heading th,.advisor-advanced,.decision-provenance,.assistant-guide) { border-color: var(--hessara-line); }
+html body .app .advisor-measurement-heading th { background: var(--hessara-surface-blue); }
+html body .app :is(.student-notebook__workspace,.student-notebook__steps li>span) { border-color: var(--hessara-line); }
+html body .app .student-notebook__workspace textarea.student-notebook__prompt { background: var(--hessara-surface-blue); }
+html body .app :is(.student-notebook__modes button,.student-notebook__copy) { color: var(--hessara-ink-secondary); border-color: var(--hessara-line-strong); background: var(--hessara-paper); min-height: 44px; font-size: 12px; border-radius: var(--hessara-radius-sm); }
+html body .app .student-notebook__modes button[aria-pressed=true] { background: var(--hessara-powder); border-color: var(--hessara-focus); }
+
+html body .app :is(.lab-panel,.code-workspace-panel) { color: var(--hessara-ink-secondary); padding: clamp(4px,1.8vw,24px) 0; }
+html body .app :is(.lab-header,.code-workspace-header) { border-color: var(--hessara-line); }
+html body .app :is(.lab-composer,.lab-run,.lab-answer,.code-card,.code-task,.lab-recover,.lab-claim,.code-change) { background: var(--hessara-paper); border-color: var(--hessara-line); border-radius: var(--hessara-radius-card); box-shadow: none; }
+html body .app :is(.lab-history,.lab-question,.lab-model-option,.lab-stats>div,.lab-check-results>li,.lab-preferences,.lab-report-panel,.lab-suggestions,.lab-delete,.lab-launch,.code-project-list,.code-launch,.code-file,.code-stats>div,.code-choice-list>label,.code-revisions li) { background: var(--hessara-surface); border-color: var(--hessara-line); color: var(--hessara-ink-secondary); border-radius: 12px; }
+html body .app :is(.lab-history button,.code-project-list button):hover { background: var(--hessara-surface-blue); }
+html body .app :is(.lab-history button,.code-project-list button)[aria-current=true],
+html body .app .lab-model-option:has(input:checked) { background: var(--hessara-surface-blue); border-color: var(--hessara-focus); color: var(--hessara-ink); }
+html body .app :is(.lab-number,.code-field-number,.lab-icon-button,.code-icon-button) { background: var(--hessara-paper); border-color: var(--hessara-line-strong); color: var(--hessara-ink-secondary); }
+html body .app :is(.lab-status,.code-status) { background: var(--hessara-surface-blue); border-color: var(--hessara-line); color: var(--hessara-ink-secondary); border-radius: 6px; }
+html body .app :is(.lab-prompt,.lab-answer pre,.lab-run-details>pre,.code-tests pre,.code-diff pre,.code-task-details>pre,.code-revision-preview pre,.lab-preferences .lab-prompt) { background: var(--hessara-surface); color: var(--hessara-ink); border-color: var(--hessara-line); }
+html body .app :is(.lab-settings,.lab-answer>details,.lab-result-case,.lab-run-details,.lab-evaluation,.lab-judgement,.code-project-facts,.code-task-details,.code-scope,.code-event-log li) { border-color: var(--hessara-line); }
+html body .app :is(.lab-evaluation blockquote,.lab-report-view blockquote) { border-color: var(--hessara-steel); color: var(--hessara-ink-secondary); }
+html body .app .code-line-added { background: var(--hessara-success-surface); border-color: var(--hessara-success); }
+html body .app .code-line-removed { background: var(--hessara-error-surface); border-color: var(--hessara-error); }
+html body .app .code-line-number { color: var(--hessara-muted); }
+html body .app :is(pre,code,kbd) { font-family: var(--hessara-mono); }
+html body .app :is(.metric strong,.speed-time,.lab-stats strong,.code-stats strong,[data-slot=table-cell]) { font-variant-numeric: tabular-nums; }
+html body .app .code-status:is([data-status=conflict],[data-status=failed]) { color: var(--hessara-error); border-color: #dbb9bd; background: var(--hessara-error-surface); }
+html body .app .code-status[data-status=merged] { color: var(--hessara-success); border-color: #b8d1c3; background: var(--hessara-success-surface); }
+html body .app .code-status:is([data-status=blocked],[data-status=interrupted]) { color: var(--hessara-warning); border-color: #d8c59e; background: var(--hessara-warning-surface); }
+html body .app .lab-run progress,
+html body .app .lab-run progress::-webkit-progress-bar { background: var(--hessara-line); }
+html body .app .lab-run progress::-webkit-progress-value { background: var(--hessara-focus); }
+html body .app .lab-run progress::-moz-progress-bar { background: var(--hessara-focus); }
+html body .lab-public-report { background: var(--hessara-canvas); border-color: var(--hessara-line); color: var(--hessara-ink); }
+html body .lab-home-link { color: var(--hessara-ink-secondary); }
+
+html body .app .agent-directory { background: transparent; border-color: var(--hessara-line); }
+html body .app .agents-page .agent-row,
+html body .app .agents-page .agent-row:hover { background: var(--hessara-paper); border-color: var(--hessara-line); border-radius: var(--hessara-radius-card); box-shadow: var(--hessara-shadow-card); }
+html body .app .agents-page .agent-row:hover { border-color: var(--hessara-line-strong); }
+html body .app :is(.agent-name-line h4,.assistant-card h4) { font-family: var(--hessara-font); font-weight: 500; }
+html body .app :is(.agent-name-line span,.agent-description p) { color: var(--hessara-muted); }
+html body .app :is(.agent-row-actions a,.agent-row-actions button,.assistant-card-copy>button,.assistant-actions a,.assistant-actions button,.agent-activation a) { color: var(--hessara-ink-secondary); border-color: var(--hessara-line); border-radius: var(--hessara-radius-sm); }
+html body .app .assistant-actions button.primary { color: #fff; background: var(--hessara-action); border-color: var(--hessara-action); }
+html body .app .assistant-gallery-heading { gap: 28px; }
+
+html body :is(.form-dialog,.task-dialog) { color: var(--hessara-ink); background: var(--hessara-canvas); border-color: var(--hessara-line); border-radius: var(--hessara-radius-panel); box-shadow: var(--hessara-shadow-float); }
+html body :is(.form-dialog,.task-dialog) [data-slot=dialog-title] { color: var(--hessara-ink); }
+html body :is(.form-dialog,.task-dialog) :is([data-slot=dialog-description],.form-help,.field small) { color: var(--hessara-muted); }
+html body .app .developer-credit { color: var(--hessara-muted); border-color: var(--hessara-line); }
+html body .app { cursor: auto; }
+html body .app :is(a,button,summary,[role=tab],[role=button]) { cursor: pointer; }
+html body .app :is(input,textarea,[contenteditable=true],pre,code) { cursor: text; }
+html body .app :is(button:disabled,[aria-disabled=true]) { cursor: not-allowed; }
+html body .app :is(button,[role=button])[aria-busy=true] { cursor: progress; }
+::selection { background: #a0c0deaa; color: var(--hessara-ink); }
+
+@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  html body .app :is(.primary,.secondary,.hero-secondary,.explore-path,.assistant-card,.atlas-entry,.tool-entry,.main-tabs [data-slot=tabs-trigger]) { transition: background-color var(--hessara-duration) var(--hessara-ease), color var(--hessara-duration) var(--hessara-ease), border-color var(--hessara-duration) var(--hessara-ease), transform var(--hessara-duration) var(--hessara-ease); }
+  html body :is(.app .primary,.app .secondary,.app .hero-secondary,[data-slot=button],.signin-submit,.signin-google):active:not(:disabled):not([aria-disabled=true]):not(:focus-visible) { scale: var(--hessara-press-scale); }
+  html body .app :is(.explore-path,.assistant-card):hover { transform: translateY(-1px); }
+}
+/* Layout breakpoints: compact 1000px, stacked 800px, phone 600px, tight 380px.
+ * Keep media queries literal: CSS custom properties cannot parameterize them.
+ */
+@media (max-width:1000px) {
+  :root { --hessara-gutter: 28px; }
+  html body .app .overview-composition { gap: 24px; }
+  html body .app .meadow-copy :is(h1,.hero-title) { font-size: 42px; }
+  html body .app[dir=rtl] .meadow-copy :is(h1,.hero-title) { font-size: 39px; }
+}
+@media (max-width:800px) {
+  html body .app .overview-composition { grid-template-columns: minmax(0,1fr); min-height: 0; gap: 12px; margin-block: 0 32px; }
+  html body .app .meadow-welcome { padding-block: 24px; }
+  html body .app .meadow-copy { max-width: 680px; }
+  html body .app .meadow-copy :is(h1,.hero-title) { font-size: clamp(38px,6.8vw,52px); }
+  html body .app[dir=rtl] .meadow-copy :is(h1,.hero-title) { font-size: clamp(34px,6vw,47px); }
+  html body .app :is(.model-atlas,.tool-list) { gap: 14px; }
+}
+@media (max-width:600px) {
+  :root { --hessara-gutter: 18px; --hessara-frame-space: 8px; }
+  html body { padding: 8px; }
+  html body .app { border-radius: 14px; min-height: calc(100dvh - 16px); }
+  html body .app .masthead { height: auto; min-height: 80px; padding-block: 14px; gap: 12px; flex-wrap: wrap; }
+  html body .wordmark strong { font-size: 21px; }
+  html body .wordmark .brand-symbol { width: 32px; height: 32px; }
+  html body .app .header-tools { gap: 6px; }
+  html body .app .content { padding-block: 20px 32px; }
+  html body .app .session-link { padding-inline: 10px; font-size: 12px; }
+  html body .app .language-select { min-width: 78px; padding-inline: 8px; font-size: 12px; }
+  html body .app .main-tabs [data-slot=tabs-trigger] { font-size: 12px; padding-inline: 11px; }
+  html body .app .meadow-welcome { padding: 12px 0 20px; }
+  html body .app .meadow-copy :is(h1,.hero-title) { font-size: clamp(34px,8.2vw,45px); line-height: 1.22; }
+  html body .app[dir=rtl] .meadow-copy :is(h1,.hero-title) { font-size: clamp(29px,7vw,38px); line-height: 1.55; letter-spacing: 0; }
+  html body .app .meadow-copy > p,
+  html body .app .meadow-copy .hero-statement { font-size: 15px; margin-top: 16px; }
+  html body .app .hero-actions { margin-top: 22px; gap: 9px; }
+  html body .app .hero-actions button { padding-inline: 14px; font-size: 13px; }
+  html body .app :is(.catalog-intro,.tools-editorial,.agents-lead) h2 { font-size: 27px; line-height: 1.55; }
+  html body .app :is(.atlas-entry,.tool-entry) { padding: 19px; border-radius: 12px; }
+  html body .app .nvidia-start { padding: 22px 17px; border-radius: 16px; }
+  html body .app .nvidia-connect { padding: 20px 16px; border-radius: 12px; }
+  html body .app :is(.model-advisor,.assistant-workbench,.decision-studio,.student-notebook,.model-connection-status) { border-radius: 16px; }
+}
+@media (max-width:380px) {
+  html body .app .masthead { align-items: flex-start; gap: 8px; }
+  html body .app .masthead .header-tools { grid-column: 1/-1; grid-row: 2; width: 100%; justify-self: stretch; justify-content: space-between; }
+  html body .app .masthead .top-level-sections { grid-row: 3; flex-wrap: wrap; }
+  html body .app .hero-actions > * { flex: 1 1 auto; }
+}
+@media (prefers-reduced-motion:reduce) {
+  html { scroll-behavior: auto; }
+  html body :is(.app .primary,.app .secondary,.app .hero-secondary,.app .explore-path,.app .assistant-card,.app .atlas-entry,.app .tool-entry,[data-slot=button],.signin-submit,.signin-google) { transition: none; transform: none; scale: none; }
+}
+@media (forced-colors:active) {
+  .primary .hessara-thinking-orb,.signin-submit .hessara-thinking-orb { filter: none; }
+  html body,
+  html body .app,
+  html body .app :is(.meadow-welcome,.metric,.plot,.speed-plot,.comparison,.results,.atlas-entry,.tool-entry,.assistant-card,.agent-row,.model-advisor,.lab-composer,.lab-run,.code-card,.code-task) { background: Canvas; color: CanvasText; border-color: CanvasText; box-shadow: none; }
+  html body .app :is(h1,h2,h3,h4,p,label,dt,dd,summary) { color: CanvasText; }
+  html body .app :is(.primary,.secondary,.hero-secondary,.icon-button) { color: ButtonText; background: ButtonFace; border-color: ButtonText; }
+  html body .app :is(a,button,summary,input,textarea,select):focus-visible { outline-color: Highlight; }
+  html body .app .main-tabs [data-slot=tabs-trigger][data-state=active] { color: HighlightText; background: Highlight; }
+}
+
+/* Design-engineering refinements in the existing semantic layer. */
+html body :is(.app,.signin-page,[role=dialog]) :is(p,.form-help) { text-wrap: pretty; }
+html body :is(.app,.signin-page,[role=dialog]) :is(output,.numeric,.llm-training-metrics dd,.llm-probability code,.llm-probability output) { font-variant-numeric: tabular-nums; }
+html body :is(.app,[role=dialog]) [data-slot=select-trigger] { color: var(--hessara-ink); background: var(--hessara-paper); border-color: var(--hessara-line-strong); border-radius: var(--hessara-radius-sm); min-height: var(--hessara-target); }
+html body :is(.app,[role=dialog]) [data-slot=select-trigger][aria-invalid=true] { border-color: var(--hessara-state-invalid); }
+html body [data-slot=tabs-content]:focus-visible { outline: var(--hessara-focus-width) solid var(--hessara-focus); outline-offset: var(--hessara-focus-offset); border-radius: var(--hessara-radius-sm); }
+html body .dialog-close { inline-size: var(--hessara-target); block-size: var(--hessara-target); padding: 10px; border-radius: var(--hessara-radius-sm); color: var(--hessara-ink-secondary); transition: color var(--hessara-duration-fast) var(--hessara-ease), background-color var(--hessara-duration-fast) var(--hessara-ease); }
+html body .dialog-close:hover { color: var(--hessara-ink); background: var(--hessara-state-hover); }
+html body :is(.form-dialog,.task-dialog) [data-slot=dialog-header] { padding-inline-end: calc(var(--hessara-target) + 8px); }
+html body :is(.app .primary,.app .secondary,.app .hero-secondary,[data-slot=button],.signin-submit,.signin-google) { transition-property: color, background-color, border-color, box-shadow, scale; transition-duration: var(--hessara-duration-fast); transition-timing-function: var(--hessara-ease); }
+html body :is(.primary,.secondary)[aria-busy] { min-inline-size: 7rem; }
+html body .llm-explorer :is(.llm-input-grid,.llm-stage) { min-width: 0; }
+
+html body [data-slot=dialog-title] { line-height: 1.5; text-wrap: balance; }
+
+

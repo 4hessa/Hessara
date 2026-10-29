@@ -1,0 +1,13 @@
+{
+  "name": "hessara-re-sandbox-control",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.13.0" },
+  "scripts": {
+    "test": "node --test bridge.test.mjs",
+    "probe:plan": "node bridge.mjs probe",
+    "list": "node bridge.mjs list"
+  },
+  "dependencies": { "@vercel/sandbox": "3.8.0" }
+}

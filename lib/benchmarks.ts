@@ -5,42 +5,42 @@ export const CATEGORIES = [
     name: "فهم البرمجة",
     en: "Code reasoning",
     description: "تتبّع المخرجات، المصفوفات، التكرار والمنطق البرمجي.",
-    color: "#48cba0",
+    color: "#586251",
   },
   {
     id: "logic",
     name: "الاستدلال المنطقي",
     en: "Logical reasoning",
     description: "تسلسلات عددية، علاقات وترتيب وعمليات متعددة.",
-    color: "#8c9bfa",
+    color: "#788473",
   },
   {
     id: "analysis",
     name: "تحليل البيانات",
     en: "Data analysis",
     description: "حساب المجاميع والمتوسطات والفروق من بيانات ثابتة.",
-    color: "#5fbddd",
+    color: "#a3aca0",
   },
   {
     id: "retrieval",
     name: "استرجاع المعلومات",
     en: "Information retrieval",
     description: "استخراج حقائق من سجلات مغلقة ذات إجابة مرجعية.",
-    color: "#eab65f",
+    color: "#323b2f",
   },
   {
     id: "instruction",
     name: "اتباع التعليمات",
     en: "Instruction following",
     description: "الالتزام بمفاتيح JSON وصيغ وقيم محددة بدقة.",
-    color: "#d48ccb",
+    color: "#6d7868",
   },
   {
     id: "long",
     name: "السياق الطويل",
     en: "Long-context retrieval",
     description: "استخراج معلومة من 400 إلى 1,600 سجل داخل السياق.",
-    color: "#ed9380",
+    color: "#919b8c",
   },
 ] as const;
 export type Category = (typeof CATEGORIES)[number]["id"];
@@ -188,7 +188,7 @@ export const DEMO_MODELS = [
     id: "sim-atlas",
     name: "Atlas",
     label: "محاكي متوازن",
-    color: "#43bc94",
+    color: "#586251",
     provider: "simulation",
     ready: true,
   },
@@ -196,7 +196,7 @@ export const DEMO_MODELS = [
     id: "sim-swift",
     name: "Swift",
     label: "محاكي سريع",
-    color: "#8392e9",
+    color: "#788473",
     provider: "simulation",
     ready: true,
   },
@@ -204,7 +204,7 @@ export const DEMO_MODELS = [
     id: "sim-prism",
     name: "Prism",
     label: "محاكي تحليلي",
-    color: "#e3ad56",
+    color: "#a3aca0",
     provider: "simulation",
     ready: true,
   },
@@ -216,6 +216,9 @@ export type Model = {
   color: string;
   provider: string;
   ready: boolean;
+  configured?: boolean;
+  verification?: "verified" | "unverified" | "failed";
+  verifiedAt?: number | null;
 };
 export type Trial = {
   id: string;
